@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizr — Precision-Fit Fashion</title>
+    <meta name="description" content="Sizr: Where precision engineering meets contemporary fashion. Built for those who demand fit, not just style.">
+    <meta name="theme-color" content="#0A0C0C">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0C0C'/%3E%3Ctext x='16' y='23' font-family='Georgia, serif' font-size='20' fill='%23FF5A3D' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Manrope:wght@300..800&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+
+    <!--
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      SIZR — Coming Soon Landing Page
+      Design system: "Technical Editorial Precision"
+        DISPLAY ... Bodoni Moda (fashion editorial serif)
+        BODY ...... Manrope (clean grotesque)
+        LABELS .... Space Grotesk (technical voice)
+        GROUND .... ink #0A0C0C · BONE #F2EDE3 · EMBER #FF5A3D
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      Edit guide:
+        COLORS ........ :root in <style> — all brand tokens
+        HERO IMAGE .... .hero-bg img src (swap the Unsplash URL)
+        LOGO .......... assets/svgviewer-output.svg — cropped by JS into
+                        nav mark (NZ mark) + footer wordmark.
+                        Adjust LOGO_CROPS in <script> if the source changes.
+        LAUNCH STATUS . .prelaunch section — Drop 01 status band + email form.
+                        No countdown date required; edit the status copy.
+        EMAIL BACKEND .. EMAIL HANDLER section in <script>
+        SOCIAL LINKS ... @getsizr in the HTML
+    -->
+
+    <style>
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           BRAND TOKENS
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        :root {
+            --ink:        #0A0C0C;
+            --ink-2:      #101313;
+            --ink-3:      #171B19;
+            --bone:       #F2EDE3;
+            --slate:      #ABB3AD;          /* ≥ 4.5:1 on ink */
+            --slate-faint: rgba(171,179,173,.55);
+            --ember:      #FF5A3D;
+            --ember-faint: rgba(255,90,61,.12);
+            --hairline:   rgba(242,237,227,.10);
+            --hairline-strong: rgba(242,237,227,.20);
+
+            --font-display: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+            --font-sans:    'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-tech:    'Space Grotesk', 'Manrope', -apple-system, sans-serif;
+
+            --ease-out: cubic-bezier(.16, 1, .3, 1);
+            --r-pill: 999px;
+            --r-card: 3px;
+
+            color-scheme: dark;
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           RESET / BASE
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--ink);
+            color: var(--bone);
+            overflow-x: hidden;
+            accent-color: var(--ember);
+        }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; font-family: var(--font-sans); }
+        ul, ol { list-style: none; }
+
+        :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+        ::selection { background: var(--ember); color: var(--ink); }
+
+        .wrap {
+            width: 100%;
+            max-width: 1240px;
+            margin-inline: auto;
+            padding-inline: clamp(1.5rem, 5vw, 3rem);
+        }
+
+        /* Skip link — visually hidden until focused */
+        .skip {
+            position: fixed;
+            top: .75rem; left: .75rem;
+            z-index: 200;
+            transform: translateY(-2.5rem);
+            opacity: 0;
+            padding: .7rem 1.2rem;
+            background: var(--bone);
+            color: var(--ink);
+            font-size: .78rem;
+            font-weight: 600;
+            border-radius: var(--r-pill);
+            transition: transform .25s, opacity .25s;
+            pointer-events: none;
+        }
+        .skip:focus-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+        /* Eyebrow label — technical voice */
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            font-family: var(--font-tech);
+            font-size: .66rem;
+            font-weight: 600;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+        .eyebrow::before {
+            content: '';
+            width: 26px;
+            height: 1px;
+            background: var(--ember);
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2rem, 3.6vw, 3.1rem);
+            line-height: 1.06;
+            letter-spacing: -.01em;
+        }
+        h2 em { font-style: italic; color: var(--ember); }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           BUTTONS
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            padding: 1.05rem 1.7rem;
+            border-radius: var(--r-pill);
+            font-family: var(--font-tech);
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            line-height: 1;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            min-height: 48px;
+            transition: background .2s ease, color .2s ease, border-color .2s ease,
+                        transform .12s ease, box-shadow .25s ease;
+        }
+        .btn .arr { transition: transform .2s ease; display: inline-block; }
+        .btn:hover .arr { transform: translateX(4px); }
+        .btn:active { transform: translateY(1px); }
+
+        .btn-primary { background: var(--bone); color: var(--ink); }
+        .btn-primary:hover { background: var(--ember); color: var(--ink); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--bone);
+            border-color: var(--hairline-strong);
+        }
+        .btn-ghost:hover { border-color: var(--bone); background: var(--ink-2); }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           NAVBAR
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.5rem clamp(1.5rem, 5vw, 3rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background .4s, padding .3s, border-color .4s;
+            border-bottom: 1px solid transparent;
+        }
+        nav.scrolled {
+            background: rgba(10,12,12,.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            padding-block: 1rem;
+            border-bottom-color: var(--hairline);
+        }
+        .nav-brand { display: flex; align-items: center; gap: .85rem; }
+        .nav-logo {
+            height: 34px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity .4s .15s;
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+        .nav-logo.ready { opacity: 1; }
+        .nav-wordmark {
+            font-family: var(--font-tech);
+            font-size: .82rem;
+            font-weight: 600;
+            letter-spacing: .34em;
+            color: var(--bone);
+        }
+        .nav-cta {
+            min-height: 42px;
+            padding: .7rem 1.4rem;
+            background: var(--bone);
+            color: var(--ink);
+            font-family: var(--font-tech);
+            font-size: .66rem;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+            border-radius: var(--r-pill);
+            transition: background .2s, color .2s, transform .12s;
+        }
+        .nav-cta:hover { background: var(--ember); color: var(--ink); }
+        .nav-cta:active { transform: translateY(1px); }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           HERO
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-block: clamp(9rem, 16vh, 11rem) clamp(4rem, 12vh, 8rem);
+            overflow: hidden;
+        }
+        .hero-bg { position: absolute; inset: 0; z-index: 0; }
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 62% 30%;
+            opacity: 0;
+            transition: opacity 1.8s var(--ease-out);
+        }
+        .hero-bg img.loaded { opacity: 1; }
+        .hero-bg img.kenburns {
+            transform-origin: 68% 32%;
+            animation: kenburns 18s ease-out forwards;
+        }
+        @keyframes kenburns {
+            from { transform: scale(1.02); }
+            to   { transform: scale(1.10); }
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(10,12,12,.55) 0%, rgba(10,12,12,.22) 45%, rgba(10,12,12,.74) 80%, var(--ink) 100%),
+                linear-gradient(90deg, rgba(10,12,12,.66) 0%, rgba(10,12,12,.12) 58%);
+        }
+
+        .hero-content { position: relative; z-index: 2; max-width: 660px; }
+
+        .hero-badge {
+            color: var(--ember);
+            margin-bottom: 1.75rem;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s .25s var(--ease-out), transform .7s .25s var(--ease-out);
+        }
+        .hero-badge.ready { opacity: 1; transform: translateY(0); }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2.9rem, 7.2vw, 6.4rem);
+            line-height: .98;
+            letter-spacing: -.01em;
+            margin-bottom: 1.75rem;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s .4s var(--ease-out), transform .7s .4s var(--ease-out);
+        }
+        .hero h1.ready { opacity: 1; transform: translateY(0); }
+        .hero h1 em { font-style: italic; color: var(--ember); }
+
+        .hero-sub {
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--slate);
+            max-width: 46ch;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s .55s var(--ease-out), transform .7s .55s var(--ease-out);
+        }
+        .hero-sub.ready { opacity: 1; transform: translateY(0); }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s .7s var(--ease-out), transform .7s .7s var(--ease-out);
+        }
+        .hero-cta-group.ready { opacity: 1; transform: translateY(0); }
+
+        /* Vertical spec rail — desktop only */
+        .hero-rail {
+            position: absolute;
+            top: 50%;
+            right: clamp(1.5rem, 4vw, 3.5rem);
+            transform: translateY(-50%);
+            z-index: 2;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.1rem;
+            font-family: var(--font-tech);
+            font-size: .6rem;
+            font-weight: 500;
+            letter-spacing: .32em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+        .hero-rail .rail-text { writing-mode: vertical-rl; }
+        .hero-rail .rail-marker { width: 6px; height: 6px; background: var(--ember); transform: rotate(45deg); }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           MARQUEE STRIP
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .marquee-strip {
+            padding: 1.4rem 0;
+            background: var(--ink-2);
+            border-top: 1px solid var(--hairline);
+            border-bottom: 1px solid var(--hairline);
+            overflow: hidden;
+            white-space: nowrap;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+        }
+        .marquee-track {
+            display: inline-flex;
+            animation: marquee 42s linear infinite;
+            will-change: transform;
+        }
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 3.5rem;
+            flex-shrink: 0;
+            font-family: var(--font-tech);
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--slate);
+            padding-right: 3.5rem;
+        }
+        .marquee-item::after {
+            content: '\25C6';
+            font-size: .42rem;
+            color: var(--ember);
+        }
+        @keyframes marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           ABOUT / MISSION  (01 — The Story)
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .about { padding-block: clamp(5.5rem, 10vw, 8.5rem); }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            gap: clamp(3rem, 7vw, 6.5rem);
+            align-items: center;
+        }
+        .about .eyebrow { margin-bottom: 1.5rem; }
+        .about h2 { margin-bottom: 2rem; max-width: 16ch; }
+        .about-text { font-size: 1rem; font-weight: 300; line-height: 1.85; color: var(--slate); }
+        .about-text p + p { margin-top: 1.35rem; }
+
+        .about-visual { position: relative; }
+        .about-frame {
+            position: absolute;
+            top: -1.1rem; left: -1.1rem;
+            width: 100%; height: 100%;
+            border: 1px solid var(--hairline-strong);
+            border-radius: var(--r-card);
+            pointer-events: none;
+        }
+        .about-frame::after {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 3rem; height: 1px;
+            background: var(--ember);
+        }
+        .about-img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            border-radius: var(--r-card);
+            transition: transform 1.2s var(--ease-out);
+        }
+        .about-visual:hover .about-img { transform: scale(1.02); }
+        .about-fig {
+            margin-top: .9rem;
+            font-family: var(--font-tech);
+            font-size: .62rem;
+            font-weight: 500;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            color: var(--slate-faint);
+        }
+        .about-fig em { font-style: normal; color: var(--ember); }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           PRINCIPLES  (02 — The Obsessions)
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .principles {
+            padding-block: clamp(5rem, 9vw, 7.5rem);
+            background: var(--ink-2);
+            border-block: 1px solid var(--hairline);
+        }
+        .principles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1.5rem;
+            margin-bottom: clamp(2.5rem, 5vw, 4rem);
+        }
+        .principles-header h2 { max-width: 14ch; }
+        .principles-count {
+            font-family: var(--font-tech);
+            font-size: .7rem;
+            font-weight: 500;
+            letter-spacing: .2em;
+            color: var(--slate);
+            white-space: nowrap;
+        }
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--hairline);
+            border: 1px solid var(--hairline);
+            border-radius: var(--r-card);
+            overflow: hidden;
+        }
+        .principle {
+            background: var(--ink-2);
+            padding: clamp(2.25rem, 4vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            transition: background .35s ease, opacity .8s var(--ease-out),
+                        transform .8s var(--ease-out);
+        }
+        .principle:hover { background: var(--ink-3); }
+        .principle-num {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(3.6rem, 6vw, 5.25rem);
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,90,61,.42);
+            margin-bottom: 1.75rem;
+            transition: -webkit-text-stroke .3s ease;
+        }
+        .principle:hover .principle-num { -webkit-text-stroke: 1px var(--ember); }
+        .principle-tag {
+            font-family: var(--font-tech);
+            font-size: .6rem;
+            font-weight: 600;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: .85rem;
+        }
+        .principle h3 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 1.55rem;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .principle p {
+            font-size: .92rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--slate);
+        }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           STATS — measured spec row
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .stats {
+            border-bottom: 1px solid var(--hairline);
+            padding-block: clamp(3rem, 6vw, 4.5rem);
+        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+        .stat-item { padding-left: clamp(1.25rem, 3vw, 2.25rem); }
+        .stat-item + .stat-item { border-left: 1px solid var(--hairline); }
+        .stat-num {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(2.6rem, 5vw, 3.9rem);
+            line-height: 1;
+            color: var(--bone);
+            font-variant-numeric: tabular-nums;
+            margin-bottom: .8rem;
+        }
+        .stat-label {
+            display: block;
+            font-family: var(--font-tech);
+            font-size: .62rem;
+            font-weight: 600;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           EDITORIAL IMAGE BREAK + QUOTE
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .editorial-break {
+            position: relative;
+            height: 74vh;
+            min-height: 520px;
+            overflow: hidden;
+        }
+        .editorial-break img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+        }
+        .editorial-break::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, var(--ink) 0%, transparent 24%, transparent 70%, var(--ink) 100%),
+                linear-gradient(90deg, rgba(10,12,12,.42) 0%, transparent 60%);
+        }
+        .editorial-quote {
+            position: absolute;
+            bottom: clamp(2.25rem, 5vw, 3.75rem);
+            left: clamp(1.5rem, 5vw, 4rem);
+            right: clamp(1.5rem, 5vw, 4rem);
+            max-width: 680px;
+            z-index: 2;
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+            line-height: 1.24;
+            color: var(--bone);
+            text-shadow: 0 2px 24px rgba(10,12,12,.55);
+        }
+        .editorial-quote::before {
+            content: '\201C';
+            display: block;
+            font-family: var(--font-display);
+            font-size: .92em;
+            line-height: .4;
+            color: var(--ember);
+            margin-bottom: .45em;
+        }
+        .editorial-attrib {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin-top: 1.5rem;
+            font-family: var(--font-tech);
+            font-style: normal;
+            font-size: .64rem;
+            font-weight: 600;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+        .editorial-attrib::before {
+            content: '';
+            width: 22px;
+            height: 1px;
+            background: var(--ember);
+        }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           PRE-LAUNCH  (03 — Drop 01)  status + signup
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .prelaunch { padding-block: clamp(5.5rem, 10vw, 8rem); }
+        .prelaunch-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: clamp(3rem, 6vw, 5.5rem);
+            align-items: center;
+        }
+        .prelaunch .eyebrow { margin-bottom: 1.5rem; }
+        .prelaunch h2 { margin-bottom: 1.5rem; max-width: 15ch; }
+        .prelaunch-copy > p {
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--slate);
+            max-width: 46ch;
+            margin-bottom: 2rem;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            padding: .65rem 1.1rem;
+            border: 1px solid var(--hairline-strong);
+            border-radius: var(--r-pill);
+            font-family: var(--font-tech);
+            font-size: .66rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ember);
+            box-shadow: 0 0 0 0 rgba(255,90,61,.5);
+            animation: pulse 2.4s ease-out infinite;
+        }
+        @keyframes pulse {
+            70%  { box-shadow: 0 0 0 9px rgba(255,90,61,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,90,61,0); }
+        }
+
+        .signup-panel {
+            position: relative;
+            background: var(--ink-2);
+            border: 1px solid var(--hairline);
+            border-radius: var(--r-card);
+            padding: clamp(1.75rem, 3.5vw, 2.6rem);
+        }
+        .signup-panel::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 3.25rem;
+            height: 1px;
+            background: var(--ember);
+        }
+        .field-label {
+            display: block;
+            margin-bottom: .6rem;
+            font-family: var(--font-tech);
+            font-size: .62rem;
+            font-weight: 600;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            color: var(--slate);
+        }
+        .signup-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--hairline-strong);
+            padding: .9rem 0;
+            color: var(--bone);
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            transition: border-color .25s ease, box-shadow .25s ease;
+        }
+        .signup-input::placeholder { color: var(--slate-faint); }
+        .signup-input:focus { border-bottom-color: var(--ember); }
+        .signup-input:focus-visible { outline: none; border-bottom-color: var(--ember); }
+        .signup-submit {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        .form-message {
+            margin-top: 1rem;
+            font-size: .85rem;
+            min-height: 1.4em;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        .form-message.success { color: var(--ember); }
+        .form-message.error   { color: var(--ember); }
+        .form-message.error::before { content: '\26A0' '  '; }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           FOOTER
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        footer {
+            background: var(--ink-2);
+            border-top: 1px solid var(--hairline);
+            padding-block: 2.75rem;
+        }
+        .footer-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .footer-brand { display: flex; flex-direction: column; gap: .55rem; }
+        .footer-logo {
+            height: 26px;
+            width: auto;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(100%);
+            opacity: .85;
+        }
+        .footer-tagline {
+            font-family: var(--font-tech);
+            font-size: .62rem;
+            font-weight: 500;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--slate-faint);
+        }
+        .footer-links { display: flex; gap: 2.25rem; }
+        .footer-links a {
+            font-family: var(--font-tech);
+            font-size: .66rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--slate);
+            padding: .5rem 0;
+            transition: color .25s ease;
+        }
+        .footer-links a:hover { color: var(--bone); }
+        .footer-meta {
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+            text-align: right;
+            font-size: .72rem;
+            color: var(--slate-faint);
+        }
+        .footer-meta span:last-child { color: var(--slate); letter-spacing: .08em; }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           SCROLL REVEAL
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .principles-grid .principle:nth-child(2).reveal { transition-delay: .08s; }
+        .principles-grid .principle:nth-child(3).reveal { transition-delay: .16s; }
+        .principles-grid .principle { transform-delay: 0s; }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           RESPONSIVE
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        @media (min-width: 1080px) {
+            .hero-rail { display: flex; }
+        }
+
+        @media (max-width: 980px) {
+            .about-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+            .about-visual { max-width: 520px; }
+            .prelaunch-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(3) { border-left: 0; }
+            .stat-item:nth-child(n + 3) { padding-left: 0; margin-top: 2.25rem; }
+            .stat-item:nth-child(odd) { padding-left: 0; }
+            .stat-item:nth-child(2) { border-left: 0; }
+            .stat-item { padding-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding-inline: 1.5rem; }
+            .hero {
+                padding-top: 8.5rem;
+                padding-bottom: 5rem;
+            }
+            .hero-bg::after {
+                background: linear-gradient(180deg, rgba(10,12,12,.62) 0%, rgba(10,12,12,.55) 100%);
+            }
+            .hero h1 { font-size: clamp(2.6rem, 11vw, 3.6rem); }
+            .hero-cta-group { flex-direction: column; align-items: stretch; }
+            .hero-cta-group .btn { width: 100%; }
+
+            .principles-grid { grid-template-columns: 1fr; }
+            .principles-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .principle { padding: 2.25rem 1.75rem; }
+
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; }
+            .stat-item, .stat-item:nth-child(n + 3), .stat-item:nth-child(odd) { padding-left: 0; border-left: 0; margin-top: 0; }
+
+            .editorial-quote { left: 1.5rem; right: 1.5rem; bottom: 2.25rem; }
+
+            .footer-grid { flex-direction: column; align-items: flex-start; text-align: left; }
+            .footer-links { gap: 1.75rem; }
+            .footer-meta { text-align: left; flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.6rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .stats-grid .stat-item { border-left: 0; }
+            .nav-wordmark { display: none; }
+            .footer-meta { flex-direction: column; gap: .3rem; }
+        }
+
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           REDUCED MOTION
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+            .hero-badge, .hero h1, .hero-sub, .hero-cta-group { opacity: 1; transform: none; }
+            .hero-bg img.kenburns { animation: none; }
+            .about-img { transform: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <!-- ═══════════════════════════════════════
+         NAVBAR
+         ═══════════════════════════════════════ -->
+    <nav id="mainNav" aria-label="Primary">
+        <div class="nav-brand">
+            <img src="" alt="Sizr" class="nav-logo" id="navLogo">
+            <span class="nav-wordmark" aria-hidden="true">SIZR</span>
+        </div>
+        <a href="#signup" class="nav-cta">Join the Waitlist</a>
+    </nav>
+
+    <main id="main">
+
+        <!-- ═══════════════════════════════════════
+             HERO
+             Swap the img src for your own lookbook photo.
+             The gradient overlay in CSS keeps text readable on any image.
+             ═══════════════════════════════════════ -->
+        <section class="hero">
+            <div class="hero-bg">
+                <img
+                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600&q=85&auto=format&fit=crop"
+                    alt=""
+                    id="heroImg"
+                    loading="eager"
+                >
+            </div>
+
+            <div class="wrap">
+                <div class="hero-content">
+                    <span class="eyebrow hero-badge" id="heroBadge">Computer-vision fit system</span>
+                    <h1 id="heroTitle">Precision-fit<br>fashion for<br><em>real bodies</em></h1>
+                    <p class="hero-sub" id="heroSub">
+                        Two engineers tired of guessing sizes. Building clothing that actually fits —
+                        powered by computer vision and obsession with proportion.
+                    </p>
+                    <div class="hero-cta-group" id="heroCta">
+                        <a href="#signup" class="btn btn-primary">Join the Waitlist <span class="arr" aria-hidden="true">&rarr;</span></a>
+                        <a href="#about" class="btn btn-ghost">Our Story</a>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="hero-rail" aria-hidden="true">
+                <span class="rail-text">SIZR &middot; EST. 2025 &middot; LAHORE &rarr; LDN</span>
+                <span class="rail-marker"></span>
+            </aside>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════
+             MARQUEE — brand keywords (decorative)
+             ═══════════════════════════════════════ -->
+        <div class="marquee-strip" aria-hidden="true">
+            <div class="marquee-track">
+                <span class="marquee-item">Precision Fit</span>
+                <span class="marquee-item">Pakistani Craftsmanship</span>
+                <span class="marquee-item">Computer Vision</span>
+                <span class="marquee-item">340 GSM Fabrics</span>
+                <span class="marquee-item">Engineered Proportions</span>
+                <span class="marquee-item">AR Try-On</span>
+                <span class="marquee-item">Precision Fit</span>
+                <span class="marquee-item">Pakistani Craftsmanship</span>
+                <span class="marquee-item">Computer Vision</span>
+                <span class="marquee-item">340 GSM Fabrics</span>
+                <span class="marquee-item">Engineered Proportions</span>
+                <span class="marquee-item">AR Try-On</span>
+            </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════
+             ABOUT / MISSION — 01
+             Swap the img src for your own craft photo. 3:4 portrait works best.
+             ═══════════════════════════════════════ -->
+        <section class="about reveal" id="about" aria-labelledby="aboutTitle">
+            <div class="wrap about-grid">
+                <div class="about-content">
+                    <span class="eyebrow">01 &mdash; The Story</span>
+                    <h2 id="aboutTitle">Built by engineers tired of <em>&ldquo;close enough&rdquo;</em></h2>
+                    <div class="about-text">
+                        <p>
+                            Sizr was born from a simple frustration: why does every brand guess at sizes?
+                            We're two engineers who believe clothing should fit the way furniture does when
+                            it's custom-built &mdash; precisely, intentionally, without compromise.
+                        </p>
+                        <p>
+                            Starting in Pakistan with some of the world's finest textile craftsmanship,
+                            we're building an AI-powered system that takes the guesswork out of fit.
+                            Our first drop: heavyweight, precision-fit essentials that feel like they were
+                            made for you &mdash; because they were.
+                        </p>
+                    </div>
+                </div>
+                <figure class="about-visual">
+                    <div class="about-frame" aria-hidden="true"></div>
+                    <img
+                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85&auto=format&fit=crop"
+                        alt="Hands guiding fabric through a sewing machine in the Sizr atelier."
+                        class="about-img"
+                    >
+                    <figcaption class="about-fig"><em>FIG. 01</em> &mdash; Atelier detail, Lahore</figcaption>
+                </figure>
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════
+             PRINCIPLES — 02 — three obsessions
+             ═══════════════════════════════════════ -->
+        <section class="principles" aria-labelledby="principlesTitle">
+            <div class="wrap">
+                <header class="principles-header reveal">
+                    <div>
+                        <span class="eyebrow">02 &mdash; The Obsessions</span>
+                        <h2 id="principlesTitle">What we obsess over</h2>
+                    </div>
+                    <span class="principles-count" aria-hidden="true">003</span>
+                </header>
+                <div class="principles-grid">
+                    <article class="principle reveal">
+                        <span class="principle-num" aria-hidden="true">01</span>
+                        <span class="principle-tag">CV Fit &middot; Proportion mapping</span>
+                        <h3>Fit, not sizing</h3>
+                        <p>
+                            Forget S/M/L. We use computer vision to map your proportions — every curve,
+                            every ratio. Your clothes fit because they're built around your actual shape.
+                        </p>
+                    </article>
+                    <article class="principle reveal">
+                        <span class="principle-num" aria-hidden="true">02</span>
+                        <span class="principle-tag">Materials &middot; 340 GSM core</span>
+                        <h3>Material integrity</h3>
+                        <p>
+                            300-400 GSM heavyweight fabrics that drape, move, and last.
+                            We source from Pakistan's finest mills — the same ones supplying luxury houses worldwide.
+                        </p>
+                    </article>
+                    <article class="principle reveal">
+                        <span class="principle-num" aria-hidden="true">03</span>
+                        <span class="principle-tag">Method &middot; Direct, honest pricing</span>
+                        <h3>No compromise</h3>
+                        <p>
+                            Premium construction at honest prices. We cut the middlemen, not the quality.
+                            Every stitch is intentional, every seam is earned.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════
+             STATS — measured spec row
+             ═══════════════════════════════════════ -->
+        <div class="stats reveal" aria-label="Sizr at a glance">
+            <div class="wrap stats-grid">
+                <div class="stat-item">
+                    <span class="stat-num">300+</span>
+                    <span class="stat-label">GSM Fabric Weight</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">100%</span>
+                    <span class="stat-label">Precision Fit</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">2</span>
+                    <span class="stat-label">Engineers Building</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">&infin;</span>
+                    <span class="stat-label">Attention to Detail</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════
+             EDITORIAL IMAGE BREAK + QUOTE
+             ═══════════════════════════════════════ -->
+        <div class="editorial-break">
+            <img
+                src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&q=85&auto=format&fit=crop"
+                alt="A rail of tailored garments hanging in the atelier."
+            >
+            <p class="editorial-quote">
+                We don't make clothes for mannequins. We engineer them for the bodies that actually exist.
+                <span class="editorial-attrib">The Sizr founders</span>
+            </p>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════
+             PRE-LAUNCH — 03 · Drop 01 status + email signup
+             Replace the status copy / launch window when you have a firm date.
+             ═══════════════════════════════════════ -->
+        <section class="prelaunch reveal" id="signup" aria-labelledby="prelaunchTitle">
+            <div class="wrap prelaunch-grid">
+                <div class="prelaunch-copy">
+                    <span class="eyebrow">03 &mdash; Drop 01</span>
+                    <h2 id="prelaunchTitle">Something precise is <em>coming.</em></h2>
+                    <p>
+                        The first drop is in final atelier. We're opening the list now &mdash;
+                        early supporters get priority access to the launch and the founding-fit cohort.
+                    </p>
+                    <div class="status-pill">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        Sign-up open &middot; Spring 2027 window
+                    </div>
+                </div>
+
+                <form class="signup-panel" id="signupForm" novalidate>
+                    <div>
+                        <label class="field-label" for="emailInput">Email address</label>
+                        <input
+                            type="email"
+                            id="emailInput"
+                            name="email"
+                            placeholder="you@domain.com"
+                            autocomplete="email"
+                            required
+                            class="signup-input"
+                        >
+                    </div>
+                    <button type="submit" class="btn btn-primary signup-submit">
+                        Join the Waitlist <span class="arr" aria-hidden="true">&rarr;</span>
+                    </button>
+                    <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ═══════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════ -->
+    <footer>
+        <div class="wrap footer-grid">
+            <div class="footer-brand">
+                <img src="" alt="Sizr" class="footer-logo" id="footerLogo">
+                <span class="footer-tagline">Fit that gets you.</span>
+            </div>
+            <nav class="footer-links" aria-label="Social">
+                <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a>
+                <a href="mailto:hello@sizr.shop">Contact</a>
+            </nav>
+            <div class="footer-meta">
+                <span>&copy; 2026 Sizr. All rights reserved.</span>
+                <span>EST. 2025 &mdash; Lahore &middot; London</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ═══════════════════════════════════════
+         JAVASCRIPT
+         ═══════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+
+        /* ─────────────────────────────────────
+           LOGO — canvas-crop variants from master SVG
+           The source is a single dark-navy lockup. We crop two regions
+           and render both white via CSS `invert()` for use on the dark site.
+             navLogo    = "SZ" monogram (top centre of the source)
+             footerLogo = "SIZR" wordmark (mid band)
+           If you replace assets/svgviewer-output.svg, adjust these ratios
+           to point at the same regions of the new file.
+           ───────────────────────────────────── */
+        var LOGO_SRC = 'assets/svgviewer-output.svg';
+        var LOGO_CROPS = [
+            { id: 'navLogo',    top: 0.05, left: 0.36, height: 0.40, width: 0.28 },
+            { id: 'footerLogo', top: 0.50, left: 0.14, height: 0.32, width: 0.69 },
+        ];
+
+        function cropLogo(img, crop) {
+            var c   = document.createElement('canvas');
+            var ctx = c.getContext('2d');
+            var w   = img.naturalWidth;
+            var h   = img.naturalHeight;
+            c.width  = w * crop.width;
+            c.height = h * crop.height;
+            ctx.drawImage(
+                img,
+                w * crop.left, h * crop.top, c.width, c.height,
+                0, 0, c.width, c.height
+            );
+            return c.toDataURL('image/png');
+        }
+
+        var logoImg = new Image();
+        logoImg.onload = function () {
+            LOGO_CROPS.forEach(function (c) {
+                var el = document.getElementById(c.id);
+                if (!el) return;
+                el.src = cropLogo(logoImg, c);
+                el.classList.add('ready');
+            });
+        };
+        logoImg.src = LOGO_SRC;
+
+
+        /* ─────────────────────────────────────
+           HERO IMAGE — fade in when loaded + slow drift
+           ───────────────────────────────────── */
+        var heroImg = document.getElementById('heroImg');
+        function heroReady() {
+            heroImg.classList.add('loaded');
+            heroImg.classList.add('kenburns');
+        }
+        if (heroImg.complete) heroReady();
+        else heroImg.addEventListener('load', heroReady);
+
+
+        /* ─────────────────────────────────────
+           HERO ENTRANCE — staggered reveal
+           (single animation moment only)
+           ───────────────────────────────────── */
+        var heroEls = ['heroBadge', 'heroTitle', 'heroSub', 'heroCta'];
+        setTimeout(function () {
+            heroEls.forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.classList.add('ready');
+            });
+        }, 200);
+
+
+        /* ─────────────────────────────────────
+           NAVBAR — pin on scroll
+           ───────────────────────────────────── */
+        var nav = document.getElementById('mainNav');
+        function checkNav() {
+            nav.classList.toggle('scrolled', window.scrollY > 80);
+        }
+        window.addEventListener('scroll', checkNav, { passive: true });
+        checkNav();
+
+
+        /* ─────────────────────────────────────
+           SCROLL REVEAL — IntersectionObserver
+           ───────────────────────────────────── */
+        var reveals = document.querySelectorAll('.reveal');
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        reveals.forEach(function (el) { observer.observe(el); });
+
+
+        /* ─────────────────────────────────────
+           EMAIL SIGNUP
+           ───────────────────────────────────── */
+        var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var form    = document.getElementById('signupForm');
+        var emailIn = document.getElementById('emailInput');
+        var msg     = document.getElementById('formMessage');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var val = emailIn.value.trim();
+
+            if (!val) {
+                msg.textContent = 'Please enter your email.';
+                msg.className = 'form-message error';
+                return;
+            }
+            if (!EMAIL_REGEX.test(val)) {
+                msg.textContent = 'Please enter a valid email.';
+                msg.className = 'form-message error';
+                return;
+            }
+
+            /*
+             * ── EMAIL HANDLER ──────────────────────
+             * Wire up your backend here.
+             *
+             * fetch('/api/waitlist', {
+             *     method: 'POST',
+             *     headers: { 'Content-Type': 'application/json' },
+             *     body: JSON.stringify({ email: val })
+             * })
+             */
+            console.log('Waitlist signup:', val);
+
+            msg.textContent = "You're on the list. We'll be in touch.";
+            msg.className   = 'form-message success';
+            emailIn.value   = '';
+            emailIn.focus();
+        });
+
+        emailIn.addEventListener('input', function () {
+            if (msg.classList.contains('error')) {
+                msg.className = 'form-message';
+            }
+        });
+
+    })();
+    </script>
+
+</body>
+</html>
