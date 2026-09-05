@@ -1,2520 +1,952 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sizr — Fit. Perfected.</title>
-    <meta name="description" content="Sizr is a precision-fit fashion house. 47 body landmarks. One generated pattern. Your garment. Engineered in Lahore, cut for real bodies — Drop 01, Spring 2027.">
-    <meta name="theme-color" content="#F2EDE3">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F2EDE3'/%3E%3Cpath d='M21 6v4l-6 7 6 7v4H10v-4h6l-6-7 6-7h-6V6h11z' fill='%230A0C0C'/%3E%3Ccircle cx='6' cy='6' r='2' fill='%23FF5A3D'/%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Manrope:wght@200..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIZR — Fit that gets you.</title>
+  <meta name="description" content="Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes. Drop 01 — limited, numbered, made in Sialkot." />
+  <meta name="theme-color" content="#0A0C0C" />
 
-    <!--
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      SIZR — Precision-Fit Fashion House
-      Design direction: "Editorial Measurement"
-        DISPLAY ... Bodoni Moda (fashion editorial serif, oversized)
-        BODY ...... Manrope (warm humanist grotesque)
-        LABELS .... Space Grotesk (technical voice, tabular)
-        GROUND .... bone #F2EDE3 · cream #FAF6F0 · ink #0A0C0C
-        ACCENT .... ember #FF5A3D — surgical only (scan trigger, "z" mark, key landmarks)
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      Scroll narrative:
-          01 HERO         (body is the hero · landmark overlay)
-          02 THE STORY    (editorial spread · asymmetric 7/5)
-          03 OBSESSIONS   (numbered principles · rule-divided)
-          04 THE SCAN     (scan → matrix → pattern → atelier)
-          05 THE DROP     (Spring 2027 · cohort, no countdown)
-          06 THE JOURNAL  (magazine grid · featured + support)
-          07 THE ATELIER  (craft + construction documentation)
-          08 FOOTER       (FIT / WORLD / SCAN / CONTACT)
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      Edit guide:
-        COLORS ........ :root tokens below
-        HERO IMAGE .... .hero-media img src (portrait 4:5 works best)
-        LANDMARKS ..... set by JS (see LANDMARK section) — a stylised
-                        47-point proportion motif, not a real scan
-        LOGO .......... assets/svgviewer-output.svg — cropped by JS into
-                        nav mark + footer wordmark (adjust LOGO_CROPS)
-        COHORT COUNT .. .cohort-num data-count="114" — wire to your API
-        EMAIL BACKEND . EMAIL HANDLER section in <script>
-        SOCIAL LINKS .. @getsizr in the HTML
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    -->
+  <link rel="icon" type="image/png" href="assets/sizr-logo.png" />
 
-    <style>
-        /* ═══════════════════════════════════════
-           BRAND TOKENS
-           ═══════════════════════════════════════ */
-        :root {
-            --ink:          #0A0C0C;
-            --charcoal:     #1A1C1C;
-            --slate:        #ABB3AD;
-            --slate-ink:    #2A2D2C;            /* body text on bone/cream, 7:1 AAA */
-            --bone:         #F2EDE3;
-            --cream:        #FAF6F0;
-            --ember:        #FF5A3D;
-            --ember-deep:   #E84C31;
-            --ember-tint:   rgba(255,90,61,.10);
-            --line:         rgba(10,12,12,.14);
-            --line-strong:  rgba(10,12,12,.34);
-            --line-light:   rgba(242,237,227,.14);
-            --line-light-2: rgba(242,237,227,.28);
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-            --font-display: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
-            --font-body:    'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-tech:    'Space Grotesk', 'Manrope', sans-serif;
-            --font-technical: 'Space Grotesk', 'Manrope', sans-serif;
+  <style>
+    /* =========================================================
+       SIZR — Landing Page Redesign
+       Streetwear drop-based brand. Mobile-first.
+       ========================================================= */
 
-            --ease-out: cubic-bezier(.16, 1, .3, 1);
-            --r-sm: 2px;
+    /* --- Design tokens ------------------------------------- */
+    :root {
+      --ink:    #0A0C0C;
+      --bone:   #F2EDE3;
+      --ember:  #FF5A3D;
 
-            --text-giant:  clamp(3.2rem, 11vw, 11.5rem);
-            --text-display: clamp(2.4rem, 5vw, 4.1rem);
-            --text-title:  clamp(1.35rem, 2.6vw, 1.9rem);
-            --space-6xl: 12rem;
-            --space-5xl: 8rem;
-            --space-4xl: 6rem;
-            --space-3xl: 4rem;
-            --space-2xl: 3rem;
-            --space-xl:  2rem;
-            --space-lg:  1.5rem;
-            --space-md:  1rem;
-            --space-sm:  .5rem;
+      --font-display: "Bodoni Moda", "Georgia", serif;
+      --font-body:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono:    "Space Grotesk", -apple-system, BlinkMacSystemFont, monospace;
+    }
 
-            --dur-fast: 150ms;
-            --dur-base: 250ms;
-            --dur-slow: 420ms;
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink:    #F2EDE3;
+        --bone:   #0A0C0C;
+        --ember:  #FF5A3D;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --ink:    #0A0C0C;
+        --bone:   #F2EDE3;
+      }
+    }
 
-            color-scheme: light;
-        }
+    /* --- Reset & base -------------------------------------- */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-        /* Dark-mode override */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                color-scheme: dark;
-            }
-            /* The design is bone-forward on purpose; dark-mode simply warms the
-               dark slabs further. Editorial light stays the brand voice. */
-        }
+    body {
+      background: var(--bone);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
 
-        /* ═══════════════════════════════════════
-           RESET / BASE
-           ═══════════════════════════════════════ */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-        body {
-            font-family: var(--font-body);
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.7;
-            background: var(--bone);
-            color: var(--ink);
-            overflow-x: hidden;
-            accent-color: var(--ember);
-        }
-        img { max-width: 100%; display: block; }
-        a { color: inherit; text-decoration: none; }
-        button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
-        ul, ol { list-style: none; }
-        :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
-        ::selection { background: var(--ember); color: var(--bone); }
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bone); }
-        ::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--bone); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    ::selection { background: var(--ember); color: var(--bone); }
 
-        .wrap {
-            width: 100%;
-            max-width: 90rem;
-            margin-inline: auto;
-            padding-inline: clamp(1.25rem, 4.5vw, 3.5rem);
-        }
+    /* --- Layout container ---------------------------------- */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-        /* Skip link */
-        .skip {
-            position: fixed;
-            top: .75rem; left: .75rem;
-            z-index: 300;
-            transform: translateY(-3rem);
-            opacity: 0;
-            padding: .7rem 1.2rem;
-            background: var(--ink);
-            color: var(--bone);
-            font-family: var(--font-tech);
-            font-size: .72rem;
-            font-weight: 600;
-            letter-spacing: .18em;
-            text-transform: uppercase;
-            border-radius: var(--r-sm);
-            transition: transform .25s, opacity .25s;
-            pointer-events: none;
-        }
-        .skip:focus-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    /* --- Scroll-reveal ------------------------------------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
 
-        /* Micro label — technical voice */
-        .micro {
-            font-family: var(--font-tech);
-            font-size: .68rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-        }
-        .micro--slate { color: var(--slate-ink); }
-        .micro--bone  { color: var(--slate); }
-        .micro--ink   { color: var(--ink); }
+    /* =========================================================
+       01 — NAVIGATION
+       ========================================================= */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bone);
+      border-bottom: 1px solid rgba(10, 12, 12, 0.08);
+    }
 
-        /* Section number — giant ghost digit */
-        .sec-index {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            margin-bottom: clamp(2.5rem, 4vw, 4rem);
-        }
-        .sec-index .num {
-            font-family: var(--font-display);
-            font-weight: 500;
-            font-size: clamp(3.4rem, 7vw, 6.5rem);
-            line-height: .8;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(10,12,12,.28);
-        }
-        .sec-index .num::after { content: '.'; color: var(--ember); -webkit-text-stroke: 0; }
-        .sec-index .rule {
-            flex: 1;
-            height: 1px;
-            background: var(--line-strong);
-        }
-        .sec-index .kicker {
-            font-family: var(--font-tech);
-            font-size: .7rem;
-            font-weight: 600;
-            letter-spacing: .28em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            white-space: nowrap;
-        }
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
 
-        /* Display / editorial headings */
-        h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.02; letter-spacing: -.01em; }
-        h2 { font-size: var(--text-display); }
-        h2 em { font-style: italic; }
+    .nav-brand img {
+      height: 22px;
+      width: auto;
+    }
 
-        .lead {
-            font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-            font-weight: 300;
-            line-height: 1.72;
-            max-width: 42ch;
-        }
+    .nav-links {
+      display: none;
+      gap: 32px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-        /* ═══════════════════════════════════════
-           BUTTONS
-           ═══════════════════════════════════════ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: .7rem;
-            min-height: 52px;
-            padding: 1rem 1.9rem;
-            border-radius: var(--r-sm);
-            font-family: var(--font-tech);
-            font-size: .7rem;
-            font-weight: 600;
-            letter-spacing: .18em;
-            text-transform: uppercase;
-            line-height: 1;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            transition: background .2s ease, color .2s ease, border-color .2s ease, transform .12s ease, box-shadow .25s ease;
-        }
-        .btn:active { transform: translateY(1px); }
-        .btn .arr { transition: transform .2s ease; display: inline-block; }
-        .btn:hover .arr { transform: translateX(4px); }
+    .nav-links a {
+      transition: color 0.2s ease;
+    }
 
-        .btn--ember { background: var(--ember); color: var(--ink); }
-        .btn--ember:hover { background: var(--ember-deep); }
-        .btn--ink { background: var(--ink); color: var(--bone); }
-        .btn--ink:hover { background: var(--charcoal); }
-        .btn--ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
-        .btn--ghost:hover { border-color: var(--ink); }
-        .btn--ghost-light { background: transparent; color: var(--bone); border-color: var(--line-light-2); }
-        .btn--ghost-light:hover { border-color: var(--bone); }
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ember);
+    }
 
-        /* Underline link */
-        .u-link {
-            display: inline-flex;
-            align-items: baseline;
-            gap: .5rem;
-            font-family: var(--font-tech);
-            font-size: .7rem;
-            font-weight: 600;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--ink);
-        }
-        .u-link { position: relative; padding-bottom: .4rem; }
-        .u-link::after {
-            content: '';
-            position: absolute;
-            left: 0; bottom: 0;
-            width: 100%; height: 1px;
-            background: currentColor;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .3s var(--ease-out);
-        }
-        .u-link:hover::after { transform: scaleX(1); }
-        .u-link .arr { transition: transform .2s ease; }
-        .u-link:hover .arr { transform: translateX(4px); }
-        .u-link--bone { color: var(--bone); }
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
 
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      background: var(--ink);
+      color: var(--bone);
+      border: none;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
 
-        /* ═══════════════════════════════════════
-           UTILITY BAR
-           ═══════════════════════════════════════ */
-        .util {
-            background: var(--ink);
-            color: var(--slate);
-            padding-block: .55rem;
-        }
-        .util .wrap {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-        .util .micro { font-weight: 500; font-size: .6rem; letter-spacing: .24em; }
-        .util .acc { color: var(--bone); border-bottom: 1px solid var(--line-light-2); }
-        .util .acc:hover { color: var(--ember); border-color: var(--ember); }
-        .util .locale { color: var(--bone); }
-        .util .locale em { font-style: normal; color: var(--ember); }
+    .nav-cta:hover {
+      background: var(--ember);
+      color: #fff;
+    }
 
+    .nav-cta:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 2px;
+    }
 
-        /* ═══════════════════════════════════════
-           NAV — floating editor's bar
-           ═══════════════════════════════════════ */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 120;
-            background: rgba(242,237,227,.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--line);
-            transition: box-shadow .35s, background .35s;
-        }
-        nav.scrolled {
-            background: rgba(242,237,227,.96);
-            box-shadow: 0 1px 0 var(--line), 0 8px 32px -24px rgba(10,12,12,.35);
-        }
-        .nav-inner {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 1rem;
-            min-height: 72px;
-        }
-        .nav-brand { display: flex; align-items: center; gap: .8rem; }
-        .nav-logo {
-            height: 30px;
-            width: auto;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity .4s .15s;
-        }
-        .nav-logo.ready { opacity: 1; }
-        .nav-wordmark {
-            font-family: var(--font-tech);
-            font-size: .78rem;
-            font-weight: 600;
-            letter-spacing: .34em;
-            color: var(--ink);
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2.2rem;
-        }
-        .nav-links a {
-            font-family: var(--font-tech);
-            font-size: .68rem;
-            font-weight: 600;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            padding: .4rem 0;
-            position: relative;
-            transition: color .2s;
-            white-space: nowrap;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            left: 0; bottom: 0;
-            width: 100%; height: 1px;
-            background: var(--ember);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .25s var(--ease-out);
-        }
-        .nav-links a:hover, .nav-links a[aria-current="true"] { color: var(--ink); }
-        .nav-links a:hover::after { transform: scaleX(1); }
-        .nav-cta {
-            justify-self: end;
-            min-height: 44px;
-            padding: .8rem 1.5rem;
-        }
-        .nav-burger {
-            display: none;
-            justify-self: end;
-            width: 44px; height: 44px;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 5px;
-            border: 1px solid var(--line-strong);
-            border-radius: var(--r-sm);
-        }
-        .nav-burger span {
-            display: block;
-            width: 18px; height: 1px;
-            background: var(--ink);
-            transition: transform .3s var(--ease-out), opacity .2s;
-        }
-        .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-        .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-        .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-cta:active {
+      transform: translateY(1px);
+    }
 
-        /* Mobile slide-over menu */
-        .menu-panel {
-            position: fixed;
-            top: 0; right: 0; bottom: 0;
-            width: min(88vw, 22rem);
-            z-index: 200;
-            background: var(--bone);
-            border-left: 1px solid var(--line);
-            transform: translateX(100%);
-            transition: transform .42s var(--ease-out);
-            display: flex;
-            flex-direction: column;
-            padding: 5.5rem 2.2rem 2.5rem;
-            overflow-y: auto;
-        }
-        .menu-panel.open { transform: translateX(0); }
-        .menu-panel .group {
-            padding-block: 1.6rem;
-            border-top: 1px solid var(--line);
-        }
-        .menu-panel .grp-label {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--ember);
-            margin-bottom: 1.1rem;
-            display: block;
-        }
-        .menu-panel a {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding-block: .7rem;
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            color: var(--ink);
-            border-bottom: 1px solid var(--line);
-        }
-        .menu-panel a .t { font-family: var(--font-tech); font-size: .6rem; letter-spacing: .2em; color: var(--slate-ink); }
-        .menu-panel .menu-cta { margin-top: 2.4rem; width: 100%; }
-        .menu-close {
-            position: absolute;
-            top: 1.3rem; right: 1.4rem;
-            width: 44px; height: 44px;
-            border: 1px solid var(--line-strong);
-            border-radius: var(--r-sm);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; line-height: 1;
-        }
-        .menu-scrim {
-            position: fixed; inset: 0;
-            z-index: 190;
-            background: rgba(10,12,12,.5);
-            opacity: 0; pointer-events: none;
-            transition: opacity .35s;
-        }
-        .menu-scrim.show { opacity: 1; pointer-events: auto; }
+    /* =========================================================
+       02 — HERO
+       ========================================================= */
+    .hero {
+      padding: 60px 0 72px;
+      text-align: center;
+    }
 
-        body.menu-locked { overflow: hidden; }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 20px;
+    }
 
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 10vw, 80px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
 
-        /* ═══════════════════════════════════════
-           HERO — body is the hero
-           ═══════════════════════════════════════ */
-        .hero {
-            display: grid;
-            grid-template-columns: 7fr 5fr;
-            min-height: calc(100dvh - 72px);
-            background: var(--bone);
-        }
-        .hero-media {
-            position: relative;
-            overflow: hidden;
-            min-height: 62vh;
-        }
-        .hero-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: 58% 20%;
-            position: absolute; inset: 0;
-            opacity: 0;
-            transition: opacity 1.8s var(--ease-out);
-        }
-        .hero-media img.loaded { opacity: 1; }
-        .hero-media img.kenburns {
-            animation: kenburns 22s var(--ease-out) forwards;
-        }
-        @keyframes kenburns {
-            from { transform: scale(1.02); }
-            to   { transform: scale(1.09); }
-        }
-        .hero-media .scrim {
-            position: absolute; inset: 0;
-            background:
-                linear-gradient(180deg, rgba(10,12,12,.28) 0%, rgba(10,12,12,0) 30%),
-                linear-gradient(0deg, rgba(10,12,12,.5) 0%, rgba(10,12,12,0) 45%);
-            pointer-events: none;
-        }
-        /* 47-landmark motif overlay */
-        .hero-landmarks {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 3;
-        }
-        .hero-landmarks circle { fill: var(--bone); opacity: 0; transition: opacity .5s var(--ease-out), r .3s; }
-        .hero-landmarks circle.em { fill: var(--ember); }
-        .hero-landmarks line { stroke: var(--bone); stroke-opacity: .28; stroke-width: 1; opacity: 0; transition: opacity .5s var(--ease-out); }
-        .hero-landmarks.ready circle, .hero-landmarks.ready line { opacity: 1; }
-        .hero-landmarks .lm-label {
-            font-family: var(--font-tech);
-            font-size: 8px;
-            letter-spacing: .3em;
-            fill: var(--bone);
-            opacity: 0;
-            transition: opacity .8s .8s var(--ease-out);
-        }
-        .hero-landmarks.ready .lm-label { opacity: .85; }
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 3vw, 18px);
+      font-weight: 500;
+      line-height: 1.5;
+      max-width: 48ch;
+      margin: 0 auto 40px;
+      color: rgba(10, 12, 12, 0.65);
+    }
 
-        .hero-caption {
-            position: absolute;
-            left: clamp(1.25rem, 3vw, 2rem);
-            bottom: clamp(1.1rem, 3vw, 1.6rem);
-            z-index: 4;
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 500;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: rgba(242,237,227,.92);
-            text-shadow: 0 1px 8px rgba(10,12,12,.5);
-        }
-        .hero-caption em { font-style: normal; color: var(--ember); }
+    .hero .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      background: var(--ember);
+      color: #fff;
+      border: none;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
 
-        .hero-matter {
-            position: relative;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: clamp(3rem, 6vw, 5.5rem) clamp(1.75rem, 4vw, 4rem);
-        }
-        .hero-badge {
-            margin-bottom: 2rem;
-        }
-        .hero-badge .dot { display: inline-block; width: 5px; height: 5px; background: var(--ember); margin-right: .8rem; transform: rotate(45deg); }
-        .hero-title {
-            font-size: var(--text-giant);
-            line-height: .86;
-            margin-bottom: 2.2rem;
-            letter-spacing: -.015em;
-        }
-        .hero-title .upright { display: block; font-size: .5em; line-height: 1; margin-top: .12em; letter-spacing: .06em; }
-        .hero-title em { font-style: italic; }
-        .hero-sub {
-            margin-bottom: 2.6rem;
-        }
-        .hero-sub .hl { color: var(--ink); font-weight: 500; }
-        .hero-sub .em { color: var(--ember); font-weight: 600; }
-        .hero-ctas { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 2.6rem; }
-        .hero-specs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.6rem;
-            padding-top: 1.6rem;
-            border-top: 1px solid var(--line-strong);
-        }
-        .hero-spec { display: flex; flex-direction: column; gap: .3rem; }
-        .hero-spec .k {
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-        }
-        .hero-spec .v {
-            font-family: var(--font-tech);
-            font-size: .92rem;
-            font-weight: 500;
-            font-variant-numeric: tabular-nums;
-            color: var(--ink);
-        }
-        .hero-spec .v em { font-style: normal; color: var(--ember); }
+    .hero .cta-primary:hover {
+      background: #e64a2e;
+    }
 
-        /* Hero entrance stagger */
-        .hero .anim {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
-        }
-        .hero .anim.ready { opacity: 1; transform: none; }
+    .hero .cta-primary:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
 
+    .hero .cta-primary:active {
+      transform: translateY(1px);
+    }
 
-        /* ═══════════════════════════════════════
-           TICKER — brand thread strip
-           ═══════════════════════════════════════ */
-        .ticker {
-            background: var(--ink);
-            color: var(--slate);
-            padding-block: 1.15rem;
-            overflow: hidden;
-            white-space: nowrap;
-            border-block: 1px solid var(--charcoal);
-        }
-        .ticker-track {
-            display: inline-flex;
-            animation: ticker 46s linear infinite;
-            will-change: transform;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 3rem;
-            flex-shrink: 0;
-            padding-right: 3rem;
-            font-family: var(--font-tech);
-            font-size: .64rem;
-            font-weight: 600;
-            letter-spacing: .28em;
-            text-transform: uppercase;
-        }
-        .ticker-item::after {
-            content: '◆';
-            font-size: .4rem;
-            color: var(--ember);
-        }
-        @keyframes ticker {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+    /* =========================================================
+       03 — THE STORY
+       ========================================================= */
+    .story {
+      padding: 72px 0;
+      border-top: 1px solid rgba(10, 12, 12, 0.1);
+    }
 
+    .story-inner {
+      max-width: 56ch;
+    }
 
-        /* ═══════════════════════════════════════
-           01 — THE STORY
-           ═══════════════════════════════════════ */
-        .story { padding-block: clamp(4rem, 8vw, 7rem) var(--space-6xl); }
-        .story-grid {
-            display: grid;
-            grid-template-columns: 7fr 5fr;
-            gap: clamp(3rem, 6vw, 6rem);
-            align-items: start;
-        }
-        .story-body h2 { margin-bottom: 2rem; max-width: 14ch; }
-        .story-body h2 em { color: var(--ember); }
-        .story-body .lead { margin-bottom: 1.6rem; color: var(--ink); }
-        .story-body p.body {
-            margin-bottom: 1.4rem;
-            max-width: 56ch;
-            color: var(--slate-ink);
-        }
-        .story-body p.body strong { color: var(--ink); font-weight: 600; }
-        .story-quote {
-            margin-top: 2.6rem;
-            padding: 1.6rem 0 0;
-            border-top: 1px solid var(--line-strong);
-            border-left: 2px solid var(--ember);
-            padding-left: 1.8rem;
-        }
-        .story-quote blockquote {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-weight: 400;
-            font-size: clamp(1.35rem, 2.2vw, 1.7rem);
-            line-height: 1.35;
-            max-width: 22ch;
-        }
-        .story-quote figcaption {
-            margin-top: 1.1rem;
-            font-family: var(--font-tech);
-            font-size: .62rem;
-            font-weight: 600;
-            letter-spacing: .24em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-        }
-        .story-quote figcaption em { font-style: normal; color: var(--ember); }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        .story-fig { position: relative; }
-        .story-fig .frame {
-            position: absolute;
-            top: -1rem; left: -1rem;
-            width: 100%; height: 100%;
-            border: 1px solid var(--line-strong);
-            pointer-events: none;
-        }
-        .story-fig .frame::before {
-            content: '';
-            position: absolute;
-            top: -1px; right: -1px;
-            width: 3.5rem; height: 1px;
-            background: var(--ember);
-        }
-        .story-fig img {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 3/4;
-            object-fit: cover;
-            transition: transform 1.2s var(--ease-out);
-        }
-        .story-fig:hover img { transform: scale(1.015); }
-        .story-fig figcaption {
-            margin-top: .9rem;
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 500;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-        }
-        .story-fig figcaption em { font-style: normal; color: var(--ember); }
+    .section-label::before {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: var(--ember);
+      display: inline-block;
+    }
 
+    .story p {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 3vw, 20px);
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(10, 12, 12, 0.8);
+    }
 
-        /* ═══════════════════════════════════════
-           02 — THE OBSESSIONS
-           ═══════════════════════════════════════ */
-        .obsess {
-            background: var(--cream);
-            border-block: 1px solid var(--line);
-            padding-block: clamp(4rem, 8vw, 6.5rem) var(--space-5xl);
-        }
-        .obsess-table { border-top: 1px solid var(--line-strong); }
-        .obsess-row {
-            display: grid;
-            grid-template-columns: 24ch 1fr auto;
-            gap: clamp(2rem, 5vw, 5rem);
-            padding-block: clamp(2.6rem, 5vw, 4.2rem);
-            border-bottom: 1px solid var(--line-strong);
-            align-items: start;
-            transition: background .3s ease;
-        }
-        .obsess-row:hover { background: var(--bone); }
-        .obsess-num {
-            font-family: var(--font-technical);
-            font-size: clamp(2.6rem, 5vw, 4.2rem);
-            font-weight: 500;
-            line-height: 1;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--ember);
-            display: inline-flex;
-            align-items: baseline;
-            gap: .9rem;
-        }
-        .obsess-row:hover .obsess-num { -webkit-text-stroke: 1.5px var(--ember); }
-        .obsess-tag {
-            font-family: var(--font-tech);
-            font-size: .62rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            margin-bottom: 1rem;
-            display: block;
-        }
-        .obsess-question {
-            font-family: var(--font-display);
-            font-size: clamp(1.6rem, 3vw, 2.4rem);
-            line-height: 1.08;
-            margin-bottom: 1.1rem;
-            max-width: 14ch;
-        }
-        .obsess-copy { max-width: 46ch; color: var(--slate-ink); font-size: .98rem; }
-        .obsess-copy strong { color: var(--ink); font-weight: 600; }
-        .obsess-copy .m {
-            margin-top: 1.4rem;
-            display: inline-flex;
-            align-items: center;
-            gap: .8rem;
-            font-family: var(--font-tech);
-            font-size: .66rem;
-            font-weight: 600;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--ink);
-        }
-        .obsess-copy .m::before { content: ''; width: 26px; height: 1px; background: var(--ember); }
-        .obsess-visual {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1px;
-            background: var(--line);
-            width: min(16rem, 100%);
-        }
-        .obsess-visual .cell {
-            aspect-ratio: 1;
-            background: var(--charcoal);
-            position: relative;
-            overflow: hidden;
-        }
-        .obsess-visual .cell svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    /* =========================================================
+       04 — THE OBSESSIONS
+       ========================================================= */
+    .obsessions {
+      padding: 72px 0;
+      border-top: 1px solid rgba(10, 12, 12, 0.1);
+    }
 
+    .obsessions-list {
+      list-style: none;
+      max-width: 720px;
+    }
 
-        /* ═══════════════════════════════════════
-           03 — THE SCAN  (technology narrative)
-           ═══════════════════════════════════════ */
-        .scan {
-            background: var(--ink);
-            color: var(--bone);
-            padding-block: clamp(4.5rem, 9vw, 7rem) var(--space-6xl);
-            position: relative;
-            overflow: hidden;
-        }
-        .scan::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(242,237,227,.06) 1px, transparent 1px);
-            background-size: 26px 26px;
-            opacity: .6;
-            pointer-events: none;
-        }
-        .scan .wrap { position: relative; }
-        .scan .sec-index .num { -webkit-text-stroke: 1px rgba(242,237,227,.32); }
-        .scan .sec-index .rule { background: var(--line-light-2); }
-        .scan .sec-index .kicker { color: var(--slate); }
-        .scan-head {
-            display: grid;
-            grid-template-columns: 6fr 6fr;
-            gap: clamp(2rem, 5vw, 5rem);
-            align-items: end;
-            margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
-        }
-        .scan-head h2 { font-size: var(--text-display); }
-        .scan-head h2 em { color: var(--ember); }
-        .scan-head .sys {
-            font-family: var(--font-tech);
-            font-size: .64rem;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate);
-            margin-bottom: 1.2rem;
-            display: block;
-        }
-        .scan-head .note { color: var(--slate); max-width: 44ch; font-size: .97rem; }
+    .obsessions-list li {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 0 20px;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(10, 12, 12, 0.1);
+      align-items: start;
+    }
 
-        .scan-steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--line-light);
-            border: 1px solid var(--line-light);
-        }
-        .step {
-            background: var(--ink);
-            padding: clamp(1.8rem, 3.4vw, 3rem) clamp(1.4rem, 2.6vw, 2.2rem);
-            position: relative;
-            min-height: 380px;
-            display: flex;
-            flex-direction: column;
-        }
-        .step::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 2px;
-            background: transparent;
-            transition: background .3s;
-        }
-        .step:hover::before { background: var(--ember); }
-        .step-index {
-            font-family: var(--font-display);
-            font-size: 3.2rem;
-            line-height: 1;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(242,237,227,.3);
-            margin-bottom: 1.4rem;
-            transition: -webkit-text-stroke .3s;
-        }
-        .step:hover .step-index { -webkit-text-stroke: 1px var(--ember); }
-        .step-name {
-            font-family: var(--font-display);
-            font-size: clamp(1.35rem, 2vw, 1.65rem);
-            margin-bottom: .4rem;
-        }
-        .step-code {
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--ember);
-            margin-bottom: 1.1rem;
-            display: block;
-        }
-        .step-copy {
-            font-size: .9rem;
-            color: var(--slate);
-            line-height: 1.7;
-            margin-bottom: 1.4rem;
-            flex: 1;
-        }
-        .step-copy strong { color: var(--bone); font-weight: 600; }
-        .step-visual {
-            border-top: 1px solid var(--line-light);
-            padding-top: 1.3rem;
-            margin-top: auto;
-        }
-        .step-visual svg {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .step-visual .vcap {
-            margin-top: .8rem;
-            font-family: var(--font-tech);
-            font-size: .56rem;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate);
-        }
+    .obsessions-list li:first-child {
+      padding-top: 0;
+    }
 
+    .obsessions-list li:last-child {
+      border-bottom: none;
+    }
 
-        /* ═══════════════════════════════════════
-           04 — THE DROP
-           ═══════════════════════════════════════ */
-        .drop { padding-block: clamp(4rem, 8vw, 6.5rem) var(--space-6xl); }
-        .drop-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 2rem;
-            margin-bottom: clamp(2.5rem, 5vw, 4rem);
-            flex-wrap: wrap;
-        }
-        .drop-head h2 em { color: var(--ember); }
-        .drop-head .status {
-            display: inline-flex;
-            align-items: center;
-            gap: .8rem;
-            font-family: var(--font-tech);
-            font-size: .66rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            padding: .7rem 0;
-            border-bottom: 1px solid var(--line-strong);
-        }
-        .drop-head .status .dot {
-            width: 7px; height: 7px;
-            background: var(--ember);
-            transform: rotate(45deg);
-        }
-        .cohort-band {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: clamp(1.5rem, 4vw, 3.5rem);
-            background: var(--charcoal);
-            color: var(--bone);
-            padding: clamp(1.6rem, 3.4vw, 2.4rem) clamp(1.5rem, 3vw, 2.5rem);
-            margin-bottom: clamp(2.5rem, 5vw, 4rem);
-        }
-        .cohort-num {
-            font-family: var(--font-display);
-            font-weight: 600;
-            font-size: clamp(2.4rem, 5vw, 3.6rem);
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-            color: var(--bone);
-            min-width: 4ch;
-        }
-        .cohort-num em { font-style: normal; color: var(--ember); }
-        .cohort-label {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .28em;
-            text-transform: uppercase;
-            color: var(--slate);
-            display: block;
-            margin-bottom: .45rem;
-        }
-        .cohort-msg {
-            font-family: var(--font-display);
-            font-size: clamp(1.05rem, 1.8vw, 1.3rem);
-            line-height: 1.3;
-        }
-        .drop-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--line-strong);
-            border: 1px solid var(--line-strong);
-        }
-        .piece { position: relative; background: var(--bone); overflow: hidden; min-height: 420px; display: flex; flex-direction: column; }
-        .piece--lead { grid-column: span 2; grid-row: span 2; min-height: 620px; }
-        .piece-media {
-            flex: 1;
-            min-height: 240px;
-            position: relative;
-            overflow: hidden;
-            background: var(--cream);
-        }
-        .piece-media img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            position: absolute; inset: 0;
-            transition: transform 1s var(--ease-out);
-        }
-        .piece:hover .piece-media img { transform: scale(1.02); }
-        .piece-media .ph {
-            position: absolute; inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.6rem;
-        }
-        .piece--lead .ph {
-            background:
-                radial-gradient(rgba(10,12,12,.06) 1px, transparent 1px) 0 0/22px 22px,
-                var(--cream);
-        }
-        .ph svg { width: min(60%, 190px); height: auto; }
-        .ph .ph-tag {
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            letter-spacing: .3em;
-        }
-        .piece-body {
-            padding: 1.4rem 1.4rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: .5rem;
-            border-top: 1px solid var(--line);
-        }
-        .piece-name { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.12; }
-        .piece-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem 1.2rem;
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .2em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-        }
-        .piece-meta .price { color: var(--ink); font-weight: 700; }
-        .piece-status {
-            margin-top: .6rem;
-            display: inline-flex;
-            align-items: center;
-            gap: .6rem;
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--ink);
-        }
-        .piece-status::before { content: ''; width: 20px; height: 1px; background: var(--ember); }
-        .drop-foot {
-            margin-top: 3.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            border-top: 1px solid var(--line-strong);
-            padding-top: 2rem;
-        }
-        .drop-foot .cohort-note {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: clamp(1.2rem, 2vw, 1.55rem);
-            max-width: 30ch;
-        }
+    .obs-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+      opacity: 0.15;
+    }
 
+    .obs-content h3 {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 4vw, 26px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
 
-        /* ═══════════════════════════════════════
-           05 — THE JOURNAL
-           ═══════════════════════════════════════ */
-        .journal {
-            background: var(--cream);
-            border-block: 1px solid var(--line);
-            padding-block: clamp(4rem, 8vw, 6.5rem) var(--space-5xl);
-        }
-        .journal-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1px;
-            background: var(--line-strong);
-            border: 1px solid var(--line-strong);
-        }
-        .article { background: var(--bone); padding: clamp(1.6rem, 3vw, 2.4rem); position: relative; display: flex; flex-direction: column; }
-        .article--feat { grid-column: span 7; grid-row: span 2; }
-        .article--feat { padding: 0; }
-        .article--supp1 { grid-column: span 5; }
-        .article--supp2 { grid-column: span 5; }
-        .article-media {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 16/10;
-            background: var(--bone);
-        }
-        .article--feat .article-media { aspect-ratio: 16/11; }
-        .article-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
-        .article:hover .article-media img { transform: scale(1.02); }
-        .article-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: .7rem;
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--ember);
-            margin-bottom: 1rem;
-        }
-        .article-kicker::before { content: ''; width: 22px; height: 1px; background: currentColor; }
-        .article-title {
-            font-family: var(--font-display);
-            font-size: clamp(1.4rem, 2.4vw, 1.85rem);
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            max-width: 24ch;
-        }
-        .article--feat .article-title { font-size: clamp(1.7rem, 3.2vw, 2.6rem); margin-bottom: 1.3rem; }
-        .article-ex { color: var(--slate-ink); font-size: .94rem; max-width: 48ch; line-height: 1.7; }
-        .article-meta {
-            margin-top: auto;
-            padding-top: 1.4rem;
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            border-top: 1px solid var(--line);
-        }
-        .article-meta .read { color: var(--ink); display: inline-flex; align-items: center; gap: .5rem; }
-        .article-meta .read .arr { transition: transform .2s; }
-        .article:hover .article-meta .read .arr { transform: translateX(4px); }
-        .journal-foot { margin-top: 2.5rem; display: flex; justify-content: flex-end; }
+    .obs-content p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: rgba(10, 12, 12, 0.6);
+    }
 
+    /* =========================================================
+       05 — DROP 01
+       ========================================================= */
+    .drop {
+      padding: 80px 0;
+      border-top: 1px solid rgba(10, 12, 12, 0.1);
+      text-align: center;
+    }
 
-        /* ═══════════════════════════════════════
-           06 — THE ATELIER  (construction documentation)
-           ═══════════════════════════════════════ */
-        .atelier { padding-block: clamp(4rem, 8vw, 6.5rem) var(--space-6xl); }
-        .atelier-grid {
-            display: grid;
-            grid-template-columns: 7fr 5fr;
-            gap: 1px;
-            background: var(--line-strong);
-            border: 1px solid var(--line-strong);
-        }
-        .atelier-media { position: relative; overflow: hidden; min-height: 560px; }
-        .atelier-media img {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 1.4s var(--ease-out);
-        }
-        .atelier-media:hover img { transform: scale(1.02); }
-        .atelier-media .cap {
-            position: absolute;
-            left: 1.4rem; bottom: 1.3rem;
-            z-index: 4;
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .24em;
-            text-transform: uppercase;
-            color: rgba(242,237,227,.95);
-            text-shadow: 0 1px 8px rgba(10,12,12,.6);
-        }
-        .atelier-media .cap em { font-style: normal; color: var(--ember); }
-        .atelier-doc {
-            background: var(--bone);
-            padding: clamp(2rem, 4vw, 3rem);
-        }
-        .atelier-doc .doc-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-            padding-bottom: 1.2rem;
-            border-bottom: 1px solid var(--line-strong);
-            margin-bottom: 1.4rem;
-        }
-        .atelier-doc .doc-head .t {
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-        }
-        .atelier-doc .doc-head .code {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            color: var(--ember);
-        }
-        .spec-table { width: 100%; border-collapse: collapse; }
-        .spec-table tr {
-            border-bottom: 1px solid var(--line);
-            transition: background .25s;
-        }
-        .spec-table tr:last-child { border-bottom: none; }
-        .spec-table tr:hover { background: var(--cream); }
-        .spec-table th {
-            text-align: left;
-            font-family: var(--font-tech);
-            font-size: .58rem;
-            font-weight: 600;
-            letter-spacing: .24em;
-            text-transform: uppercase;
-            color: var(--slate-ink);
-            padding: .95rem 0;
-            width: 44%;
-        }
-        .spec-table td {
-            text-align: right;
-            font-family: var(--font-tech);
-            font-size: .9rem;
-            font-weight: 500;
-            font-variant-numeric: tabular-nums;
-            color: var(--ink);
-            padding: .95rem 0;
-        }
-        .spec-table td em { font-style: normal; color: var(--ember); }
-        .atelier-foot {
-            margin-top: 2.6rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        .atelier-foot .line {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-            max-width: 28ch;
-        }
-        .atelier-foot .seal {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--ink);
-            display: inline-flex;
-            align-items: center;
-            gap: .9rem;
-            padding: 1rem 1.5rem;
-            border: 1px solid var(--line-strong);
-        }
-        .atelier-foot .seal i {
-            width: 9px; height: 9px;
-            background: var(--ember);
-            transform: rotate(45deg);
-            font-style: normal;
-            display: inline-block;
-        }
+    .drop h2 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 12vw, 96px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
 
+    .drop-copy {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 3vw, 18px);
+      font-weight: 500;
+      line-height: 1.5;
+      max-width: 44ch;
+      margin: 0 auto 32px;
+      color: rgba(10, 12, 12, 0.65);
+    }
 
-        /* ═══════════════════════════════════════
-           FOOTER — FIT / WORLD / SCAN / CONTACT
-           ═══════════════════════════════════════ */
-        footer {
-            background: var(--charcoal);
-            color: var(--bone);
-            padding-top: var(--space-5xl);
-            border-top: 1px solid var(--line);
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
-            gap: clamp(2.5rem, 5vw, 5rem);
-            padding-bottom: var(--space-4xl);
-        }
-        .footer-brand { display: flex; flex-direction: column; gap: 1.2rem; }
-        .footer-logo {
-            height: 34px;
-            width: auto;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity .4s .15s;
-            filter: brightness(0) saturate(100%) invert(98%) contrast(90%);
-        }
-        .footer-logo.ready { opacity: .92; }
-        .footer-brand .tag {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: 1.35rem;
-            line-height: 1.2;
-            max-width: 16ch;
-        }
-        .footer-brand .loc {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .26em;
-            text-transform: uppercase;
-            color: var(--slate);
-        }
-        .footer-col h4 {
-            font-family: var(--font-tech);
-            font-size: .6rem;
-            font-weight: 600;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--ember);
-            margin-bottom: 1.4rem;
-        }
-        .footer-col ul { display: flex; flex-direction: column; gap: .5rem; }
-        .footer-col a, .footer-col li {
-            font-family: var(--font-body);
-            font-size: .92rem;
-            font-weight: 300;
-            color: var(--slate);
-            transition: color .2s;
-        }
-        .footer-col a:hover { color: var(--bone); }
-        .footer-col .sm { font-size: .78rem; }
-        .footer-signup { display: flex; flex-direction: column; gap: 1rem; }
-        .footer-signup p { font-size: .88rem; color: var(--slate); line-height: 1.6; font-weight: 300; }
-        .footer-form { display: flex; gap: .5rem; }
-        .footer-form input {
-            flex: 1;
-            min-width: 0;
-            background: transparent;
-            border: 1px solid var(--line-light-2);
-            border-radius: var(--r-sm);
-            padding: .9rem 1rem;
-            color: var(--bone);
-            font-family: var(--font-body);
-            font-size: .95rem;
-            transition: border-color .25s, box-shadow .25s;
-        }
-        .footer-form input::placeholder { color: rgba(171,179,173,.7); }
-        .footer-form input:focus { outline: none; border-color: var(--ember); box-shadow: 0 0 0 1px var(--ember); }
-        .footer-form .btn { min-height: 48px; padding-inline: 1.3rem; }
-        .form-msg {
-            min-height: 1.3em;
-            font-family: var(--font-tech);
-            font-size: .68rem;
-            font-weight: 600;
-            letter-spacing: .12em;
-        }
-        .form-msg.success { color: var(--ember); }
-        .form-msg.error { color: var(--ember); }
-        .form-msg.error::before { content: '⚠ '; }
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            border-top: 1px solid var(--line-light);
-            padding-block: 1.6rem;
-        }
-        .footer-bottom .micro { color: var(--slate); font-weight: 500; }
-        .footer-bottom .lead-soc {
-            display: flex;
-            gap: 1.8rem;
-        }
-        .footer-bottom a {
-            font-family: var(--font-tech);
-            font-size: .62rem;
-            font-weight: 600;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--slate);
-            transition: color .2s;
-        }
-        .footer-bottom a:hover { color: var(--bone); }
-        .footer-bottom .zm { color: var(--ember); }
+    .drop-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border: 1px solid rgba(10, 12, 12, 0.15);
+      margin-bottom: 40px;
+    }
 
+    .drop-status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ember);
+      display: inline-block;
+    }
 
-        /* ═══════════════════════════════════════
-           SCROLL REVEAL
-           ═══════════════════════════════════════ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(26px);
-            transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
-        }
-        .reveal.visible { opacity: 1; transform: none; }
-        .reveal[data-delay="1"] { transition-delay: .08s; }
-        .reveal[data-delay="2"] { transition-delay: .16s; }
-        .reveal[data-delay="3"] { transition-delay: .24s; }
+    .drop .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      background: var(--ember);
+      color: #fff;
+      border: none;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
 
+    .drop .cta-primary:hover {
+      background: #e64a2e;
+    }
 
-        /* ═══════════════════════════════════════
-           RESPONSIVE
-           ═══════════════════════════════════════ */
-        @media (max-width: 1100px) {
-            .nav-links { gap: 1.5rem; }
-            .scan-steps { grid-template-columns: repeat(2, 1fr); }
-            .step { min-height: 320px; }
-            .drop-grid { grid-template-columns: repeat(2, 1fr); }
-            .piece--lead { grid-column: span 2; grid-row: auto; min-height: 500px; }
-        }
+    .drop .cta-primary:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
 
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; }
-            .hero-media { min-height: 68vh; }
-            .hero-matter { padding-block: 3.5rem 4rem; }
-            .story-grid { grid-template-columns: 1fr; gap: 3.5rem; }
-            .story-fig { max-width: 560px; }
-            .scan-head { grid-template-columns: 1fr; gap: 1.5rem; }
-            .atelier-grid { grid-template-columns: 1fr; }
-            .atelier-media { min-height: 420px; }
-            .obsess-row { grid-template-columns: 1fr; gap: 1.4rem; }
-            .obsess-visual { width: 100%; max-width: 20rem; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem 2.5rem; }
-            .footer-brand { grid-column: 1 / -1; }
-            .nav-links { display: none; }
-            .nav-burger { display: flex; }
-            .nav-inner { grid-template-columns: 1fr auto; }
-            .nav-cta { display: none; }
-            .journal-grid { grid-template-columns: 1fr; }
-            .article--feat, .article--supp1, .article--supp2 { grid-column: 1 / -1; }
-            .article--feat .article-media { aspect-ratio: 16/9; }
-        }
+    .drop .cta-primary:active {
+      transform: translateY(1px);
+    }
 
-        @media (max-width: 640px) {
-            .cohort-band { grid-template-columns: 1fr; gap: 1rem; }
-            .drop-head { flex-direction: column; align-items: flex-start; }
-            .hero-specs { gap: 1.1rem; }
-            .drop-grid { grid-template-columns: 1fr; }
-            .piece--lead { grid-column: auto; min-height: 460px; }
-            .sec-index .num { font-size: 3.4rem; }
-            .sec-index .kicker { letter-spacing: .18em; }
-            .scan-steps { grid-template-columns: 1fr; }
-            .step { min-height: auto; }
-            .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-            .footer-bottom { flex-direction: column; align-items: flex-start; }
-            .hero-title { letter-spacing: -0.01em; }
-            .obsess-row { grid-template-columns: 1fr; }
-        }
+    /* =========================================================
+       06 — FOOTER
+       ========================================================= */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid rgba(10, 12, 12, 0.1);
+    }
 
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
 
-        /* ═══════════════════════════════════════
-           REDUCED MOTION
-           ═══════════════════════════════════════ */
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            *, *::before, *::after {
-                animation-duration: .001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: .001ms !important;
-            }
-            .reveal, .hero .anim { opacity: 1 !important; transform: none !important; }
-            .hero-media img.kenburns { animation: none; }
-            .ticker-track, .marquee-track { animation-duration: 1s; }
-            .hero-landmarks circle, .hero-landmarks line, .hero-landmarks .lm-label { opacity: 1 !important; }
-        }
-    </style>
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: rgba(10, 12, 12, 0.5);
+      margin-top: 4px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(10, 12, 12, 0.4);
+      margin-bottom: 14px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: rgba(10, 12, 12, 0.7);
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--ember);
+    }
+
+    .footer-col a:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(10, 12, 12, 0.08);
+    }
+
+    .footer-copy {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: rgba(10, 12, 12, 0.4);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-social a {
+      color: rgba(10, 12, 12, 0.6);
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--ember);
+    }
+
+    .footer-social a:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 2px;
+    }
+
+    /* =========================================================
+       WAITLIST FORM (modal/drawer)
+       ========================================================= */
+    .waitlist-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 12, 0.6);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .waitlist-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .waitlist-panel {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bone);
+      border: 1px solid rgba(10, 12, 12, 0.1);
+      padding: 48px 32px 40px;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .waitlist-overlay.is-open .waitlist-panel {
+      transform: translateY(0);
+    }
+
+    .waitlist-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 24px;
+      color: var(--ink);
+      padding: 8px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
+
+    .waitlist-close:hover {
+      color: var(--ember);
+    }
+
+    .waitlist-close:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 2px;
+    }
+
+    .waitlist-panel h3 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .waitlist-panel p {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: rgba(10, 12, 12, 0.55);
+      margin-bottom: 24px;
+    }
+
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .waitlist-form label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(10, 12, 12, 0.4);
+    }
+
+    .waitlist-form input[type="email"] {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      background: transparent;
+      border: 1px solid rgba(10, 12, 12, 0.15);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .waitlist-form input[type="email"]::placeholder {
+      color: rgba(10, 12, 12, 0.35);
+    }
+
+    .waitlist-form input[type="email"]:focus {
+      border-color: var(--ember);
+    }
+
+    .waitlist-form .form-submit {
+      padding: 14px 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--bone);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .waitlist-form .form-submit:hover {
+      background: var(--ember);
+      color: #fff;
+    }
+
+    .waitlist-form .form-submit:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 2px;
+    }
+
+    .waitlist-form .form-submit:active {
+      transform: translateY(1px);
+    }
+
+    .form-msg {
+      font-family: var(--font-body);
+      font-size: 13px;
+      min-height: 18px;
+      margin-top: 4px;
+    }
+
+    .form-msg.ok {
+      color: var(--ember);
+    }
+
+    .form-msg.error {
+      color: #cc3333;
+    }
+
+    /* =========================================================
+       TABLET (min-width: 768px)
+       ========================================================= */
+    @media (min-width: 768px) {
+      .container { padding: 0 40px; }
+      .nav-links { display: flex; }
+      .nav { padding: 24px 0; }
+
+      .hero { padding: 80px 0 96px; }
+
+      .story { padding: 96px 0; }
+
+      .obsessions { padding: 96px 0; }
+      .obsessions-list li { grid-template-columns: 80px 1fr; }
+
+      .drop { padding: 96px 0; }
+
+      .footer { padding: 56px 0 40px; }
+
+      .footer-grid {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 48px;
+      }
+
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .waitlist-panel {
+        padding: 56px 48px 48px;
+        border-radius: 0;
+      }
+    }
+
+    /* =========================================================
+       DESKTOP (min-width: 1024px)
+       ========================================================= */
+    @media (min-width: 1024px) {
+      .container { padding: 0 56px; }
+      .hero { padding: 100px 0 120px; }
+    }
+
+    /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .waitlist-overlay { transition: none; }
+      .waitlist-panel { transition: none; }
+    }
+  </style>
 </head>
-
 <body>
-    <a class="skip" href="#main">Skip to content</a>
 
-    <!-- ═══════════════════════════════════════
-         UTILITY BAR
-         ═══════════════════════════════════════ -->
-    <div class="util" aria-hidden="true">
-        <div class="wrap">
-            <span class="micro">Sizr&nbsp;&middot;&nbsp;EST.&nbsp;2025&nbsp;&middot;&nbsp;Lahore&nbsp;<em>↔</em>&nbsp;London</span>
-            <div style="display:flex;gap:1.4rem;align-items:center;">
-                <span class="micro locale">EN&nbsp;&middot;&nbsp;<em>PKR</em></span>
-                <a class="micro acc" href="#accessibility">Accessibility</a>
-            </div>
-        </div>
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav container" role="navigation" aria-label="Main">
+    <a class="nav-brand" href="#" aria-label="SIZR home">
+      <img src="assets/sizr-logo.png" alt="" width="22" height="22" />
+      SIZR
+    </a>
+
+    <div class="nav-links">
+      <a href="#story">Fit</a>
+      <a href="#drop">World</a>
+      <a href="#drop">Drop</a>
     </div>
 
-    <!-- ═══════════════════════════════════════
-         NAV
-         ═══════════════════════════════════════ -->
-    <nav id="mainNav" aria-label="Primary">
-        <div class="wrap nav-inner">
-            <a href="#main" class="nav-brand" aria-label="Sizr — home">
-                <img src="" alt="" class="nav-logo" id="navLogo" aria-hidden="true">
-                <span class="nav-wordmark" aria-hidden="true">SIZR</span>
-            </a>
-            <div class="nav-links">
-                <a href="#fit" aria-current="true">Fit</a>
-                <a href="#world">World</a>
-                <a href="#scan">Scan</a>
-            </div>
-            <a href="#cohort" class="btn btn--ink nav-cta">Join the Cohort</a>
-            <button class="nav-burger" id="menuBtn" aria-expanded="false" aria-controls="menuPanel" aria-label="Open menu">
-                <span></span><span></span><span></span>
-            </button>
+    <button class="nav-cta" onclick="openWaitlist()" aria-haspopup="dialog">
+      Join the Waitlist
+    </button>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero container" id="top">
+    <p class="hero-eyebrow reveal">Drop 01 — Coming Soon</p>
+    <h1 class="reveal">Fit that gets you.</h1>
+    <p class="hero-sub reveal">
+      Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes.
+    </p>
+    <button class="cta-primary reveal" onclick="openWaitlist()" aria-haspopup="dialog">
+      Join the Waitlist →
+    </button>
+  </section>
+
+  <!-- ===================== THE STORY ===================== -->
+  <section class="story container" id="story">
+    <p class="section-label reveal">02 — The Story</p>
+    <p class="reveal">
+      We're two computer engineering students — one in Islamabad, one in Sialkot — who got tired of clothes that were "close enough." So we started Sizr: heavyweight basics, made properly, priced honestly.
+    </p>
+  </section>
+
+  <!-- ===================== THE OBSESSIONS ===================== -->
+  <section class="obsessions container" id="obsessions">
+    <p class="section-label reveal">03 — The Obsessions</p>
+    <ul class="obsessions-list">
+      <li class="reveal">
+        <span class="obs-num">01</span>
+        <div class="obs-content">
+          <h3>Fabric that lasts.</h3>
+          <p>300–400 GSM heavyweight cotton, built to hold shape.</p>
         </div>
-    </nav>
-
-    <!-- Mobile slide-over -->
-    <div class="menu-scrim" id="menuScrim" aria-hidden="true"></div>
-    <aside class="menu-panel" id="menuPanel" aria-label="Menu">
-        <button class="menu-close" id="menuClose" aria-label="Close menu">&times;</button>
-        <div class="group">
-            <span class="grp-label">01 · The House</span>
-            <a href="#story">The Story <span class="t">01</span></a>
-            <a href="#obsess">The Obsessions <span class="t">02</span></a>
-            <a href="#atelier">The Atelier <span class="t">06</span></a>
+      </li>
+      <li class="reveal">
+        <span class="obs-num">02</span>
+        <div class="obs-content">
+          <h3>Made in Sialkot.</h3>
+          <p>Manufactured directly where we're based — no middlemen.</p>
         </div>
-        <div class="group">
-            <span class="grp-label">02 · The System</span>
-            <a href="#scan">The Scan <span class="t">03</span></a>
-            <a href="#journal">The Journal <span class="t">05</span></a>
+      </li>
+      <li class="reveal">
+        <span class="obs-num">03</span>
+        <div class="obs-content">
+          <h3>Numbered, not mass-made.</h3>
+          <p>Each drop is limited. Every piece is batch-numbered.</p>
         </div>
-        <div class="group">
-            <span class="grp-label">03 · The Drop</span>
-            <a href="#drop">Drop 01 — Spring 2027 <span class="t">04</span></a>
-        </div>
-        <a href="#cohort" class="btn btn--ink menu-cta">Join the Cohort</a>
-    </aside>
+      </li>
+    </ul>
+  </section>
 
-    <main id="main">
+  <!-- ===================== DROP 01 ===================== -->
+  <section class="drop container" id="drop">
+    <h2 class="reveal">Drop 01</h2>
+    <p class="drop-copy reveal">
+      Heavyweight tees and hoodies. Bold graphics. Limited run.
+    </p>
+    <p class="drop-status reveal">Drop 01 — Sign-up open</p>
+    <button class="cta-primary reveal" onclick="openWaitlist()" aria-haspopup="dialog">
+      Join the Waitlist →
+    </button>
+  </section>
 
-        <!-- ═══════════════════════════════════════
-             HERO — the body is the hero
-             Swap the img src for your own lookbook portrait (4:5 works best).
-             The landmark overlay is a stylised 47-point proportion motif.
-             ═══════════════════════════════════════ -->
-        <section class="hero" id="fit" aria-label="Fit. Perfected.">
-            <div class="hero-media">
-                <img
-                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600&q=85&auto=format&fit=crop"
-                    alt="A founding-fit member wearing a Sizr heavyweight garment."
-                    id="heroImg"
-                    loading="eager"
-                    fetchpriority="high"
-                >
-                <div class="scrim" aria-hidden="true"></div>
-                <svg class="hero-landmarks" id="landmarkSvg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-                <p class="hero-caption"><em>FIG.&nbsp;00</em>&nbsp;&mdash;&nbsp;FIT&nbsp;REPORT&nbsp;&middot;&nbsp;COHORT&nbsp;001</p>
-            </div>
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer container" role="contentinfo">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">SIZR — Fit that gets you.</div>
+        <p class="footer-tagline">Est. 2025</p>
+      </div>
+      <div class="footer-col">
+        <h4>Fit</h4>
+        <ul>
+          <li><a href="#drop">Drop 01</a></li>
+          <li><a href="#story">The Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>World</h4>
+        <ul>
+          <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Journal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@sizr.shop">hello@sizr.shop</a></li>
+        </ul>
+      </div>
+    </div>
 
-            <div class="hero-matter">
-                <span class="micro micro--ink hero-badge anim" id="heroBadge">
-                    <span class="dot" aria-hidden="true"></span>Computer-vision fit&nbsp;system
-                </span>
-                <h1 class="hero-title anim" id="heroTitle">
-                    Fit.<br><span class="upright">Perfected.</span>
-                </h1>
-                <p class="lead hero-sub anim" id="heroSub">
-                    Forty-seven landmarks&nbsp;— <span class="hl">one generated pattern,</span>&nbsp;cut for
-                    <span class="em">your&nbsp;body</span>. Not sizing.&nbsp;Fit.
-                </p>
-                <div class="hero-ctas anim" id="heroCta">
-                    <a href="#scan" class="btn btn--ember">Start Your Scan <span class="arr" aria-hidden="true">&rarr;</span></a>
-                    <a href="#story" class="btn btn--ghost">Read the Manifesto</a>
-                </div>
-                <dl class="hero-specs anim" id="heroSpecs" aria-label="Sizr specifications">
-                    <div class="hero-spec">
-                        <dt class="k">Landmarks</dt>
-                        <dd class="v"><em>47</em> pts</dd>
-                    </div>
-                    <div class="hero-spec">
-                        <dt class="k">Drop 01</dt>
-                        <dd class="v">Spring&nbsp;2027</dd>
-                    </div>
-                    <div class="hero-spec">
-                        <dt class="k">Fibre weight</dt>
-                        <dd class="v">300&ndash;400&nbsp;GSM</dd>
-                    </div>
-                    <div class="hero-spec">
-                        <dt class="k">Atelier</dt>
-                        <dd class="v">Sialkot&nbsp;&middot;&nbsp;PK</dd>
-                    </div>
-                </dl>
-            </div>
-        </section>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Sizr. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a>
+        <span style="color: rgba(10,12,12,0.3); font-family: var(--font-mono); font-size: 12px;">— @getsizr</span>
+      </div>
+    </div>
+  </footer>
 
+  <!-- ===================== WAITLIST OVERLAY ===================== -->
+  <div class="waitlist-overlay" id="waitlistOverlay" role="dialog" aria-modal="true" aria-label="Join the waitlist">
+    <div class="waitlist-panel">
+      <button class="waitlist-close" onclick="closeWaitlist()" aria-label="Close">&times;</button>
+      <h3>Join the list.</h3>
+      <p>Drop 01 is coming. Sign up for early access and updates.</p>
+      <form class="waitlist-form" id="waitlistForm" novalidate>
+        <label for="waitlistEmail">Email address</label>
+        <input
+          type="email"
+          id="waitlistEmail"
+          name="email"
+          placeholder="you@email.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="form-submit">Sign Up</button>
+      </form>
+      <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+    </div>
+  </div>
 
-        <!-- ═══════════════════════════════════════
-             TICKER — brand thread (decorative)
-             ═══════════════════════════════════════ -->
-        <div class="ticker" aria-hidden="true">
-            <div class="ticker-track">
-                <span class="ticker-item">Precision Fit</span>
-                <span class="ticker-item">Pakistani Craftsmanship</span>
-                <span class="ticker-item">47 Landmarks</span>
-                <span class="ticker-item">Generated Patterns</span>
-                <span class="ticker-item">340 GSM Fabrics</span>
-                <span class="ticker-item">No Compromise</span>
-                <span class="ticker-item">Precision Fit</span>
-                <span class="ticker-item">Pakistani Craftsmanship</span>
-                <span class="ticker-item">47 Landmarks</span>
-                <span class="ticker-item">Generated Patterns</span>
-                <span class="ticker-item">340 GSM Fabrics</span>
-                <span class="ticker-item">No Compromise</span>
-            </div>
-        </div>
+  <!-- ===================== SCRIPTS ===================== -->
+  <script>
+    /* =========================================================
+       SIZR — Landing page interactions
+       ========================================================= */
 
+    /* --- Waitlist overlay ---------------------------------- */
+    function openWaitlist() {
+      var overlay = document.getElementById('waitlistOverlay');
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.getElementById('waitlistEmail').focus();
+      document.body.style.overflow = 'hidden';
+    }
 
-        <!-- ═══════════════════════════════════════
-             01 — THE STORY
-             ═══════════════════════════════════════ -->
-        <section class="story reveal" id="story" aria-labelledby="storyTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">01</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">The story</span>
-                </header>
-                <div class="story-grid">
-                    <div class="story-body">
-                        <h2 id="storyTitle">Built by two engineers who were tired of <em>&ldquo;close enough.&rdquo;</em></h2>
-                        <p class="lead">
-                            It started in a fitting room in Islamabad, watching a perfectly good shirt
-                            hang loose across shoulders that didn&rsquo;t match the pattern.
-                        </p>
-                        <p class="body">
-                            The fabric was beautiful. The stitching was clean. The tag said <strong>Medium</strong>.
-                            The body inside said this doesn&rsquo;t work. We asked a question nobody in fashion
-                            seemed willing to ask: <strong>what if clothing fit the way furniture does when it&rsquo;s
-                            custom-built?</strong> Not &ldquo;close enough.&rdquo; Not &ldquo;size up for comfort.&rdquo;
-                            Precisely. Intentionally.
-                        </p>
-                        <p class="body">
-                            We&rsquo;re engineers&nbsp;&mdash; computer-vision people&nbsp;&mdash; and we met at
-                            NUTECH, found each other again over a shared hatred of ill-fitted collars. So we built
-                            the thing no one had: a fit system that maps the actual body, then cuts the garment to match.
-                        </p>
-                        <figure class="story-quote">
-                            <blockquote>
-                                &ldquo;We don&rsquo;t make clothes for mannequines. We engineer them for the bodies
-                                that actually exist.&rdquo;
-                            </blockquote>
-                            <figcaption>&mdash;&nbsp;The founders<em>&nbsp;&middot;&nbsp;Muhammad&nbsp;Saad&nbsp;&amp;&nbsp;AbdurRehman</em></figcaption>
-                        </figure>
-                    </div>
-                    <figure class="story-fig">
-                        <div class="frame" aria-hidden="true"></div>
-                        <img
-                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85&auto=format&fit=crop"
-                            alt="Hands guiding fabric through a sewing machine in the Sizr atelier."
-                            loading="lazy"
-                        >
-                        <figcaption>
-                            <span><em>FIG. 01</em> &mdash; Atelier detail, Lahore</span>
-                            <span class="micro">EST. 2025</span>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-        </section>
+    function closeWaitlist() {
+      var overlay = document.getElementById('waitlistOverlay');
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
 
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('waitlistOverlay').classList.contains('is-open')) {
+        closeWaitlist();
+      }
+    });
 
-        <!-- ═══════════════════════════════════════
-             02 — THE OBSESSIONS
-             ═══════════════════════════════════════ -->
-        <section class="obsess reveal" id="obsess" aria-labelledby="obsessTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">02</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">The obsessions</span>
-                </header>
-                <h2 id="obsessTitle" style="margin-bottom:clamp(2rem,4vw,3rem);">Three constraints, <em>refused</em>.</h2>
+    // Close on overlay background click
+    document.getElementById('waitlistOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeWaitlist();
+      }
+    });
 
-                <div class="obsess-table">
-                    <!-- Principle 01 -->
-                    <article class="obsess-row reveal">
-                        <div>
-                            <span class="obsess-num" aria-hidden="true">01</span>
-                        </div>
-                        <div>
-                            <span class="obsess-tag">Proportion&nbsp;mapping</span>
-                            <h3 class="obsess-question">Why settle for a letter when you can have a measurement?</h3>
-                            <p class="obsess-copy">
-                                S/M/L is a statistical approximation from the 1940s. We scan your body&nbsp;&mdash;
-                                browser-based, no app, no hardware&nbsp;&mdash; extract <strong>47 landmarks</strong>,
-                                and compute your <strong>proportion matrix</strong>. Clothes fit because they&rsquo;re
-                                built around your actual shape.
-                                <span class="m">Every curve&nbsp;&middot;&nbsp;every ratio</span>
-                            </p>
-                        </div>
-                        <figure class="obsess-visual" aria-hidden="true">
-                            <div class="cell"><svg viewBox="0 0 80 80"><rect x="12" y="18" width="56" height="44" fill="none" stroke="rgba(242,237,227,.4)" stroke-width="1"/><circle cx="34" cy="26" r="2" fill="#FF5A3D"/><circle cx="50" cy="34" r="2" fill="#FF5A3D"/><circle cx="30" cy="44" r="2" fill="#FF5A3D"/><circle cx="46" cy="54" r="2" fill="#FF5A3D"/><line x1="34" y1="26" x2="50" y2="34" stroke="rgba(242,237,227,.5)" stroke-width="1"/><line x1="30" y1="44" x2="46" y2="54" stroke="rgba(242,237,227,.5)" stroke-width="1"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="2" fill="#FF5A3D"/><circle cx="18" cy="40" r="1.4" fill="rgba(242,237,227,.5)"/><circle cx="62" cy="40" r="1.4" fill="rgba(242,237,227,.5)"/><circle cx="40" cy="20" r="1.4" fill="rgba(242,237,227,.5)"/><circle cx="40" cy="60" r="1.4" fill="rgba(242,237,227,.5)"/><circle cx="26" cy="28" r="1.4" fill="rgba(242,237,227,.4)"/><line x1="18" y1="40" x2="62" y2="40" stroke="rgba(242,237,227,.35)" stroke-width="1"/><line x1="40" y1="20" x2="40" y2="60" stroke="rgba(242,237,227,.35)" stroke-width="1"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><path d="M20 20 H60 V48 L40 60 L20 48 Z" fill="none" stroke="rgba(242,237,227,.55)" stroke-width="1"/><path d="M32 20 V42" stroke="#FF5A3D" stroke-width="1"/><path d="M20 44 H60" stroke="rgba(242,237,227,.4)" stroke-width="1" stroke-dasharray="2 2"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><circle cx="40" cy="26" r="2" fill="rgba(242,237,227,.5)"/><path d="M40 28 V52" stroke="rgba(242,237,227,.4)" stroke-width="1"/><circle cx="40" cy="22" r="5" fill="none" stroke="#FF5A3D" stroke-width="1"/></svg></div>
-                        </figure>
-                    </article>
-
-                    <!-- Principle 02 -->
-                    <article class="obsess-row reveal">
-                        <div>
-                            <span class="obsess-num" aria-hidden="true">02</span>
-                        </div>
-                        <div>
-                            <span class="obsess-tag">Material&nbsp;integrity</span>
-                            <h3 class="obsess-question">The cloth is the contract.</h3>
-                            <p class="obsess-copy">
-                                300&ndash;400&nbsp;GSM heavyweight fabrics that drape, move and last. We source from
-                                <strong>Pakistan&rsquo;s finest mills</strong>&nbsp;&mdash; the same houses supplying
-                                luxury labels in Milan, London and New York. Heavy canvas, real structure, cloth that
-                                wears its weight.
-                                <span class="m">Sourced&nbsp;&middot;&nbsp;not&nbsp;compromised</span>
-                            </p>
-                        </div>
-                        <figure class="obsess-visual" aria-hidden="true">
-                            <div class="cell"><svg viewBox="0 0 80 80"><g stroke="rgba(242,237,227,.4)" stroke-width="1"><line x1="20" y1="16" x2="26" y2="64"/><line x1="32" y1="16" x2="38" y2="64"/><line x1="44" y1="16" x2="50" y2="64"/><line x1="56" y1="16" x2="62" y2="64"/></g><g stroke="rgba(242,237,227,.28)" stroke-width="1"><line x1="16" y1="28" x2="64" y2="24"/><line x1="16" y1="40" x2="64" y2="36"/><line x1="16" y1="52" x2="64" y2="48"/></g><text x="40" y="76" font-size="5" fill="rgba(242,237,227,.45)" text-anchor="middle" font-family="monospace">340 GSM</text></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><path d="M24 20 h32 l4 6 -4 8 h-12 v26 h14" fill="none" stroke="rgba(242,237,227,.55)" stroke-width="1"/><path d="M24 20 v26 h10" fill="none" stroke="rgba(242,237,227,.55)" stroke-width="1"/><circle cx="52" cy="22" r="2" fill="#FF5A3D"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><rect x="20" y="20" width="40" height="40" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/><rect x="26" y="28" width="10" height="10" fill="rgba(242,237,227,.12)"/><rect x="42" y="28" width="10" height="10" fill="rgba(242,237,227,.2)"/><line x1="20" y1="46" x2="60" y2="46" stroke="rgba(242,237,227,.3)" stroke-width="1" stroke-dasharray="2 2"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><path d="M30 24 q10 6 20 0" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/><path d="M30 40 q10 6 20 0" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/><path d="M30 56 q10 6 20 0" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/><path d="M40 18 v40" stroke="#FF5A3D" stroke-width="1" stroke-dasharray="2 2"/></svg></div>
-                        </figure>
-                    </article>
-
-                    <!-- Principle 03 -->
-                    <article class="obsess-row reveal">
-                        <div>
-                            <span class="obsess-num" aria-hidden="true">03</span>
-                        </div>
-                        <div>
-                            <span class="obsess-tag">Method&nbsp;&middot;&nbsp;honest&nbsp;pricing</span>
-                            <h3 class="obsess-question">Premium construction at honest prices.</h3>
-                            <p class="obsess-copy">
-                                We cut the middlemen, not the quality. Third-generation tailors in Sialkot,
-                                industrial machines calibrated daily, quality control at every station.
-                                Every seam is earned&nbsp;&mdash; and it&rsquo;s priced like it.
-                                <span class="m">Every stitch intentional</span>
-                            </p>
-                        </div>
-                        <figure class="obsess-visual" aria-hidden="true">
-                            <div class="cell"><svg viewBox="0 0 80 80"><path d="M20 24 h40 M20 36 h28 M20 48 h40" stroke="rgba(242,237,227,.45)" stroke-width="1"/><path d="M40 20 v40" stroke="rgba(242,237,227,.3)" stroke-width="1" stroke-dasharray="2 2"/><circle cx="40" cy="40" r="2" fill="#FF5A3D"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="18" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/><path d="M40 40 L52 30" stroke="#FF5A3D" stroke-width="1"/><circle cx="40" cy="40" r="2" fill="#FF5A3D"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><text x="18" y="46" font-size="26" fill="rgba(242,237,227,.55)" font-family="Georgia, serif">QC</text><line x1="18" y1="52" x2="62" y2="52" stroke="#FF5A3D" stroke-width="1"/></svg></div>
-                            <div class="cell"><svg viewBox="0 0 80 80"><path d="M28 24 v32 M44 24 v24" stroke="rgba(242,237,227,.4)" stroke-width="1"/><line x1="24" y1="40" x2="48" y2="40" stroke="rgba(242,237,227,.3)" stroke-width="1" stroke-dasharray="1 2"/><circle cx="40" cy="54" r="2" fill="#FF5A3D"/></svg></div>
-                        </figure>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ═══════════════════════════════════════
-             03 — THE SCAN   (technology narrative)
-             Scan → Matrix → Pattern → Atelier
-             ═══════════════════════════════════════ -->
-        <section class="scan reveal" id="scan" aria-labelledby="scanTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">03</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">The system</span>
-                </header>
-                <div class="scan-head">
-                    <div>
-                        <span class="sys">Precision-fit&nbsp;system</span>
-                        <h2 id="scanTitle">Fit engineering,<br><em>not fashion math.</em></h2>
-                    </div>
-                    <p class="note">
-                        Traditional grading scales one base pattern up and down. We don&rsquo;t grade&nbsp;&mdash;
-                        we <strong>generate</strong>. Each pattern is a one-off, derived from your scan, adjusted for
-                        fabric behaviour, ease preferences and the garment&rsquo;s intended drape.
-                    </p>
-                </div>
-
-                <ol class="scan-steps">
-                    <li class="step">
-                        <span class="step-index" aria-hidden="true">I</span>
-                        <span class="step-code">Step 01</span>
-                        <h3 class="step-name">The Scan</h3>
-                        <p class="step-copy">
-                            Browser-based computer vision. No app, no special hardware&nbsp;&mdash; stand in front of
-                            your phone camera for <strong>40 seconds</strong>. We extract <strong>47 body landmarks</strong>.
-                        </p>
-                        <div class="step-visual" aria-hidden="true">
-                            <svg viewBox="0 0 200 120">
-                                <rect x="20" y="18" width="160" height="84" fill="none" stroke="rgba(242,237,227,.35)" stroke-width="1"/>
-                                <rect x="26" y="24" width="80" height="72" fill="rgba(10,12,12,.4)" stroke="rgba(242,237,227,.18)" stroke-width="1"/>
-                                <circle cx="66" cy="40" r="22" fill="none" stroke="rgba(242,237,227,.3)" stroke-width="1"/>
-                                <path d="M120 90 L130 60 L142 74 L152 50 L166 90" fill="none" stroke="rgba(242,237,227,.4)" stroke-width="1"/>
-                                <circle cx="130" cy="60" r="2.4" fill="#FF5A3D"/><circle cx="148" cy="56" r="2.4" fill="#FF5A3D"/>
-                                <circle cx="158" cy="70" r="2.4" fill="#FF5A3D"/><circle cx="130" cy="74" r="2.4" fill="#FF5A3D"/>
-                                <text x="26" y="96" font-size="8" letter-spacing="1" fill="rgba(242,237,227,.5)" font-family="monospace">CV&nbsp;PIPELINE</text>
-                            </svg>
-                            <span class="vcap">40&nbsp;seconds&nbsp;&middot;&nbsp;no&nbsp;hardware</span>
-                        </div>
-                    </li>
-
-                    <li class="step">
-                        <span class="step-index" aria-hidden="true">II</span>
-                        <span class="step-code">Step 02</span>
-                        <h3 class="step-name">The Matrix</h3>
-                        <p class="step-copy">
-                            We compute your <strong>proportion matrix</strong>&nbsp;&mdash; every curve, every ratio,
-                            every asymmetry mapped to sub-millimetre precision.
-                        </p>
-                        <div class="step-visual" aria-hidden="true">
-                            <svg viewBox="0 0 200 120">
-                                <g stroke="rgba(242,237,227,.18)" stroke-width="1">
-                                    <line x1="20" y1="24" x2="180" y2="24"/><line x1="20" y1="44" x2="180" y2="44"/>
-                                    <line x1="20" y1="64" x2="180" y2="64"/><line x1="20" y1="84" x2="180" y2="84"/>
-                                </g>
-                                <g stroke="rgba(242,237,227,.18)" stroke-width="1">
-                                    <line x1="62" y1="18" x2="62" y2="90"/><line x1="104" y1="18" x2="104" y2="90"/>
-                                    <line x1="146" y1="18" x2="146" y2="90"/>
-                                </g>
-                                <circle cx="40" cy="34" r="2.2" fill="#FF5A3D"/><circle cx="82" cy="28" r="1.6" fill="rgba(242,237,227,.5)"/>
-                                <circle cx="124" cy="40" r="1.6" fill="rgba(242,237,227,.5)"/><circle cx="166" cy="26" r="1.6" fill="rgba(242,237,227,.5)"/>
-                                <circle cx="40" cy="70" r="1.6" fill="rgba(242,237,227,.5)"/><circle cx="82" cy="76" r="1.6" fill="rgba(242,237,227,.5)"/>
-                                <circle cx="124" cy="66" r="2.2" fill="#FF5A3D"/><circle cx="166" cy="74" r="1.6" fill="rgba(242,237,227,.5)"/>
-                                <text x="20" y="108" font-size="8" letter-spacing="1" fill="rgba(242,237,227,.5)" font-family="monospace">PROPORTION&nbsp;12:6:7&nbsp;::&nbsp;...</text>
-                            </svg>
-                            <span class="vcap">47&nbsp;pts&nbsp;&rarr;&nbsp;12&nbsp;ratios</span>
-                        </div>
-                    </li>
-
-                    <li class="step">
-                        <span class="step-index" aria-hidden="true">III</span>
-                        <span class="step-code">Step 03</span>
-                        <h3 class="step-name">The Pattern</h3>
-                        <p class="step-copy">
-                            We <strong>generate</strong>&nbsp;&mdash; not grade&nbsp;&mdash; a one-off digital pattern
-                            from your scan, tuned to fabric behaviour and the intended drape.
-                        </p>
-                        <div class="step-visual" aria-hidden="true">
-                            <svg viewBox="0 0 200 120">
-                                <path d="M40 30 h70 l20 20 v44 h-90 l-12 -14 v-50 z" fill="none" stroke="rgba(242,237,227,.5)" stroke-width="1"/>
-                                <path d="M64 30 v40" stroke="#FF5A3D" stroke-width="1"/>
-                                <line x1="40" y1="44" x2="130" y2="44" stroke="rgba(242,237,227,.3)" stroke-width="1" stroke-dasharray="3 3"/>
-                                <line x1="40" y1="80" x2="130" y2="80" stroke="rgba(242,237,227,.3)" stroke-width="1" stroke-dasharray="3 3"/>
-                                <circle cx="58" cy="60" r="2" fill="rgba(242,237,227,.6)"/>
-                                <text x="40" y="108" font-size="8" letter-spacing="1" fill="rgba(242,237,227,.5)" font-family="monospace">GENERATED&nbsp;/&nbsp;NO&nbsp;GRADING</text>
-                            </svg>
-                            <span class="vcap">One&nbsp;pattern&nbsp;per&nbsp;body</span>
-                        </div>
-                    </li>
-
-                    <li class="step">
-                        <span class="step-index" aria-hidden="true">IV</span>
-                        <span class="step-code">Step 04</span>
-                        <h3 class="step-name">The Atelier</h3>
-                        <p class="step-copy">
-                            Cut and sewn in <strong>Sialkot, Pakistan</strong> by third-generation tailors&nbsp;&mdash;
-                            the same hands that stitch for global luxury houses.
-                        </p>
-                        <div class="step-visual" aria-hidden="true">
-                            <svg viewBox="0 0 200 120">
-                                <g stroke="rgba(242,237,227,.3)" stroke-width="1">
-                                    <path d="M20 30 q20 4 40 0 q20 -4 40 0" fill="none"/>
-                                    <path d="M20 46 q20 4 40 0 q20 -4 40 0" fill="none"/>
-                                    <path d="M20 62 q20 4 40 0 q20 -4 40 0" fill="none"/>
-                                    <path d="M20 78 q20 4 40 0 q20 -4 40 0" fill="none"/>
-                                </g>
-                                <path d="M110 90 l-8 -20 l34 -40" stroke="#FF5A3D" stroke-width="1.4" fill="none"/>
-                                <circle cx="136" cy="30" r="2" fill="#FF5A3D"/>
-                                <text x="20" y="108" font-size="8" letter-spacing="1" fill="rgba(242,237,227,.5)" font-family="monospace">THIRD-GENERATION&nbsp;TAILORS</text>
-                            </svg>
-                            <span class="vcap">Sialkot&nbsp;&middot;&nbsp;PK</span>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </section>
-
-
-        <!-- ═══════════════════════════════════════
-             04 — THE DROP — Spring 2027
-             ═══════════════════════════════════════ -->
-        <section class="drop reveal" id="drop" aria-labelledby="dropTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">04</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">Drop&nbsp;01</span>
-                </header>
-                <div class="drop-head">
-                    <div>
-                        <h2 id="dropTitle">Capsule&nbsp;01&nbsp;&mdash; <em>Spring 2027</em></h2>
-                        <p class="lead" style="margin-top:1.2rem;">Heavyweight essentials, precision-fit to your scan. No symbols, no logos&nbsp;&mdash; just measurement.</p>
-                    </div>
-                    <span class="status"><span class="dot" aria-hidden="true"></span>Cohort&nbsp;sign-up&nbsp;open</span>
-                </div>
-
-                <div class="cohort-band" id="cohort">
-                    <span class="cohort-num"><span id="cohortCount" data-count="114">114</span><em>/300</em></span>
-                    <div>
-                        <span class="cohort-label">Founding-fit cohort</span>
-                        <p class="cohort-msg">Early supporters get priority access, a direct line to the founders, and a fit profile that evolves with you.</p>
-                    </div>
-                    <a href="#signup" class="btn btn--ember">Join the Cohort <span class="arr" aria-hidden="true">&rarr;</span></a>
-                </div>
-
-                <div class="drop-grid">
-                    <!-- Lead piece — Heavy Tee (editorial on-body image reuse) -->
-                    <article class="piece piece--lead">
-                        <div class="piece-media">
-                            <img
-                                src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&q=85&auto=format&fit=crop"
-                                alt="Heavyweight cotton tee, precision cut."
-                                loading="lazy"
-                            >
-                        </div>
-                        <div class="piece-body">
-                            <h3 class="piece-name">The Heavy Tee</h3>
-                            <div class="piece-meta">
-                                <span>340&nbsp;GSM</span><span>Zero-gauge&nbsp;collar</span><span class="price">£185</span>
-                            </div>
-                            <span class="piece-status">Cut from your scan &mdash; Spring 2027</span>
-                        </div>
-                    </article>
-
-                    <!-- Engineered Shirt — typographic placeholder -->
-                    <article class="piece">
-                        <div class="piece-media">
-                            <div class="ph" style="background:var(--cream);">
-                                <svg viewBox="0 0 160 140" aria-hidden="true">
-                                    <path d="M48 18 h64 l14 12 -10 12 -14 -4 v88 h-44 V38 l-16 4 L30 30 Z" fill="none" stroke="#0A0C0C" stroke-width="1"/>
-                                    <path d="M80 30 v80" stroke="#0A0C0C" stroke-width=".6" stroke-dasharray="3 3"/>
-                                    <circle cx="80" cy="88" r="2" fill="#FF5A3D"/>
-                                </svg>
-                                <span class="ph-tag">Engineered shirt</span>
-                            </div>
-                        </div>
-                        <div class="piece-body">
-                            <h3 class="piece-name">The Engineered Shirt</h3>
-                            <div class="piece-meta">
-                                <span>Yarn-dyed&nbsp;cotton</span><span class="price">£245</span>
-                            </div>
-                            <span class="piece-status">Pattern in progress</span>
-                        </div>
-                    </article>
-
-                    <!-- Trouser — typographic placeholder -->
-                    <article class="piece">
-                        <div class="piece-media">
-                            <div class="ph" style="background:var(--cream);">
-                                <svg viewBox="0 0 160 140" aria-hidden="true">
-                                    <path d="M52 16 h16 v72 l-20 34 h-16 l20 -34 z" fill="none" stroke="#0A0C0C" stroke-width="1"/>
-                                    <path d="M108 16 h-16 v72 l20 34 h16 l-20 -34 z" fill="none" stroke="#0A0C0C" stroke-width="1"/>
-                                    <path d="M60 30 h40" stroke="#0A0C0C" stroke-width=".6" stroke-dasharray="3 3"/>
-                                    <circle cx="80" cy="20" r="2" fill="#FF5A3D"/>
-                                </svg>
-                                <span class="ph-tag">Precision trouser</span>
-                            </div>
-                        </div>
-                        <div class="piece-body">
-                            <h3 class="piece-name">The Precision Trouser</h3>
-                            <div class="piece-meta">
-                                <span>Knee-friendly&nbsp;rise</span><span class="price">£285</span>
-                            </div>
-                            <span class="piece-status">Fit-tested on 47 bodies</span>
-                        </div>
-                    </article>
-
-                    <!-- Heavy Sweatshirt — typographic placeholder -->
-                    <article class="piece">
-                        <div class="piece-media">
-                            <div class="ph" style="background:var(--cream);">
-                                <svg viewBox="0 0 160 140" aria-hidden="true">
-                                    <path d="M44 22 h16 c8 8 32 8 40 0 h16 l10 14 -16 8 -2 72 h-56 V44 L40 36 Z" fill="none" stroke="#0A0C0C" stroke-width="1"/>
-                                    <path d="M80 34 v66" stroke="#0A0C0C" stroke-width=".6" stroke-dasharray="3 3"/>
-                                    <circle cx="80" cy="80" r="2" fill="#FF5A3D"/>
-                                </svg>
-                                <span class="ph-tag">Heavy sweatshirt</span>
-                            </div>
-                        </div>
-                        <div class="piece-body">
-                            <h3 class="piece-name">The Heavy Sweatshirt</h3>
-                            <div class="piece-meta">
-                                <span>400&nbsp;GSM&nbsp;backing</span><span class="price">£245</span>
-                            </div>
-                            <span class="piece-status">Double-needle at every seam</span>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="drop-foot">
-                    <p class="cohort-note">Each garment is cut to your scan&nbsp;&mdash; not to a size tag.</p>
-                    <a href="#signup" class="u-link">Join the founding-fit cohort <span class="arr" aria-hidden="true">&rarr;</span></a>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ═══════════════════════════════════════
-             05 — THE JOURNAL
-             ═══════════════════════════════════════ -->
-        <section class="journal reveal" id="journal" aria-labelledby="journalTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">05</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">The journal</span>
-                </header>
-                <h2 id="journalTitle" style="margin-bottom:clamp(2rem,4vw,3rem);">Process, published.</h2>
-
-                <div class="journal-grid">
-                    <!-- Featured story -->
-                    <article class="article article--feat reveal">
-                        <div class="article-media">
-                            <img
-                                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=85&auto=format&fit=crop"
-                                alt="Garments hanging in the Sizr atelier, freshly cut and sewn."
-                                loading="lazy"
-                            >
-                        </div>
-                        <div style="padding:clamp(1.6rem,3vw,2.4rem);display:flex;flex-direction:column;flex:1;">
-                            <span class="article-kicker">Process</span>
-                            <h3 class="article-title">How we map the shoulder</h3>
-                            <p class="article-ex">
-                                The shoulder is where fit goes to die. A seam that&rsquo;s a centimetre long throws the
-                                whole drape. This is the anatomy of a measurement&nbsp;&mdash; from scan to stitch.
-                            </p>
-                            <div class="article-meta">
-                                <span>Issue&nbsp;N°.&nbsp;001</span>
-                                <a href="#journal" class="read">Read <span class="arr" aria-hidden="true">&rarr;</span></a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Supporting 01 -->
-                    <article class="article article--supp1 reveal" data-delay="1">
-                        <div style="display:flex;flex-direction:column;flex:1;">
-                            <span class="article-kicker">Material</span>
-                            <h3 class="article-title">The 340 GSM decision</h3>
-                            <p class="article-ex">
-                                Why we chose heavyweight cotton over the thin, translucent tees the market forgot
-                                were supposed to last.
-                            </p>
-                            <div class="article-meta">
-                                <span>Issue&nbsp;N°.&nbsp;002</span>
-                                <a href="#journal" class="read">Read <span class="arr" aria-hidden="true">&rarr;</span></a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Supporting 02 -->
-                    <article class="article article--supp2 reveal" data-delay="2">
-                        <div style="display:flex;flex-direction:column;flex:1;">
-                            <span class="article-kicker">Atelier&nbsp;diaries</span>
-                            <h3 class="article-title">Lahore to London</h3>
-                            <p class="article-ex">
-                                Two time zones, one standard. The logistics of cutting in Sialkot, scanning in London,
-                                and shipping a garment that fits.
-                            </p>
-                            <div class="article-meta">
-                                <span>Issue&nbsp;N°.&nbsp;003</span>
-                                <a href="#journal" class="read">Read <span class="arr" aria-hidden="true">&rarr;</span></a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="journal-foot">
-                    <a href="#journal" class="u-link">Open the journal <span class="arr" aria-hidden="true">&rarr;</span></a>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ═══════════════════════════════════════
-             06 — THE ATELIER
-             ═══════════════════════════════════════ -->
-        <section class="atelier reveal" id="atelier" aria-labelledby="atelierTitle">
-            <div class="wrap">
-                <header class="sec-index">
-                    <span class="num" aria-hidden="true">06</span>
-                    <span class="rule" aria-hidden="true"></span>
-                    <span class="kicker">The atelier</span>
-                </header>
-                <h2 id="atelierTitle" style="margin-bottom:clamp(2rem,4vw,3rem);">Craft, <em>documented.</em></h2>
-
-                <div class="atelier-grid">
-                    <figure class="atelier-media">
-                        <img
-                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1400&q=85&auto=format&fit=crop"
-                            alt="A Sialkot tailor guiding fabric through an industrial machine."
-                            loading="lazy"
-                        >
-                        <figcaption class="cap"><em>FIG. 06</em>&nbsp;&mdash;&nbsp;Sialkot in operation</figcaption>
-                    </figure>
-
-                    <div class="atelier-doc">
-                        <div class="doc-head">
-                            <span class="t">Construction&nbsp;note</span>
-                            <span class="code">SZR&ndash;DOC&ndash;06</span>
-                        </div>
-                        <table class="spec-table">
-                            <tbody>
-                                <tr><th scope="row">Fibre weight</th><td>300&ndash;400&nbsp;GSM</td></tr>
-                                <tr><th scope="row">Mills</th><td>Pakistan&nbsp;&middot;&nbsp;Milan&nbsp;grade</td></tr>
-                                <tr><th scope="row">Cut</th><td>Generated&nbsp;pattern,<em> per&nbsp;scan</em></td></tr>
-                                <tr><th scope="row">Tailors</th><td>Third&nbsp;generation</td></tr>
-                                <tr><th scope="row">Machines</th><td>Calibrated&nbsp;daily</td></tr>
-                                <tr><th scope="row">Quality control</th><td>Every&nbsp;station</td></tr>
-                                <tr><th scope="row">Drape</th><td>Modelled&nbsp;per&nbsp;garment</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="atelier-foot">
-                    <p class="line">&ldquo;The fabric is beautiful. The stitching is clean. Now it has to fit.&rdquo;</p>
-                    <span class="seal"><i aria-hidden="true"></i>Merit&nbsp;is&nbsp;the&nbsp;whole&nbsp;product</span>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ═══════════════════════════════════════
-             SIGNUP / COHORT ANCHOR — for nav CTA
-             (the visible form lives in the footer CONTACT column)
-             ═══════════════════════════════════════ -->
-        <span id="signup" aria-hidden="true" style="position:relative; top:-120px;"></span>
-
-    </main>
-
-
-    <!-- ═══════════════════════════════════════
-         FOOTER
-         ═══════════════════════════════════════ -->
-    <footer id="accessibility" aria-label="Footer">
-        <div class="wrap">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <img src="" alt="Sizr" class="footer-logo" id="footerLogo">
-                    <p class="tag">Fit that gets you.</p>
-                    <span class="loc">EST. 2025 &mdash; Lahore <em style="color:var(--ember);">↔</em> London</span>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Fit</h4>
-                    <ul>
-                        <li><a href="#drop">Drop 01</a></li>
-                        <li><a href="#obsess">The Essentials</a></li>
-                        <li><a href="#atelier">The Atelier</a></li>
-                        <li><a href="#story">The Story</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>World</h4>
-                    <ul>
-                        <li><a href="#journal">The Journal</a></li>
-                        <li><a href="#scan">The System</a></li>
-                        <li><a href="#scan">How It Works</a></li>
-                        <li><a href="#signup">The Cohort</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <div class="footer-signup">
-                        <p>Join the founding-fit cohort. Early access, direct line to the founders, a fit profile that evolves with you.</p>
-                        <form class="footer-form" id="signupForm" novalidate>
-                            <label class="micro" for="emailInput" style="position:absolute;left:-9999px;">Email address</label>
-                            <input
-                                type="email"
-                                id="emailInput"
-                                name="email"
-                                placeholder="you@email.com"
-                                autocomplete="email"
-                                required
-                            >
-                            <button type="submit" class="btn btn--ember">Join</button>
-                        </form>
-                        <p class="form-msg" id="formMessage" role="status" aria-live="polite"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <span class="micro">&copy; 2026 Sizr. All rights reserved.</span>
-                <span class="micro" style="color:var(--slate);">FIT.&nbsp;PERFECTED.<span class="zm">&nbsp;Z.</span></span>
-                <div class="lead-soc">
-                    <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a>
-                    <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a>
-                    <a href="mailto:hello@sizr.shop">Contact</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-
-    <!-- ═══════════════════════════════════════
-         JAVASCRIPT
-         ═══════════════════════════════════════ -->
-    <script>
+    /* --- Waitlist form validation -------------------------- */
     (function () {
-        'use strict';
+      var form = document.getElementById('waitlistForm');
+      var input = document.getElementById('waitlistEmail');
+      var msg = document.getElementById('formMsg');
 
-        /* ─────────────────────────────────────
-           LOGO — canvas-crop variants from master SVG
-             navLogo    = "SZ" monogram (top centre)
-             footerLogo = "SIZR" wordmark (mid band)
-           ───────────────────────────────────── */
-        var LOGO_SRC = 'assets/svgviewer-output.svg';
-        var LOGO_CROPS = [
-            { id: 'navLogo',    top: 0.05, left: 0.36, height: 0.40, width: 0.28 },
-            { id: 'footerLogo', top: 0.50, left: 0.14, height: 0.32, width: 0.69 },
-        ];
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var value = (input.value || '').trim();
 
-        function cropLogo(img, crop) {
-            var c   = document.createElement('canvas');
-            var ctx = c.getContext('2d');
-            var w   = img.naturalWidth;
-            var h   = img.naturalHeight;
-            c.width  = w * crop.width;
-            c.height = h * crop.height;
-            ctx.drawImage(
-                img,
-                w * crop.left, h * crop.top, c.width, c.height,
-                0, 0, c.width, c.height
-            );
-            return c.toDataURL('image/png');
+        if (!value) {
+          setMsg('Please enter your email address.', 'error');
+          input.focus();
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+          setMsg('Please enter a valid email address.', 'error');
+          input.focus();
+          return;
         }
 
-        var logoImg = new Image();
-        logoImg.onload = function () {
-            LOGO_CROPS.forEach(function (c) {
-                var el = document.getElementById(c.id);
-                if (!el) return;
-                el.src = cropLogo(logoImg, c);
-                el.classList.add('ready');
-            });
-        };
-        logoImg.src = LOGO_SRC;
+        // No backend yet — log locally.
+        console.log('Waitlist signup:', value);
 
+        setMsg("You're on the list. We'll be in touch.", 'ok');
+        input.value = '';
+      });
 
-        /* ─────────────────────────────────────
-           HERO IMAGE — fade in + slow drift
-           ───────────────────────────────────── */
-        var heroImg = document.getElementById('heroImg');
-        function heroReady() {
-            heroImg.classList.add('loaded');
-            heroImg.classList.add('kenburns');
-        }
-        if (heroImg.complete) heroReady();
-        else heroImg.addEventListener('load', heroReady);
-
-
-        /* ─────────────────────────────────────
-           HERO ENTRANCE — staggered reveal
-           ───────────────────────────────────── */
-        var heroEls = ['heroBadge', 'heroTitle', 'heroSub', 'heroCta', 'heroSpecs'];
-        setTimeout(function () {
-            heroEls.forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el) el.classList.add('ready');
-            });
-        }, 200);
-
-
-        /* ─────────────────────────────────────
-           HERO LANDMARKS — stylised 47-point proportion motif
-           Generates a body-like cloud of dots + connecting grid lines.
-           Not a real scan — a visual language for the technology.
-           ───────────────────────────────────── */
-        (function drawLandmarks() {
-            var svg = document.getElementById('landmarkSvg');
-            if (!svg) return;
-            var NS = 'http://www.w3.org/2000/svg';
-            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            /* Deterministic pseudo-random (stable across loads) */
-            var seed = 17;
-            function rand() {
-                seed = (seed * 9301 + 49297) % 233280;
-                return seed / 233280;
-            }
-            function pick(arr) { return arr[Math.floor(rand() * arr.length)]; }
-
-            var pts = [];
-            /* Head cluster */
-            for (var i = 0; i < 7; i++) {
-                pts.push({ x: 50 + (i - 3) * 2.6, y: 14 + rand() * 6, big: i === 3 });
-            }
-            /* Neck / shoulders */
-            for (var j = 0; j < 5; j++) {
-                pts.push({ x: 50 + (j - 2) * 7.5, y: 30 + rand() * 3, big: j === 2 });
-            }
-            /* Torso — left contour */
-            for (var k = 0; k < 8; k++) {
-                var tx = 30 - k * 1.4 * 0.55;
-                pts.push({ x: tx + rand() * 2, y: 42 + k * 5.6, big: k === 2 || k === 6 });
-            }
-            /* Torso — right contour */
-            for (var m = 0; m < 8; m++) {
-                var rx = 70 + m * 1.4 * 0.55;
-                pts.push({ x: rx + rand() * 2, y: 42 + m * 5.6, big: m === 2 || m === 6 });
-            }
-            /* Hips */
-            for (var n = 0; n < 4; n++) {
-                pts.push({ x: 38 + (n - 1.5) * 8, y: 86 + rand() * 3, big: false });
-            }
-            /* Arms */
-            for (var a = 0; a < 8; a++) {
-                var side = a < 4 ? -1 : 1;
-                var ax = 50 + side * (20 + a % 4 * 2.2);
-                pts.push({ x: ax + rand() * 2, y: 36 + (a % 4) * 6 + (a < 4 ? 0 : 2), big: a % 4 === 2 });
-            }
-            /* Slice to ~47 */
-            while (pts.length > 47) pts.pop();
-            /* Tag a few as ember "key" landmarks */
-            var emberIdx = [3, 12, 16, 22, 38];
-            var emberSet = {};
-            emberIdx.forEach(function (e) { emberSet[e] = true; });
-
-            var g = document.createElementNS(NS, 'g');
-
-            /* Connecting grid lines — a sparse measurement lattice */
-            var lines = [];
-            for (var l = 0; l < pts.length; l += 3) {
-                var next = (l + 5) % pts.length;
-                var ln = document.createElementNS(NS, 'line');
-                ln.setAttribute('x1', pts[l].x); ln.setAttribute('y1', pts[l].y);
-                ln.setAttribute('x2', pts[next].x); ln.setAttribute('y2', pts[next].y);
-                g.appendChild(ln);
-                lines.push(ln);
-            }
-            /* Cross measurements */
-            [[2, 14], [8, 18], [17, 30]].forEach(function (pair) {
-                var ln = document.createElementNS(NS, 'line');
-                ln.setAttribute('x1', pts[pair[0]].x); ln.setAttribute('y1', pts[pair[0]].y);
-                ln.setAttribute('x2', pts[pair[1]].x); ln.setAttribute('y2', pts[pair[1]].y);
-                g.appendChild(ln);
-                lines.push(ln);
-            });
-
-            /* Dots */
-            pts.forEach(function (p, i) {
-                var c = document.createElementNS(NS, 'circle');
-                c.setAttribute('cx', p.x.toFixed(2));
-                c.setAttribute('cy', p.y.toFixed(2));
-                c.setAttribute('r', (emberSet[i] ? 1.8 : p.big ? 1.3 : 0.85).toFixed(2));
-                if (emberSet[i]) c.setAttribute('class', 'em');
-                g.appendChild(c);
-            });
-
-            var lbl = document.createElementNS(NS, 'text');
-            lbl.setAttribute('x', 50); lbl.setAttribute('y', 96);
-            lbl.setAttribute('class', 'lm-label');
-            lbl.setAttribute('text-anchor', 'middle');
-            lbl.textContent = '47 LANDMARKS';
-            g.appendChild(lbl);
-
-            svg.appendChild(g);
-
-            /* Reveal — stagger dots, then whole cloud */
-            requestAnimationFrame(function () { requestAnimationFrame(function () {
-                svg.classList.add('ready');
-            }); });
-
-            /* Draw lines progressively when reduced-motion is off */
-            if (!reduced) {
-                lines.forEach(function (ln, i) {
-                    setTimeout(function () { ln.style.opacity = '1'; }, 500 + i * 30);
-                });
-                var dots = svg.querySelectorAll('circle');
-                dots.forEach(function (d, i) {
-                    setTimeout(function () { d.style.opacity = '1'; }, 750 + i * 18);
-                });
-            }
-        })();
-
-
-        /* ─────────────────────────────────────
-           NAV — scroll state
-           ───────────────────────────────────── */
-        var nav = document.getElementById('mainNav');
-        function checkNav() {
-            nav.classList.toggle('scrolled', window.scrollY > 60);
-        }
-        window.addEventListener('scroll', checkNav, { passive: true });
-        checkNav();
-
-
-        /* ─────────────────────────────────────
-           MOBILE MENU
-           ───────────────────────────────────── */
-        var menuBtn  = document.getElementById('menuBtn');
-        var menuPanel= document.getElementById('menuPanel');
-        var menuClose= document.getElementById('menuClose');
-        var menuScrim= document.getElementById('menuScrim');
-
-        function openMenu() {
-            menuPanel.classList.add('open');
-            menuScrim.classList.add('show');
-            menuBtn.setAttribute('aria-expanded', 'true');
-            document.body.classList.add('menu-locked');
-        }
-        function closeMenu() {
-            menuPanel.classList.remove('open');
-            menuScrim.classList.remove('show');
-            menuBtn.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('menu-locked');
-        }
-        menuBtn.addEventListener('click', openMenu);
-        menuClose.addEventListener('click', closeMenu);
-        menuScrim.addEventListener('click', closeMenu);
-        menuPanel.querySelectorAll('a').forEach(function (a) {
-            a.addEventListener('click', closeMenu);
-        });
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeMenu();
-        });
-
-
-        /* ─────────────────────────────────────
-           SCROLL REVEAL — IntersectionObserver
-           ───────────────────────────────────── */
-        var reveals = document.querySelectorAll('.reveal');
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        reveals.forEach(function (el) { observer.observe(el); });
-
-
-        /* ─────────────────────────────────────
-           COHORT COUNTER — count-up on intersect
-           data-count holds the target; wire to your backend later.
-           ───────────────────────────────────── */
-        var cohortNum = document.getElementById('cohortCount');
-        if (cohortNum) {
-            var target = parseInt(cohortNum.getAttribute('data-count'), 10) || 114;
-            var done = false;
-            var coObs = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (!entry.isIntersecting || done) return;
-                    done = true;
-                    coObs.disconnect();
-                    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                    if (reduced) { cohortNum.textContent = target; return; }
-                    var start = null;
-                    var dur = 1600;
-                    function tick(ts) {
-                        if (!start) start = ts;
-                        var p = Math.min((ts - start) / dur, 1);
-                        var eased = 1 - Math.pow(1 - p, 3);
-                        cohortNum.textContent = Math.round(eased * target);
-                        if (p < 1) requestAnimationFrame(tick);
-                        else cohortNum.textContent = target;
-                    }
-                    requestAnimationFrame(tick);
-                });
-            }, { threshold: 0.4 });
-            coObs.observe(cohortNum);
-        }
-
-
-        /* ─────────────────────────────────────
-           EMAIL SIGNUP
-           ───────────────────────────────────── */
-        var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        var form    = document.getElementById('signupForm');
-        var emailIn = document.getElementById('emailInput');
-        var msg     = document.getElementById('formMessage');
-
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var val = emailIn.value.trim();
-
-            if (!val) {
-                msg.textContent = 'Please enter your email.';
-                msg.className = 'form-msg error';
-                return;
-            }
-            if (!EMAIL_REGEX.test(val)) {
-                msg.textContent = 'Please enter a valid email.';
-                msg.className = 'form-msg error';
-                return;
-            }
-
-            /*
-             * ── EMAIL HANDLER ──────────────────────
-             * Wire up your backend here.
-             *
-             * fetch('/api/waitlist', {
-             *     method: 'POST',
-             *     headers: { 'Content-Type': 'application/json' },
-             *     body: JSON.stringify({ email: val })
-             * })
-             */
-            console.log('Waitlist signup:', val);
-
-            msg.textContent = 'You\'re in the cohort. We\'ll be in touch.';
-            msg.className   = 'form-msg success';
-            emailIn.value   = '';
-            emailIn.focus();
-        });
-
-        emailIn.addEventListener('input', function () {
-            if (msg.classList.contains('error')) {
-                msg.className = 'form-msg';
-            }
-        });
-
-
-        /* ─────────────────────────────────────
-           SMOOTH ANCHOR OFFSET — respect sticky nav
-           ───────────────────────────────────── */
-        var navH = 72;
-        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-            a.addEventListener('click', function (e) {
-                var id = a.getAttribute('href');
-                if (id.length < 2) return;
-                var t = document.querySelector(id);
-                if (!t) return;
-                e.preventDefault();
-                var top = t.getBoundingClientRect().top + window.scrollY - navH + 1;
-                window.scrollTo({ top: top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-                history.replaceState(null, '', id);
-            });
-        });
-
+      function setMsg(text, kind) {
+        msg.textContent = text;
+        msg.className = 'form-msg ' + (kind || '');
+      }
     })();
-    </script>
+
+    /* --- Scroll-reveal on section load --------------------- */
+    (function () {
+      var els = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
 
 </body>
 </html>
