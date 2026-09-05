@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIZR — Fit that gets you.</title>
-  <meta name="description" content="Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes. Drop 01 — limited, numbered, made in Sialkot." />
+  <meta name="description" content="Heavyweight basics, made properly and priced honestly. Two computer engineers, tired of 'close enough.' Drop 01 — limited, numbered, made in Sialkot." />
   <meta name="theme-color" content="#0A0C0C" />
 
   <link rel="icon" type="image/png" href="assets/sizr-logo.png" />
@@ -12,23 +12,45 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     /* =========================================================
-       SIZR — Landing Page
-       Streetwear drop-based brand. Dark editorial. Mobile-first.
+       SIZR — Landing page
+       Fashion first. Technology second.
+       Editorial streetwear. Ink / Bone / Ember territories.
+       Mobile-first (375px > 768px > 1024px).
+       Only the hero animates. Everything else is a printed plate.
        ========================================================= */
 
-    /* --- Design tokens ------------------------------------- */
+    /* --- Design tokens -------------------------------------- */
     :root {
-      --ink:    #0A0C0C;
-      --bone:   #F2EDE3;
-      --ember:  #FF5A3D;
+      /* Color */
+      --ink:     #0A0C0C;
+      --bone:    #F2EDE3;
+      --ember:   #FF5A3D;
+      --graphite:#1C1E1E;
 
+      --mute:       rgba(242, 237, 227, 0.58);  /* secondary text on ink, ~5.5:1 */
+      --faint:      rgba(242, 237, 227, 0.30);  /* captions / footnotes on ink */
+      --mute-ink:   #5A554C;                     /* secondary text on bone, ~5.5:1 */
+      --faint-ink:  rgba(10, 12, 12, 0.35);      /* watermarks on bone */
+      --rule-dark:  rgba(242, 237, 227, 0.12);   /* hairlines on ink */
+      --rule-bone:  rgba(10, 12, 12, 0.16);      /* hairlines on bone */
+
+      /* Type */
       --font-display: "Bodoni Moda", "Georgia", serif;
-      --font-body:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-sans:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-mono:    "Space Grotesk", -apple-system, BlinkMacSystemFont, monospace;
+
+      /* Space */
+      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 16px;
+      --sp-4: 24px; --sp-5: 48px; --sp-6: 96px; --sp-7: 140px;
+      --maxw: 1240px;
+
+      /* Z-index scale: 10 nav, 20 overlay, 30 focus */
+      --z-nav: 10;
+      --z-overlay: 20;
     }
 
     /* --- Reset & base -------------------------------------- */
@@ -38,7 +60,8 @@
     body {
       background: var(--ink);
       color: var(--bone);
-      font-family: var(--font-body);
+      font-family: var(--font-sans);
+      font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -46,745 +69,621 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    button { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; border: none; background: none; }
     img { max-width: 100%; height: auto; display: block; }
     ::selection { background: var(--ember); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
 
     /* --- Layout -------------------------------------------- */
     .container {
       width: 100%;
-      max-width: 1200px;
+      max-width: var(--maxw);
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 24px;
     }
 
-    .rule {
-      width: 100%;
-      height: 1px;
-      background: rgba(242, 237, 227, 0.1);
-      border: none;
+    /* Quiet text link — the only CTA on the page. No buttons. */
+    .qlink {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease, color 0.2s ease;
     }
+    .qlink:hover { border-color: var(--ember); color: var(--ember); }
+
+    /* Section footnote, set-copy sentence case (not an eyebrow) */
+    .footnote { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
+
+    /* Editorial plate (surrogate for real photography) */
+    .plate {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+    /* Film grain overlay, via SVG feTurbulence (1px edges are fine on ink) */
+    .plate::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .plate--dark {
+      background:
+        radial-gradient(120% 90% at 20% 0%, #232627 0%, var(--graphite) 45%, #101111 100%);
+      border: 1px solid var(--rule-dark);
+    }
+    .plate--bone {
+      background:
+        radial-gradient(130% 100% at 80% 0%, #F7F2E9 0%, var(--bone) 55%, #E5DFD2 100%);
+      border: 1px solid var(--rule-bone);
+    }
+    .plate-caption {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--faint);
+      z-index: 1;
+    }
+    .plate--bone .plate-caption { color: var(--faint-ink); }
 
     /* =========================================================
        01 — NAVIGATION
        ========================================================= */
     .nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      background: var(--ink);
+      border-bottom: 1px solid var(--rule-dark);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--ink);
-      border-bottom: 1px solid rgba(242, 237, 227, 0.08);
+      height: 64px;
     }
-
-    .nav-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-brand img {
-      height: 24px;
-      width: auto;
-    }
+    .nav-brand { display: inline-flex; align-items: center; padding: 4px 0; }
+    .nav-brand img { height: 26px; width: auto; }
 
     .nav-links {
       display: none;
+      align-items: center;
       gap: 32px;
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
-
-    .nav-links a {
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--ember);
-    }
-
-    .nav-links a:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 4px;
-    }
-
-    .nav-cta {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 10px 20px;
-      background: var(--bone);
-      color: var(--ink);
-      border: none;
-      transition: background 0.2s ease, transform 0.1s ease;
-    }
-
-    .nav-cta:hover {
-      background: var(--ember);
-      color: var(--bone);
-    }
-
-    .nav-cta:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
-    }
-
-    .nav-cta:active {
-      transform: translateY(1px);
-    }
-
-    /* =========================================================
-       02 — HERO (asymmetric split)
-       ========================================================= */
-    .hero {
-      padding: 48px 0 64px;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: heroFadeIn 0.8s ease 0.15s forwards;
-    }
-
-    @keyframes heroFadeIn {
-      to { opacity: 1; transform: none; }
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .hero-text {
-      order: 2;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(42px, 11vw, 88px);
-      font-weight: 900;
-      line-height: 0.92;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-    }
-
-    .hero-sub {
-      font-family: var(--font-body);
-      font-size: clamp(15px, 3vw, 18px);
+    .nav-links a { transition: color 0.2s ease, border-color 0.2s ease; }
+    .nav-links a:hover { color: var(--ember); }
+    .nav-join {
+      margin-left: 8px;
       font-weight: 500;
-      line-height: 1.5;
-      max-width: 44ch;
-      margin-bottom: 36px;
-      color: rgba(242, 237, 227, 0.55);
     }
 
-    .cta-primary {
+    .nav-menu-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-family: var(--font-mono);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 16px 32px;
-      background: var(--ember);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.1s ease;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+    .nav-menu-btn .bar {
+      width: 16px;
+      height: 1px;
+      background: var(--bone);
+      display: inline-block;
+      position: relative;
+      transition: background 0.2s ease;
     }
 
-    .cta-primary:hover {
-      background: #e64a2e;
-    }
-
-    .cta-primary:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 3px;
-    }
-
-    .cta-primary:active {
-      transform: translateY(1px);
-    }
-
-    .hero-image {
-      order: 1;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      background: rgba(242, 237, 227, 0.04);
-      border: 1px solid rgba(242, 237, 227, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 227, 0.15);
-    }
-
-    .hero-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* =========================================================
-       03 — THE STORY
-       ========================================================= */
-    .story {
-      padding: 64px 0;
-    }
-
-    .story-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .section-num {
-      font-family: var(--font-display);
-      font-size: 72px;
-      font-weight: 900;
-      line-height: 0.85;
-      color: var(--bone);
-      opacity: 0.08;
-    }
-
-    .story p {
-      font-family: var(--font-body);
-      font-size: clamp(16px, 3vw, 20px);
-      font-weight: 500;
-      line-height: 1.65;
-      max-width: 56ch;
-      color: rgba(242, 237, 227, 0.75);
-    }
-
-    /* =========================================================
-       04 — THE OBSESSIONS (ruled numbered list)
-       ========================================================= */
-    .obsessions {
-      padding: 64px 0;
-    }
-
-    .obsessions-list {
-      list-style: none;
-      max-width: 720px;
-    }
-
-    .obsessions-list li {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 0 20px;
-      padding: 32px 0;
-      border-bottom: 1px solid rgba(242, 237, 227, 0.1);
-      align-items: start;
-    }
-
-    .obsessions-list li:first-child {
-      padding-top: 0;
-    }
-
-    .obsessions-list li:last-child {
-      border-bottom: none;
-    }
-
-    .obs-num {
-      font-family: var(--font-display);
-      font-size: 52px;
-      font-weight: 900;
-      line-height: 1;
-      color: var(--bone);
-      opacity: 0.12;
-    }
-
-    .obs-content h3 {
-      font-family: var(--font-display);
-      font-size: clamp(20px, 4vw, 26px);
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 6px;
-    }
-
-    .obs-content p {
-      font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 400;
-      line-height: 1.6;
-      color: rgba(242, 237, 227, 0.5);
-    }
-
-    /* =========================================================
-       05 — DROP 01
-       ========================================================= */
-    .drop {
-      padding: 72px 0;
-    }
-
-    .drop-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .drop h2 {
-      font-family: var(--font-display);
-      font-size: clamp(52px, 14vw, 120px);
-      font-weight: 900;
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-    }
-
-    .drop-right {
+    /* Mobile drawer overlay */
+    .drawer {
+      position: fixed;
+      inset: 0;
+      z-index: calc(var(--z-overlay) + 1);
+      background: var(--ink);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.28s;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 0 24px 40px;
+      visibility: hidden;
     }
-
-    .drop-copy {
-      font-family: var(--font-body);
-      font-size: clamp(15px, 3vw, 18px);
-      font-weight: 500;
-      line-height: 1.5;
-      max-width: 40ch;
-      color: rgba(242, 237, 227, 0.55);
-      margin-bottom: 32px;
+    .drawer.is-open {
+      transform: translateX(0);
+      visibility: visible;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
     }
-
-    .drop-status {
-      display: inline-flex;
+    .drawer-top {
+      display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      height: 64px;
+      border-bottom: 1px solid var(--rule-dark);
+    }
+    .drawer-top img { height: 26px; width: auto; }
+    .drawer-close {
       font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 10px 24px;
-      border: 1px solid rgba(242, 237, 227, 0.12);
-      margin-bottom: 40px;
-      width: fit-content;
+      font-size: 13px;
+      letter-spacing: 0.02em;
     }
-
-    .drop-status::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--ember);
-      display: inline-block;
-    }
-
-    .drop .cta-primary {
-      width: fit-content;
-    }
-
-    /* =========================================================
-       06 — FOOTER
-       ========================================================= */
-    .footer {
-      padding: 56px 0 40px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-      margin-bottom: 48px;
-    }
-
-    .footer-brand {
-      font-family: var(--font-mono);
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .footer-tagline {
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: rgba(242, 237, 227, 0.4);
-      margin-top: 4px;
-    }
-
-    .footer-col h4 {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 227, 0.3);
-      margin-bottom: 14px;
-    }
-
-    .footer-col ul {
+    .drawer-nav {
       list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 8px;
-    }
-
-    .footer-col a {
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: rgba(242, 237, 227, 0.6);
-      transition: color 0.2s ease;
-    }
-
-    .footer-col a:hover {
-      color: var(--ember);
-    }
-
-    .footer-col a:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
-    }
-
-    /* Footer waitlist form */
-    .footer-form {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-width: 400px;
+      margin: 48px 0 0;
     }
-
-    .footer-form label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 227, 0.3);
+    .drawer-nav a {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 9vw, 44px);
+      font-weight: 700;
+      line-height: 1.1;
     }
-
-    .footer-form-row {
-      display: flex;
-      gap: 0;
-    }
-
-    .footer-form input[type="email"] {
-      flex: 1;
-      padding: 12px 14px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      background: transparent;
-      border: 1px solid rgba(242, 237, 227, 0.12);
-      border-right: none;
-      color: var(--bone);
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .footer-form input[type="email"]::placeholder {
-      color: rgba(242, 237, 227, 0.25);
-    }
-
-    .footer-form input[type="email"]:focus {
-      border-color: var(--ember);
-    }
-
-    .footer-form .form-submit {
-      padding: 12px 20px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--bone);
-      color: var(--ink);
-      border: 1px solid rgba(242, 237, 227, 0.12);
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.1s ease;
-      white-space: nowrap;
-    }
-
-    .footer-form .form-submit:hover {
-      background: var(--ember);
-      color: #fff;
-      border-color: var(--ember);
-    }
-
-    .footer-form .form-submit:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
-    }
-
-    .footer-form .form-submit:active {
-      transform: translateY(1px);
-    }
-
-    .footer-form .form-msg {
-      font-family: var(--font-body);
-      font-size: 13px;
-      min-height: 18px;
-      margin-top: 0;
-    }
-
-    .footer-form .form-msg.ok {
-      color: var(--ember);
-    }
-
-    .footer-form .form-msg.error {
-      color: #ff7a6b;
-    }
-
-    .footer-bottom {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(242, 237, 227, 0.08);
-    }
-
-    .footer-copy {
-      font-family: var(--font-body);
-      font-size: 12px;
-      color: rgba(242, 237, 227, 0.3);
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 20px;
+    .drawer-nav a .idx {
       font-family: var(--font-mono);
       font-size: 12px;
       font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-right: 14px;
+      vertical-align: middle;
+    }
+    .drawer-foot {
+      border-top: 1px solid var(--rule-dark);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .drawer-foot .row { display: flex; gap: 24px; }
+
+    /* =========================================================
+       02 — HERO (asymmetric split, the only animation)
+       ========================================================= */
+    .hero {
+      padding-top: 48px;
+      padding-bottom: 88px;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
     }
 
-    .footer-social a {
-      color: rgba(242, 237, 227, 0.5);
-      transition: color 0.2s ease;
+    .hero-media {
+      order: 1;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+    }
+    .hero-media img {
+      width: 62%;
+      height: auto;
+      opacity: 0.92;
     }
 
-    .footer-social a:hover {
+    .hero-text {
+      order: 2;
+      max-width: 30ch;
+    }
+    .hero-strap {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--mute);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(46px, 12vw, 92px);
+      line-height: 0.96;
+      letter-spacing: -0.015em;
+      margin-bottom: 28px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 700;
       color: var(--ember);
     }
-
-    .footer-social a:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
+    .hero-body {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--mute);
+      margin-bottom: 36px;
     }
+    .hero .qlink { font-size: 15px; }
 
-    .footer-social .at {
-      color: rgba(242, 237, 227, 0.2);
+    /* Single entrance animation — hero only */
+    .hero-inner {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: heroFadeIn 1s ease 0.2s forwards;
+    }
+    @keyframes heroFadeIn {
+      to { opacity: 1; transform: none; }
     }
 
     /* =========================================================
-       WAITLIST OVERLAY
+       03 — 01 · THE IDEA (bone territory)
        ========================================================= */
-    .waitlist-overlay {
+    .idea {
+      background: var(--bone);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      padding: 96px 0;
+    }
+    .idea .footnote { color: var(--mute-ink); margin-bottom: 40px; }
+    .idea-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .idea-copy p {
+      font-size: clamp(19px, 3.4vw, 26px);
+      font-weight: 500;
+      line-height: 1.5;
+      max-width: 34ch;
+      color: var(--ink);
+    }
+    .idea-copy p + p {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--mute-ink);
+      max-width: 44ch;
+    }
+    .idea-numeral {
+      position: absolute;
+      right: -2vw;
+      bottom: -6vw;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(200px, 42vw, 480px);
+      line-height: 0.7;
+      letter-spacing: -0.04em;
+      color: var(--faint-ink);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       04 — 02 · WHAT WE MAKE (bone territory, paired panel)
+       ========================================================= */
+    .make {
+      background: var(--bone);
+      color: var(--ink);
+      padding: 0 0 96px;
+    }
+    .make .footnote { color: var(--mute-ink); margin-bottom: 32px; }
+    .make-pair {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .make-panel {
+      min-height: 340px;
+    }
+    .make-panel--flat img { width: 56%; height: auto; }
+    .make-panel--life {
+      background:
+        radial-gradient(120% 90% at 30% 10%, #26292A 0%, var(--graphite) 55%, #111212 100%);
+      border: 1px solid var(--rule-dark);
+    }
+    .make-cta {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    /* =========================================================
+       05 — 03 · OBSESSIONS (bone, ruled list)
+       ========================================================= */
+    .obsessions {
+      background: var(--bone);
+      color: var(--ink);
+      padding: 0 0 96px;
+    }
+    .obsessions .footnote { color: var(--mute-ink); margin-bottom: 8px; }
+    .obs-list {
+      list-style: none;
+    }
+    .obs-list li {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 4px 20px;
+      align-items: baseline;
+      padding: 28px 0;
+      border-top: 1px solid var(--rule-bone);
+    }
+    .obs-list li:last-child { border-bottom: 1px solid var(--rule-bone); }
+    .obs-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--mute-ink);
+    }
+    .obs-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(22px, 4.5vw, 30px);
+      line-height: 1.15;
+    }
+    .obs-fact {
+      grid-column: 2;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--mute-ink);
+      margin-top: 2px;
+    }
+
+    /* =========================================================
+       06 — 04 · DROP 01 (dark plate)
+       ========================================================= */
+    .drop {
+      padding-top: 112px;
+      padding-bottom: 120px;
+    }
+    .drop .footnote { color: var(--mute); margin-bottom: 32px; }
+    .drop-media {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      margin-bottom: 48px;
+    }
+    .drop-media .big {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(90px, 22vw, 220px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--faint);
+      user-select: none;
+    }
+    .drop-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .drop h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(44px, 8vw, 84px);
+      line-height: 0.95;
+      letter-spacing: -0.015em;
+    }
+    .drop-copy {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--mute);
+      max-width: 38ch;
+      margin: 4px 0 28px;
+    }
+    .drop-batch {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--mute);
+      margin-bottom: 32px;
+    }
+
+    /* =========================================================
+       07 — FOOTER (ink)
+       ========================================================= */
+    .footer {
+      border-top: 1px solid var(--rule-dark);
+      padding: 72px 0 48px;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .footer-brand img { height: 30px; width: auto; margin-bottom: 18px; }
+    .footer-line {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--mute);
+      max-width: 34ch;
+    }
+    .footer-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .footer-form .form-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      border-bottom: 1px solid var(--rule-dark);
+      padding-bottom: 10px;
+      transition: border-color 0.2s ease;
+    }
+    .footer-form .form-row:focus-within { border-color: var(--ember); }
+    .footer-form input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--bone);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      padding: 2px 0;
+    }
+    .footer-form input[type="email"]::placeholder { color: var(--faint); }
+    .footer-form .form-msg {
+      min-height: 20px;
+      font-size: 13px;
+    }
+    .footer-form .form-msg.ok  { color: var(--ember); }
+    .footer-form .form-msg.err { color: var(--ember); }
+    .footer-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .footer-socials a { color: var(--mute); transition: color 0.2s ease; }
+    .footer-socials a:hover { color: var(--ember); }
+    .footer-bottom {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule-dark);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--faint);
+    }
+    .footer-bottom a { color: var(--mute); transition: color 0.2s ease; }
+    .footer-bottom a:hover { color: var(--ember); }
+
+    /* =========================================================
+       08 — WAITLIST OVERLAY
+       ========================================================= */
+    .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 12, 12, 0.8);
-      z-index: 200;
+      z-index: var(--z-overlay);
+      background: rgba(10, 12, 12, 0.82);
+      backdrop-filter: blur(2px);
       display: flex;
       align-items: flex-end;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0s linear 0.25s;
     }
-
-    .waitlist-overlay.is-open {
+    .overlay.is-open {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
+      transition: opacity 0.25s ease, visibility 0s;
     }
-
-    .waitlist-panel {
+    .overlay-panel {
       width: 100%;
-      max-width: 520px;
-      background: var(--ink);
-      border: 1px solid rgba(242, 237, 227, 0.1);
+      max-width: 560px;
+      background: var(--graphite);
+      border: 1px solid var(--rule-dark);
       border-bottom: none;
-      padding: 48px 32px 40px;
+      border-radius: 4px 4px 0 0;
+      padding: 48px 28px 40px;
       position: relative;
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
+      transform: translateY(24px);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
-
-    .waitlist-overlay.is-open .waitlist-panel {
-      transform: translateY(0);
-    }
-
-    .waitlist-close {
+    .overlay.is-open .overlay-panel { transform: translateY(0); }
+    .overlay-close {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      font-size: 24px;
-      color: var(--bone);
-      padding: 8px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      line-height: 1;
+      top: 20px;
+      right: 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--mute);
+      transition: color 0.2s ease;
     }
-
-    .waitlist-close:hover {
-      color: var(--ember);
-    }
-
-    .waitlist-close:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
-    }
-
-    .waitlist-panel h3 {
+    .overlay-close:hover { color: var(--ember); }
+    .overlay-panel h3 {
       font-family: var(--font-display);
-      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 8px;
+      font-size: clamp(28px, 6vw, 38px);
+      line-height: 1.05;
+      margin-bottom: 12px;
     }
-
-    .waitlist-panel > p {
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: rgba(242, 237, 227, 0.45);
-      margin-bottom: 28px;
+    .overlay-panel h3 em { font-style: italic; font-weight: 700; color: var(--ember); }
+    .overlay-panel .intro {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--mute);
+      margin-bottom: 32px;
+      max-width: 40ch;
     }
-
     .waitlist-form {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 24px;
     }
-
-    .waitlist-form label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(242, 237, 227, 0.3);
-    }
-
-    .waitlist-form input[type="email"] {
-      width: 100%;
-      padding: 14px 16px;
-      font-family: var(--font-body);
-      font-size: 15px;
-      background: transparent;
-      border: 1px solid rgba(242, 237, 227, 0.12);
-      color: var(--bone);
-      outline: none;
+    .waitlist-form .form-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      border-bottom: 1px solid var(--rule-dark);
+      padding-bottom: 10px;
       transition: border-color 0.2s ease;
     }
-
-    .waitlist-form input[type="email"]::placeholder {
-      color: rgba(242, 237, 227, 0.25);
-    }
-
-    .waitlist-form input[type="email"]:focus {
-      border-color: var(--ember);
-    }
-
-    .waitlist-form .form-submit {
-      padding: 14px 24px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--bone);
-      color: var(--ink);
+    .waitlist-form .form-row:focus-within { border-color: var(--ember); }
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
       border: none;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.1s ease;
+      outline: none;
+      color: var(--bone);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      padding: 2px 0;
     }
-
-    .waitlist-form .form-submit:hover {
-      background: var(--ember);
-      color: #fff;
-    }
-
-    .waitlist-form .form-submit:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 2px;
-    }
-
-    .waitlist-form .form-submit:active {
-      transform: translateY(1px);
-    }
-
+    .waitlist-form input[type="email"]::placeholder { color: var(--faint); }
     .waitlist-form .form-msg {
-      font-family: var(--font-body);
+      min-height: 20px;
       font-size: 13px;
-      min-height: 18px;
-      margin-top: 4px;
+      color: var(--mute);
     }
-
-    .waitlist-form .form-msg.ok {
-      color: var(--ember);
-    }
-
-    .waitlist-form .form-msg.error {
-      color: #ff7a6b;
-    }
+    .waitlist-form .form-msg.ok  { color: var(--ember); }
+    .waitlist-form .form-msg.err { color: var(--ember); }
 
     /* =========================================================
        TABLET (min-width: 768px)
        ========================================================= */
     @media (min-width: 768px) {
       .container { padding: 0 40px; }
-      .nav-links { display: flex; }
-      .nav { padding: 24px 0; }
 
-      .hero { padding: 72px 0 96px; }
+      .hero { padding-top: 72px; padding-bottom: 120px; }
+      .hero-inner { gap: 56px; }
+      .hero-text { max-width: 34ch; }
 
-      .hero-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-      }
+      .idea { padding: 140px 0; }
+      .idea-grid { grid-template-columns: 1fr 1fr; }
 
-      .hero-text { order: 1; }
-      .hero-image { order: 2; aspect-ratio: 3 / 4; }
+      .make { padding: 0 0 140px; }
+      .make-pair { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .make-panel { min-height: 520px; }
 
-      .hero-image-label { font-size: 12px; }
+      .obsessions { padding: 0 0 140px; }
+      .obs-list li { grid-template-columns: 96px 1fr; gap: 0 28px; padding: 36px 0; }
 
-      .section-num { font-size: 96px; }
+      .drop { padding-top: 160px; padding-bottom: 168px; }
+      .drop-layout { grid-template-columns: 1fr 1fr; }
 
-      .story { padding: 80px 0; }
-      .story-grid {
-        grid-template-columns: 100px 1fr;
-        gap: 0;
-        align-items: start;
-      }
+      .footer { padding: 96px 0 56px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
 
-      .obsessions { padding: 80px 0; }
-      .obsessions-list li { grid-template-columns: 72px 1fr; }
-
-      .drop { padding: 80px 0; }
-      .drop-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-        align-items: start;
-      }
-
-      .footer { padding: 64px 0 48px; }
-      .footer-grid {
-        grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-        gap: 48px;
-      }
-
-      .footer-bottom {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .waitlist-panel {
-        padding: 56px 48px 48px;
-      }
+      .overlay-panel { padding: 64px 56px 48px; }
     }
 
     /* =========================================================
@@ -792,16 +691,40 @@
        ========================================================= */
     @media (min-width: 1024px) {
       .container { padding: 0 56px; }
-      .hero { padding: 80px 0 120px; }
-      .hero-grid {
-        gap: 64px;
+
+      .nav-links { display: flex; }
+      .nav-menu-btn { display: none; }
+
+      /* Asymmetric split — image column ~55% / type column ~45% */
+      .hero {
+        padding-top: 40px;
+        padding-bottom: 0;
+        min-height: calc(100vh - 64px);
+        display: flex;
+        align-items: center;
+      }
+      .hero-inner {
+        grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+        gap: 0 72px;
+        align-items: center;
+      }
+      .hero-media {
+        order: 0;
+        aspect-ratio: auto;
+        align-self: stretch;
+        height: calc(100vh - 64px - 80px);
+        margin-left: -56px;            /* bleed to left gutter */
+        border-radius: 0 4px 4px 0;
+      }
+      .hero-media img { width: 44%; }
+      .hero-text {
+        order: 1;
+        max-width: 30ch;
       }
 
-      .section-num { font-size: 120px; }
+      .idea-numeral { font-size: 520px; }
 
-      .story { padding: 96px 0; }
-      .obsessions { padding: 96px 0; }
-      .drop { padding: 96px 0; }
+      .drop-media .big { font-size: 240px; }
     }
 
     /* =========================================================
@@ -809,9 +732,10 @@
        ========================================================= */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .hero { animation: none; opacity: 1; transform: none; }
-      .waitlist-overlay { transition: none; }
-      .waitlist-panel { transition: none; }
+      .hero-inner { animation: none; opacity: 1; transform: none; }
+      .overlay, .overlay-panel { transition: none; }
+      .drawer { transition: none; }
+      .qlink { transition: none; }
     }
   </style>
 </head>
@@ -819,129 +743,172 @@
 
   <!-- ===================== NAVIGATION ===================== -->
   <nav class="nav container" role="navigation" aria-label="Main">
-    <a class="nav-brand" href="#" aria-label="SIZR home">
-      <img src="assets/sizr-logo-dark.png" alt="SIZR" width="24" height="24" />
+    <a class="nav-brand" href="#top" aria-label="SIZR home">
+      <img src="assets/sizr-logo-dark.png" alt="SIZR — fit that gets you" width="26" height="26" />
     </a>
 
     <div class="nav-links">
-      <a href="#story">Fit</a>
-      <a href="#drop">World</a>
-      <a href="#drop">Drop</a>
+      <a href="#drop">drops</a>
+      <a href="#idea">good</a>
+      <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">instagram</a>
+      <a class="nav-join qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
     </div>
 
-    <button class="nav-cta" onclick="openWaitlist()" aria-haspopup="dialog">
-      Join the Waitlist
+    <button class="nav-menu-btn" aria-haspopup="true" aria-controls="menuDrawer" aria-expanded="false" onclick="toggleMenu()">
+      <span class="bar" aria-hidden="true"></span>
+      menu
     </button>
   </nav>
 
+  <!-- Mobile drawer -->
+  <div class="drawer" id="menuDrawer" aria-hidden="true">
+    <div class="drawer-top">
+      <img src="assets/sizr-logo-dark.png" alt="SIZR" width="26" height="26" />
+      <button class="drawer-close" onclick="toggleMenu()" aria-label="Close menu">close</button>
+    </div>
+    <nav aria-label="Menu">
+      <ul class="drawer-nav">
+        <li><a href="#drop" onclick="closeMenu()"><span class="idx">01</span>drops</a></li>
+        <li><a href="#idea" onclick="closeMenu()"><span class="idx">02</span>good</a></li>
+        <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener" onclick="closeMenu()"><span class="idx">03</span>instagram</a></li>
+      </ul>
+    </nav>
+    <div class="drawer-foot">
+      <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
+      <div class="row">
+        <a href="mailto:hello@sizr.shop">hello@sizr.shop</a>
+        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">tiktok</a>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================== HERO ===================== -->
   <section class="hero container" id="top">
-    <div class="hero-grid">
-      <div class="hero-image">
-        <div class="hero-image-label">Product photography</div>
+    <div class="hero-inner">
+      <!-- PLACEHOLDER — replace with real editorial photography (heavy tee, dark frame) -->
+      <div class="hero-media plate plate--dark" role="img" aria-label="Placeholder for SIZR editorial photography — heavy tee in a dark frame">
+        <img src="assets/sizr-logo-dark.png" alt="SIZR heavyweight tee graphic" />
+        <span class="plate-caption">photography — heavy tee / 01</span>
       </div>
+
       <div class="hero-text">
-        <h1>Fit that<br/>gets you.</h1>
-        <p class="hero-sub">
-          Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes.
+        <p class="hero-strap">Heavyweight basics.</p>
+        <h1>Made <em>properly.</em><br />Priced honestly.</h1>
+        <p class="hero-body">
+          Two engineers, tired of "close enough." Heavyweight cotton, built to hold shape.
+          Small runs, numbered pieces.
         </p>
-        <button class="cta-primary" onclick="openWaitlist()" aria-haspopup="dialog">
-          Join the Waitlist →
-        </button>
+        <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
       </div>
     </div>
   </section>
 
-  <div class="container"><hr class="rule" /></div>
+  <!-- ===================== 01 · THE IDEA ===================== -->
+  <section class="idea" id="idea">
+    <div class="container relative">
+      <p class="footnote"><em>01</em> — the idea</p>
+      <div class="idea-grid">
+        <div class="idea-copy">
+          <p>
+            Two computer engineering students — one in Islamabad, one in Sialkot —
+            got tired of clothes that were "close enough."
+          </p>
+          <p>
+            So we started Sizr: heavyweight basics, made properly, priced honestly.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="idea-numeral" aria-hidden="true">01</div>
+  </section>
 
-  <!-- ===================== THE STORY ===================== -->
-  <section class="story container" id="story">
-    <div class="story-grid">
-      <div class="section-num">02</div>
-      <p>
-        We're two computer engineering students — one in Islamabad, one in Sialkot — who got tired of clothes that were "close enough." So we started Sizr: heavyweight basics, made properly, priced honestly.
-      </p>
+  <!-- ===================== 02 · WHAT WE MAKE ===================== -->
+  <section class="make" id="make">
+    <div class="container">
+      <p class="footnote"><em>02</em> — what we make</p>
+      <div class="make-pair">
+        <!-- PLACEHOLDER — flat-lay of heavyweight tee on raw linen -->
+        <div class="make-panel make-panel--flat plate plate--bone" role="img" aria-label="Placeholder for SIZR flat-lay — folded heavyweight tee on raw linen">
+          <img src="assets/sizr-logo.png" alt="SIZR tee graphic" />
+          <span class="plate-caption">flat-lay — heavy tee / 01</span>
+        </div>
+        <!-- PLACEHOLDER — lifestyle frame, worn against a raw wall -->
+        <div class="make-panel make-panel--life plate" role="img" aria-label="Placeholder for SIZR editorial — worn heavy tee, raw wall">
+          <span class="plate-caption">editorial — worn / 02</span>
+        </div>
+      </div>
+      <p class="make-cta"><a class="qlink" href="#drop">the pieces</a></p>
     </div>
   </section>
 
-  <div class="container"><hr class="rule" /></div>
-
-  <!-- ===================== THE OBSESSIONS ===================== -->
-  <section class="obsessions container" id="obsessions">
-    <ul class="obsessions-list">
-      <li>
-        <span class="obs-num">01</span>
-        <div class="obs-content">
-          <h3>Fabric that lasts.</h3>
-          <p>300–400 GSM heavyweight cotton, built to hold shape.</p>
-        </div>
-      </li>
-      <li>
-        <span class="obs-num">02</span>
-        <div class="obs-content">
-          <h3>Made in Sialkot.</h3>
-          <p>Manufactured directly where we're based — no middlemen.</p>
-        </div>
-      </li>
-      <li>
-        <span class="obs-num">03</span>
-        <div class="obs-content">
-          <h3>Numbered, not mass-made.</h3>
-          <p>Each drop is limited. Every piece is batch-numbered.</p>
-        </div>
-      </li>
-    </ul>
+  <!-- ===================== 03 · OBSESSIONS ===================== -->
+  <section class="obsessions" id="obsessions">
+    <div class="container">
+      <p class="footnote"><em>03</em> — obsessions</p>
+      <ul class="obs-list">
+        <li>
+          <span class="obs-num" aria-hidden="true">01</span>
+          <div>
+            <h3 class="obs-title">Fabric that lasts.</h3>
+            <p class="obs-fact">300–400 GSM heavyweight cotton, built to hold shape.</p>
+          </div>
+        </li>
+        <li>
+          <span class="obs-num" aria-hidden="true">02</span>
+          <div>
+            <h3 class="obs-title">Made in Sialkot.</h3>
+            <p class="obs-fact">Manufactured directly where we're based — no middlemen.</p>
+          </div>
+        </li>
+        <li>
+          <span class="obs-num" aria-hidden="true">03</span>
+          <div>
+            <h3 class="obs-title">Numbered, not mass-made.</h3>
+            <p class="obs-fact">Each drop is limited. Every piece is batch-numbered.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </section>
 
-  <div class="container"><hr class="rule" /></div>
-
-  <!-- ===================== DROP 01 ===================== -->
+  <!-- ===================== 04 · DROP 01 ===================== -->
   <section class="drop container" id="drop">
-    <div class="drop-grid">
+    <p class="footnote">04 — drop 01</p>
+    <!-- PLACEHOLDER — campaign image for drop 01 -->
+    <div class="drop-media plate plate--dark" role="img" aria-label="Placeholder for SIZR drop 01 campaign image">
+      <span class="big" aria-hidden="true">01</span>
+      <span class="plate-caption">campaign — drop 01</span>
+    </div>
+    <div class="drop-layout">
       <h2>Drop 01</h2>
-      <div class="drop-right">
+      <div>
         <p class="drop-copy">
           Heavyweight tees and hoodies. Bold graphics. Limited run.
+          Drop 01 sign-up is open.
         </p>
-        <p class="drop-status">Drop 01 — Sign-up open</p>
-        <button class="cta-primary" onclick="openWaitlist()" aria-haspopup="dialog">
-          Join the Waitlist →
-        </button>
+        <span class="drop-batch" aria-label="Edition one, batch one">edition 01 · batch 01</span>
+        <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
       </div>
     </div>
   </section>
 
-  <div class="container"><hr class="rule" /></div>
-
   <!-- ===================== FOOTER ===================== -->
-  <footer class="footer container" role="contentinfo">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">SIZR — Fit that gets you.</div>
-        <p class="footer-tagline">Est. 2025</p>
-      </div>
-      <div class="footer-col">
-        <h4>Fit</h4>
-        <ul>
-          <li><a href="#drop">Drop 01</a></li>
-          <li><a href="#story">The Story</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>World</h4>
-        <ul>
-          <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Journal</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:hello@sizr.shop">hello@sizr.shop</a></li>
-        </ul>
-        <div class="footer-form" style="margin-top: 20px;">
-          <label for="footerEmail">Join the waitlist</label>
-          <form class="footer-form" id="footerWaitlistForm" novalidate>
-            <div class="footer-form-row">
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/sizr-logo-dark.png" alt="SIZR" width="30" height="30" />
+          </div>
+          <p class="footer-line">
+            Heavyweight basics, made properly, priced honestly. Small runs. Numbered pieces.
+          </p>
+        </div>
+
+        <div class="footer-form">
+          <label class="qlink" for="footerEmail">join the drop</label>
+          <form id="footerWaitlistForm" novalidate>
+            <div class="form-row">
               <input
                 type="email"
                 id="footerEmail"
@@ -950,43 +917,47 @@
                 autocomplete="email"
                 required
               />
-              <button type="submit" class="form-submit">Sign Up</button>
+              <button type="submit" class="qlink">join</button>
             </div>
             <p class="form-msg" id="footerFormMsg" role="status" aria-live="polite"></p>
           </form>
         </div>
       </div>
-    </div>
 
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Sizr. All rights reserved.</p>
-      <div class="footer-social">
-        <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a>
-        <span class="at">— @getsizr</span>
+      <div class="footer-socials">
+        <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">@getsizr — instagram</a>
+        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">@getsizr — tiktok</a>
+        <a href="mailto:hello@sizr.shop">hello@sizr.shop</a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Sizr. All rights reserved.</span>
+        <span>Est. 2025 — Pakistan</span>
       </div>
     </div>
   </footer>
 
   <!-- ===================== WAITLIST OVERLAY ===================== -->
-  <div class="waitlist-overlay" id="waitlistOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Join the waitlist">
-    <div class="waitlist-panel">
-      <button class="waitlist-close" onclick="closeWaitlist()" aria-label="Close">&times;</button>
-      <h3>Join the list.</h3>
-      <p>Drop 01 is coming. Sign up for early access and updates.</p>
+  <div class="overlay" id="waitlistOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Join the waitlist">
+    <div class="overlay-panel">
+      <button class="overlay-close" onclick="closeWaitlist()" aria-label="Close waitlist dialog">close</button>
+      <h3>join the <em>list.</em></h3>
+      <p class="intro">Drop 01 is coming. Sign up for early access and updates.</p>
       <form class="waitlist-form" id="waitlistForm" novalidate>
-        <label for="waitlistEmail">Email address</label>
-        <input
-          type="email"
-          id="waitlistEmail"
-          name="email"
-          placeholder="you@email.com"
-          autocomplete="email"
-          required
-        />
-        <button type="submit" class="form-submit">Sign Up</button>
+        <div class="form-row">
+          <label class="qlink" for="waitlistEmail">email address</label>
+          <input
+            type="email"
+            id="waitlistEmail"
+            name="email"
+            placeholder="you@email.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <button type="submit" class="qlink">join</button>
+        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
       </form>
-      <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -994,58 +965,85 @@
   <script>
     /* =========================================================
        SIZR — Landing page interactions
+       No scroll-reveal. Only the hero animates.
        ========================================================= */
 
+    /* --- Mobile menu drawer -------------------------------- */
+    var drawer = document.getElementById('menuDrawer');
+    var menuBtn = document.querySelector('.nav-menu-btn');
+
+    function toggleMenu() {
+      var open = drawer.classList.toggle('is-open');
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        var f = drawer.querySelector('.drawer-close');
+        if (f) f.focus();
+      }
+    }
+
+    function closeMenu() {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
     /* --- Waitlist overlay ---------------------------------- */
-    function openWaitlist() {
-      var overlay = document.getElementById('waitlistOverlay');
+    var overlay = document.getElementById('waitlistOverlay');
+
+    function openWaitlist(e) {
+      if (e) e.preventDefault();
+      closeMenu();
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
-      document.getElementById('waitlistEmail').focus();
       document.body.style.overflow = 'hidden';
+      var input = document.getElementById('waitlistEmail');
+      if (input) input.focus();
     }
 
     function closeWaitlist() {
-      var overlay = document.getElementById('waitlistOverlay');
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && document.getElementById('waitlistOverlay').classList.contains('is-open')) {
-        closeWaitlist();
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (overlay.classList.contains('is-open')) closeWaitlist();
+        if (drawer.classList.contains('is-open')) closeMenu();
       }
     });
 
-    document.getElementById('waitlistOverlay').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeWaitlist();
-      }
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeWaitlist();
     });
 
-    /* --- Waitlist form validation (overlay) ---------------- */
-    (function () {
-      var form = document.getElementById('waitlistForm');
-      var input = document.getElementById('waitlistEmail');
-      var msg = document.getElementById('formMsg');
+    /* --- Email validation (shared) ------------------------- */
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    function bindForm(formId, inputId, msgId, label) {
+      var form = document.getElementById(formId);
+      var input = document.getElementById(inputId);
+      var msg = document.getElementById(msgId);
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var value = (input.value || '').trim();
 
         if (!value) {
-          setMsg('Please enter your email address.', 'error');
+          setMsg('Enter an email address to join.', 'err');
           input.focus();
           return;
         }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
-          setMsg('Please enter a valid email address.', 'error');
+        if (!emailRe.test(value)) {
+          setMsg("That email doesn't look right — try again.", 'err');
           input.focus();
           return;
         }
 
-        console.log('Waitlist signup:', value);
+        console.log(label + ' signup:', value);
         setMsg("You're on the list. We'll be in touch.", 'ok');
         input.value = '';
       });
@@ -1054,39 +1052,10 @@
         msg.textContent = text;
         msg.className = 'form-msg ' + (kind || '');
       }
-    })();
+    }
 
-    /* --- Footer form validation ---------------------------- */
-    (function () {
-      var form = document.getElementById('footerWaitlistForm');
-      var input = document.getElementById('footerEmail');
-      var msg = document.getElementById('footerFormMsg');
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var value = (input.value || '').trim();
-
-        if (!value) {
-          setMsg('Please enter your email address.', 'error');
-          input.focus();
-          return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
-          setMsg('Please enter a valid email address.', 'error');
-          input.focus();
-          return;
-        }
-
-        console.log('Waitlist signup:', value);
-        setMsg("You're on the list. We'll be in touch.", 'ok');
-        input.value = '';
-      });
-
-      function setMsg(text, kind) {
-        msg.textContent = text;
-        msg.className = 'form-msg ' + (kind || '');
-      }
-    })();
+    bindForm('waitlistForm', 'waitlistEmail', 'formMsg', 'Waitlist');
+    bindForm('footerWaitlistForm', 'footerEmail', 'footerFormMsg', 'Footer waitlist');
   </script>
 
 </body>
