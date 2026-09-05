@@ -1,1511 +1,1179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>SIZR — Fit that gets you.</title>
-  <meta name="description" content="SIZR — heavyweight basics, made properly, priced honestly. Limited, numbered, made in Sialkot, Pakistan." />
-  <meta name="theme-color" content="#0A0C0C" />
-  <link rel="icon" type="image/png" href="assets/sizr-logo.png" />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+  <meta name="description" content="SIZR — heavyweight basics, made properly, priced honestly.">
+  <meta name="theme-color" content="#0A0C0C">
+  <link rel="icon" href="assets/sizr-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================
-       STAGE 1 — Tokens / Reset / Base / Navigation
-       ========================================================= */
+    /* ============================================================
+       SIZR — single-file rebuild (new locked spec)
+       ============================================================ */
 
-    /* --- Design tokens --------------------------------------- */
+    /* ---------- 01 · Design tokens ---------- */
     :root {
-      --ink: #0A0C0C;
-      --bone: #F2EDE3;
-      --ember: #FF5A3D;
-      --graphite: #1C1E1E;
-      --mute-dark: rgba(242,237,227,.60);
-      --rule-dark: rgba(242,237,227,.12);
-      --rule-bone: rgba(10,12,12,.15);
+      /* palette */
+      --ink:        #0A0C0C;
+      --bone:       #F2EDE3;
+      --ember:      #FF5A3D;
+      --graphite:   #1C1E1E;
+      --mute-dark:  rgba(242,237,227,.60);   /* secondary text on ink   */
+      --mute-bone:  rgba(10,12,12,.55);      /* secondary text on bone  */
+      --rule-dark:  rgba(242,237,227,.14);   /* hairlines on ink        */
+      --rule-bone:  rgba(10,12,12,.14);      /* hairlines on bone       */
 
-      --font-display: 'Bodoni Moda', 'Times New Roman', serif;
-      --font-sans: 'Manrope', 'Helvetica Neue', sans-serif;
-      --font-mono: 'Space Grotesk', monospace;
+      /* type */
+      --font-display: 'Bodoni Moda', Georgia, serif;
+      --font-sans:    'Manrope', system-ui, sans-serif;
+      --font-mono:    'Space Grotesk', monospace;
 
-      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 16px; --sp-4: 24px;
-      --sp-5: 48px; --sp-6: 96px; --sp-7: 160px;
-      --maxw: 1240px;
+      /* spacing scale */
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 16px;
+      --sp-4: 24px;
+      --sp-5: 40px;
+      --sp-6: 64px;
+      --sp-7: 96px;
 
-      /* Extension tokens */
+      /* layout + z */
+      --maxw: 1280px;
+      --gutter: clamp(20px, 5vw, 40px);
       --z-nav: 10;
       --z-overlay: 20;
-      --mute-bone: #5A554C;                     /* secondary text on bone — 5.5:1+ */
-      --faint-dark: rgba(242,237,227,0.30);      /* captions on ink */
+
+      /* radius: 0–4px on panels/images; pill ONLY for the one CTA style */
+      --r-s: 2px;
+      --r-m: 4px;
     }
 
-    /* --- Reset & base ---------------------------------------- */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* ---------- 02 · Reset ---------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      scrollbar-gutter: stable;
+    }
 
     body {
       background: var(--ink);
       color: var(--bone);
       font-family: var(--font-sans);
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
     }
 
     a { color: inherit; text-decoration: none; }
 
     button {
-      font-family: inherit;
-      font-size: inherit;
+      font: inherit;
       color: inherit;
-      cursor: pointer;
-      border: none;
       background: none;
+      border: 0;
+      cursor: pointer;
     }
-
-    img { max-width: 100%; height: auto; display: block; }
 
     ::selection { background: var(--ember); color: var(--ink); }
 
     :focus-visible {
       outline: 2px solid var(--ember);
       outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    ul, ol { list-style: none; }
+
+    /* ---------- 03 · Utilities ---------- */
+    .container {
+      width: 100%;
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
     }
 
     .sr-only {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
+      width: 1px; height: 1px;
+      margin: -1px; padding: 0;
       overflow: hidden;
       clip: rect(0 0 0 0);
       white-space: nowrap;
       border: 0;
     }
 
-    /* --- Layout ---------------------------------------------- */
-    .container {
-      width: 100%;
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 0 24px;
+    /* ONE CTA style for the whole page: pill Ember button. Pills nowhere else. */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;               /* pill — reserved for this CTA only */
+      background: var(--ember);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      line-height: 1;
+      white-space: nowrap;
+      transition: background .2s ease, transform .2s ease;
     }
+    .btn:hover  { background: #ff7554; }
+    .btn:active { transform: translateY(1px); }
+    .btn:focus-visible { outline-color: var(--ink); outline-offset: 3px; }
 
-    /* --- Quiet text link — the only CTA style ---------------- */
-    .qlink {
-      display: inline;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 2px;
-      transition: border-color 0.2s ease, color 0.2s ease;
-      cursor: pointer;
-    }
-    .qlink:hover { border-color: var(--ember); color: var(--ember); }
-    .qlink:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 3px;
-    }
-
-    /* =========================================================
-       NAVIGATION
-       ========================================================= */
+    /* ---------- 04 · Navigation (frosted glass) ---------- */
     .nav {
       position: sticky;
       top: 0;
       z-index: var(--z-nav);
-      background: var(--ink);
+      background: rgba(10, 12, 12, .52);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      backdrop-filter: blur(16px) saturate(140%);
       border-bottom: 1px solid var(--rule-dark);
-      height: 64px;
+    }
+
+    .nav-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      height: 68px;
     }
 
     .nav-brand {
       display: inline-flex;
       align-items: center;
-      padding: 4px 0;
+      line-height: 0;
     }
     .nav-brand img { height: 26px; width: auto; }
 
-    /* Desktop links — hidden until 1024px */
     .nav-links {
-      display: none;
+      display: none;                  /* hidden below 1024px */
       align-items: center;
-      gap: 32px;
-      font-family: var(--font-mono);
+      gap: 28px;
+    }
+    .nav-link {
+      font-family: var(--font-sans);
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.02em;
+      letter-spacing: .02em;
+      color: var(--mute-dark);
+      transition: color .2s ease;
     }
-    .nav-links a { transition: color 0.2s ease; }
-    .nav-links a:hover { color: var(--ember); }
-    .nav-join { margin-left: 8px; }
+    .nav-link:hover { color: var(--bone); }
 
-    /* Mobile menu button — hidden on desktop */
+    .nav-cta { display: none; }       /* hidden below 1024px */
+
     .nav-menu-btn {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      font-family: var(--font-mono);
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--rule-dark);
+      border-radius: var(--r-m);
+      font-family: var(--font-sans);
       font-size: 13px;
-      letter-spacing: 0.02em;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: lowercase;
+      color: var(--bone);
+      transition: border-color .2s ease, color .2s ease;
     }
-    .nav-menu-btn .bar {
-      width: 16px;
-      height: 1px;
-      background: var(--bone);
-      display: inline-block;
-    }
+    .nav-menu-btn:hover { border-color: var(--mute-dark); }
 
-    /* --- Mobile drawer --------------------------------------- */
+    /* ---------- 05 · Mobile menu (full-screen drawer) ---------- */
     .drawer {
       position: fixed;
       inset: 0;
       z-index: var(--z-overlay);
       background: var(--ink);
-      transform: translateX(100%);
-      visibility: hidden;
-      transition:
-        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0s linear 0.28s;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 0 24px 40px;
+      padding-block: 20px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .3s ease, visibility .3s ease;
     }
-    .drawer.is-open {
-      transform: translateX(0);
-      visibility: visible;
-      transition:
-        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0s;
-    }
+    .drawer[aria-hidden="false"] { visibility: visible; opacity: 1; }
 
-    .drawer-top {
+    .drawer-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
-      border-bottom: 1px solid var(--rule-dark);
+      padding-inline: var(--gutter);
     }
-    .drawer-top img { height: 26px; width: auto; }
+    .drawer-head img { height: 24px; width: auto; }
+
     .drawer-close {
-      font-family: var(--font-mono);
+      padding: 8px 12px;
+      border: 1px solid var(--rule-dark);
+      border-radius: var(--r-m);
+      font-family: var(--font-sans);
       font-size: 13px;
-      letter-spacing: 0.02em;
+      font-weight: 500;
+      letter-spacing: .08em;
+      color: var(--bone);
     }
 
     .drawer-nav {
-      list-style: none;
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 48px;
+      justify-content: center;
+      gap: 8px;
+      padding-inline: var(--gutter);
     }
     .drawer-nav a {
+      display: block;
       font-family: var(--font-display);
-      font-size: clamp(34px, 9vw, 44px);
-      font-weight: 700;
+      font-size: clamp(40px, 12vw, 64px);
+      font-weight: 600;
       line-height: 1.1;
+      color: var(--bone);
+      padding-block: 8px;
     }
-    .drawer-nav .idx {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--mute-dark);
-      margin-right: 14px;
-      vertical-align: middle;
-    }
+    .drawer-nav a:hover { color: var(--ember); }
 
     .drawer-foot {
-      border-top: 1px solid var(--rule-dark);
-      padding-top: 24px;
+      padding: 24px var(--gutter) 8px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      font-family: var(--font-mono);
-      font-size: 13px;
+      gap: 20px;
+      align-items: flex-start;
     }
-    .drawer-foot .row { display: flex; gap: 24px; }
 
-    /* =========================================================
-       STAGE 2 — Hero
-       ========================================================= */
+    /* ---------- 06 · Hero ---------- */
     .hero {
       position: relative;
-      background: var(--ink);
+      display: flex;
+      align-items: flex-end;
+      min-height: 100svh;
+      min-height: 100vh;
+      padding-block: var(--sp-6);
+      padding-bottom: clamp(48px, 8vh, 80px);
       overflow: hidden;
-      padding: clamp(64px, 10vw, 120px) 0 clamp(56px, 8vw, 96px);
     }
 
-    /* Ghost numeral — design device, not a heading.
-       Spec: Bodoni Moda, ~120–260px, opacity ~0.08–0.12. */
-    .hero-ghost {
+    /* full-bleed image */
+    .hero-bg {
       position: absolute;
-      top: 10%;
-      right: -5%;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(140px, 18vw, 260px);
-      line-height: 1;
-      color: var(--bone);
-      opacity: 0.09;
-      pointer-events: none;
-      user-select: none;
+      inset: 0;
       z-index: 0;
     }
-
-    /* --- Grid ----------------------------------------------- */
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      align-items: start;
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-bg img.parallax {          /* oversized so scroll parallax never gaps */
+      height: 120%;
+      max-width: none;
+    }
+    /* dark scrim for text readability */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(10,12,12,.10) 0%,
+          rgba(10,12,12,.55) 55%,
+          rgba(10,12,12,.82) 100%);
     }
 
-    /* --- Type column ----------------------------------------- */
-    .hero-type {
+    .hero-copy {
       position: relative;
       z-index: 1;
+      max-width: 740px;
     }
 
     .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.02em;
-      color: var(--mute-dark);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .hero-eyebrow::before {
-      content: "";
+      display: inline-block;
       width: 8px;
       height: 8px;
+      border-radius: 50%;
       background: var(--ember);
-      flex-shrink: 0;
+      margin-bottom: var(--sp-4);
     }
 
-    .hero-title {
+    .hero-headline {
       font-family: var(--font-display);
+      font-size: clamp(42px, 10vw, 96px);
       font-weight: 900;
-      font-size: clamp(52px, 12vw, 128px);
-      line-height: 0.94;
-      letter-spacing: -0.02em;
-      margin-top: 16px;
-    }
-    .hero-title em {
-      font-style: italic;
-      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      color: var(--bone);
+      margin-bottom: var(--sp-3);
     }
 
     .hero-sub {
-      font-size: 17px;
-      line-height: 1.7;
+      font-size: clamp(15px, 2.2vw, 18px);
+      font-weight: 500;
       color: var(--mute-dark);
-      max-width: 42ch;
-      margin-top: 16px;
+      line-height: 1.5;
+      margin-bottom: var(--sp-5);
     }
 
-    .hero-cta {
-      display: inline-block;
-      margin-top: 24px;
-    }
-
-    /* --- Hero image ------------------------------------------ */
-    .hero-image {
-      position: relative;
-      z-index: 1;
-      aspect-ratio: 4 / 5;
-      background: var(--graphite);
-      margin: 0;
-      overflow: hidden; /* clips the parallax scale bleed */
-    }
-    .hero-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* --- Hero entrance — once, on load ----------------------- */
-    @keyframes hero-in {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero > .container > * {
+    /* hero entrance animation: fade + rise once on load */
+    .hero-copy {
       opacity: 0;
-      animation: hero-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transform: translateY(24px);
+      animation: heroIn 1s ease-out .3s forwards;
     }
-    .hero > .container > *:nth-child(1) { animation-delay: 0.06s; }
-    .hero > .container > *:nth-child(2) { animation-delay: 0.14s; }
+    @keyframes heroIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero > .container > * { opacity: 1; animation: none; }
+      .hero-copy { animation: none; opacity: 1; transform: none; }
     }
 
-    /* =========================================================
-       STAGE 3 — Sections (shared) + The Idea
-       ========================================================= */
+    /* ---------- 07 · Story ---------- */
+    .story {
+      background: var(--bone);
+      color: var(--ink);
+      padding-block: clamp(72px, 11vw, 128px);
+      border-bottom: 1px solid var(--rule-bone);
+    }
 
-    /* --- Shared section structure ----------------------------- */
-    .sec {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(72px, 10vw, 140px) 0;
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr;               /* stacks on mobile */
+      gap: clamp(32px, 6vw, 72px);
+      align-items: start;
     }
-    .sec-bone { background: var(--bone); color: var(--ink); }
 
-    /* Section header: "01" + "the idea" */
-    .sec-head {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: clamp(40px, 6vw, 72px);
-    }
-    .sec-nr {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(32px, 4vw, 44px);
-      line-height: 1;
-    }
-    .sec-label {
+    .story-kicker {
       font-family: var(--font-mono);
       font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      letter-spacing: .1em;
+      color: var(--mute-bone);
+      margin-bottom: var(--sp-3);
     }
 
-    /* Asymmetric editorial grid */
-    .sec-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      align-items: start;
-    }
-    .sec-title {
+    .story-copy {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(28px, 4.5vw, 48px);
-      line-height: 1.15;
-      letter-spacing: -0.01em;
+      font-size: clamp(21px, 3vw, 30px);
+      font-weight: 400;
+      line-height: 1.6;                          /* generous */
+      color: var(--ink);
+      max-width: 30em;
     }
-    .sec-body {
-      font-size: clamp(15px, 1.6vw, 17px);
-      line-height: 1.75;
+    .story-copy p + p { margin-top: 1em; }
+    .story-copy em { font-style: italic; }
+
+    /* right column: negative space + small spec-label motif */
+    .story-aside {
+      display: none;                             /* desktop only */
+    }
+    .spec-label {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px 16px;
+      border: 1px solid var(--rule-bone);
+      border-top: none;                          /* open top, like a tag */
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .16em;
       color: var(--mute-bone);
     }
-
-    /* Ghost numeral — shared positioning */
-    .ghost {
-      position: absolute;
+    .spec-label .spec-num {
       font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
+      font-size: 30px;
+      font-weight: 600;
       line-height: 1;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    /* --- The Idea specific ------------------------------------ */
-    .idea .ghost {
-      top: 15%;
-      right: -3%;
-      font-size: clamp(140px, 16vw, 260px);
       color: var(--ink);
-      opacity: 0.09;
+      letter-spacing: 0;
     }
 
-    .idea .sec-title {
-      border-top: 1px solid var(--rule-bone);
-      padding-top: 20px;
+    @media (min-width: 1024px) {
+      .story-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);   /* asymmetric 55/45 */
+      }
+      .story-aside {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: var(--sp-2);
+      }
     }
 
-    /* =========================================================
-       STAGE 4 — What We Make
-       ========================================================= */
-
-    /* Ink section background variant */
-    .sec-ink { background: var(--ink); color: var(--bone); }
-
-    /* Section header color per background */
-    .sec-ink .sec-label { color: var(--mute-dark); }
-    .sec-bone .sec-label { color: var(--mute-bone); }
-
-    .wwm .ghost {
-      top: 10%;
-      right: -3%;
-      font-size: clamp(140px, 16vw, 260px);
-      color: var(--ink);
-      opacity: 0.09;
-    }
-
-    /* --- Paired panels ---------------------------------------- */
-    .panel-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-    .panel {
-      position: relative;
-      margin: 0;
-      overflow: hidden;
-    }
-    .panel img {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    /* Placeholder letter — hidden once a real image loads */
-    .panel-letter {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-    .panel-bone {
-      background: var(--bone);
-      aspect-ratio: 4 / 5;
-      /* Delineates the flat-lay plate on the bone section */
-      box-shadow: inset 0 0 0 1px var(--rule-bone);
-    }
-    .panel-bone .panel-letter {
-      color: var(--ink);
-      opacity: 0.08;
-      font-size: clamp(120px, 14vw, 200px);
-    }
-    .panel-graphite {
-      background: var(--graphite);
-      aspect-ratio: 3 / 4;
-    }
-    .panel-graphite .panel-letter {
+    /* ---------- 08 · Product / feature ---------- */
+    .prod {
+      background: var(--ink);
       color: var(--bone);
-      opacity: 0.10;
-      font-size: clamp(120px, 14vw, 200px);
+      padding-block: clamp(72px, 11vw, 128px);
+      border-bottom: 1px solid var(--rule-dark);
     }
 
-    /* --- Centered link — the only centered element on the page */
-    .pieces-wrap {
-      margin-top: 40px;
-      text-align: center;
+    .prod-kicker {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: .1em;
+      color: var(--mute-dark);
+      margin-bottom: var(--sp-3);
     }
 
-    /* =========================================================
-       STAGE 5 — Obsessions
-       ========================================================= */
-
-    .obs .ghost {
-      top: 12%;
-      right: -4%;
-      font-size: clamp(140px, 16vw, 260px);
-      color: var(--ink);
-      opacity: 0.09;
+    .prod-headline {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 7vw, 72px);
+      font-weight: 900;
+      line-height: 1.03;
+      letter-spacing: -.02em;
+      color: var(--bone);
+      max-width: 16ch;
+      margin-bottom: clamp(40px, 6vw, 64px);
     }
 
-    /* Ruled numbered list — not cards */
+    /* three swappable product images */
+    .prod-media {
+      display: grid;
+      grid-template-columns: 1fr;                 /* stacks on mobile */
+      gap: var(--sp-3);
+      margin-bottom: clamp(48px, 7vw, 80px);
+    }
+
+    .prod-fig {
+      border: 1px solid var(--rule-dark);
+      border-radius: var(--r-m);
+      overflow: hidden;
+      background: var(--graphite);
+    }
+    .prod-fig img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .prod-fig:hover img { transform: scale(1.025); }
+
+    .prod-cap {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--mute-dark);
+      border-top: 1px solid var(--rule-dark);
+    }
+
+    /* ruled list — the three obsessions (not cards) */
     .obs-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      border-bottom: 1px solid var(--rule-dark);
     }
     .obs-row {
       display: grid;
-      grid-template-columns: 40px minmax(0, 1fr);
-      column-gap: 16px;
+      grid-template-columns: auto 1fr;
+      gap: 12px 20px;
       align-items: baseline;
-      padding: 24px 0;
-      border-top: 1px solid var(--rule-bone);
+      border-top: 1px solid var(--rule-dark);
+      padding-block: clamp(18px, 2.6vw, 26px);
     }
-    .obs-row:last-child { border-bottom: 1px solid var(--rule-bone); }
-
     .obs-num {
       font-family: var(--font-mono);
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      line-height: 1.4;
-      color: var(--mute-bone);
+      font-size: 13px;
+      letter-spacing: .08em;
+      color: var(--mute-dark);
     }
-    /* Single ember accent — the flagship obsession. Ember is held at
-       one per viewport by the design system, so only the lead numeral
-       wears the accent. */
-    .obs-row:first-child .obs-num { color: var(--ember); }
-
-    .obs-name {
+    .obs-body .obs-name {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(22px, 2.6vw, 32px);
-      line-height: 1.2;
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -.01em;
+    }
+    .obs-body .obs-desc {
+      margin-top: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--mute-dark);
+      max-width: 42ch;
     }
 
-    .obs-fact {
-      grid-column: 2;
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.65;
-      color: var(--mute-bone);
-      margin-top: 8px;
+    @media (min-width: 768px) {
+      .prod-media { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
     }
 
-    /* =========================================================
-       STAGE 6 — Drop 01
-       ========================================================= */
+    /* ---------- 09 · Drop 01 (the main event) ---------- */
+    .drop {
+      background: var(--bone);
+      color: var(--ink);
+      padding-block: clamp(80px, 12vw, 144px);
+      border-bottom: 1px solid var(--rule-bone);
+    }
 
-    .drop .ghost {
-      top: 10%;
-      right: -4%;
-      font-size: clamp(140px, 16vw, 260px);
-      color: var(--bone);
-      opacity: 0.09;
+    .drop-headline {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 15vw, 172px);
+      font-weight: 900;
+      line-height: .92;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      margin-bottom: clamp(32px, 5vw, 56px);
     }
 
     .drop-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      align-items: start;
+      grid-template-columns: 1fr;             /* stacks on mobile */
+      gap: var(--sp-5);
+      align-items: center;
     }
 
-    .drop-title {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(48px, 9vw, 88px);
-      line-height: 0.96;
-      letter-spacing: -0.02em;
-    }
-    .drop-title em { font-style: italic; font-weight: 400; }
-
-    .drop-copy {
-      max-width: 40ch;
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--mute-dark);
-      margin-top: 16px;
-    }
-
-    /* Status band — a statement, not a countdown */
-    .drop-status {
-      margin-top: 40px;
-      border-top: 1px solid var(--rule-dark);
-      border-bottom: 1px solid var(--rule-dark);
-      padding: 14px 0;
+    .drop-info {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-4);
+    }
+
+    .drop-status {
+      display: inline-flex;
       align-items: center;
       gap: 10px;
       font-family: var(--font-mono);
       font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--mute-dark);
+      letter-spacing: .06em;
+      color: var(--mute-bone);
+      border-top: 1px solid var(--rule-bone);
+      padding-top: var(--sp-3);
+      width: 100%;
     }
     .drop-status::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--ember);
-      flex-shrink: 0;
-    }
-
-    .drop-cta {
-      display: inline-block;
-      margin-top: 24px;
-    }
-
-    /* Parallax image plate — GSAP target wired in Stage 8 */
-    .drop-img {
-      position: relative;
-      margin: 0;
-      aspect-ratio: 4 / 5;
-      background: var(--graphite);
-      box-shadow: inset 0 0 0 1px var(--rule-dark);
-      overflow: hidden;
-    }
-    .drop-img img {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .drop-letter {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(120px, 14vw, 200px);
-      line-height: 1;
-      color: var(--bone);
-      opacity: 0.10;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    /* =========================================================
-       STAGE 7 — Footer & Waitlist overlay
-       ========================================================= */
-
-    /* --- Footer ---------------------------------------------- */
-    .footer {
-      background: var(--ink);
-      color: var(--bone);
-      border-top: 1px solid var(--rule-dark);
-      padding: clamp(64px, 9vw, 120px) 0 48px;
-    }
-
-    .footer-word {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(40px, 7vw, 72px);
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-    .footer-word em {
-      font-style: italic;
-      font-weight: 400;
-    }
-
-    .footer-est {
-      margin-top: 12px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.02em;
-      color: var(--mute-dark);
-    }
-
-    .footer-cols {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      margin-top: clamp(48px, 8vw, 80px);
-      padding-top: 32px;
-      border-top: 1px solid var(--rule-dark);
-    }
-    .foot-head {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--mute-dark);
-      margin-bottom: 14px;
-    }
-    .foot-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .foot-col a {
-      font-size: 15px;
-      color: var(--mute-dark);
-      transition: color 0.2s ease;
-    }
-    .foot-col a:hover { color: var(--ember); }
-
-    /* Footer inline email — quiet hairline field + text link */
-    .foot-join {
-      margin-top: 40px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      border-bottom: 1px solid var(--rule-dark);
-      padding-bottom: 12px;
-    }
-    .foot-join input {
-      flex: 1;
-      min-width: 0;
-      background: none;
-      border: none;
-      font-family: var(--font-mono);
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      color: var(--bone);
-    }
-    .foot-join input::placeholder { color: var(--faint-dark); }
-    .foot-join input:focus-visible {
-      outline: 2px solid var(--ember);
-      outline-offset: 3px;
-    }
-    .foot-join-btn { flex-shrink: 0; }
-
-    .foot-err {
-      margin-top: 10px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      color: var(--ember);
-    }
-
-    .foot-base {
-      margin-top: clamp(40px, 7vw, 64px);
-      padding-top: 24px;
-      border-top: 1px solid var(--rule-dark);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      color: var(--mute-dark);
-    }
-    .foot-social a { color: var(--bone); }
-    .foot-social a:hover { color: var(--ember); }
-
-    /* --- Waitlist overlay ------------------------------------ */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: calc(var(--z-overlay) + 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(10, 12, 12, 0.72);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s ease, visibility 0s linear 0.25s;
-    }
-    .overlay.is-open {
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.25s ease, visibility 0s;
-    }
-
-    .overlay-panel {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      background: var(--ink);
-      border: 1px solid var(--rule-dark);
-      padding: clamp(28px, 5vw, 40px);
-    }
-    .overlay-x {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.02em;
-      color: var(--mute-dark);
-    }
-    .overlay-x:hover { color: var(--ember); }
-
-    .overlay-kicker {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--mute-dark);
-    }
-    .overlay-title {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(30px, 6vw, 40px);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      margin-top: 12px;
-    }
-    .overlay-copy {
-      margin-top: 14px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--mute-dark);
-    }
-
-    .waitlist-form {
-      margin-top: 24px;
-      display: flex;
-      align-items: flex-end;
-      gap: 16px;
-      border-bottom: 1px solid var(--rule-dark);
-      padding-bottom: 12px;
-    }
-    .waitlist-form input {
-      flex: 1;
-      min-width: 0;
-      background: none;
-      border: none;
-      font-family: var(--font-mono);
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      color: var(--bone);
-    }
-    .waitlist-form input::placeholder { color: var(--faint-dark); }
-    .waitlist-cta { flex-shrink: 0; }
-
-    .waitlist-err {
-      margin-top: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      color: var(--ember);
-    }
-
-    .overlay-note {
-      margin-top: 16px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      color: var(--faint-dark);
-    }
-
-    /* =========================================================
-       STAGE 8 — Custom cursor & parallax groundwork
-       ========================================================= */
-
-    /* Parallax targets — image is scaled up 1.14 so the 12%
-       travel never reveals an edge; prefetch transform buffer */
-    .hero-image img,
-    .drop-img img { will-change: transform; }
-
-    /* Custom cursor — small dot that expands over links */
-    .cursor {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 8px;
-      height: 8px;
-      margin: -4px 0 0 -4px;
+      content: '';
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--bone);
-      opacity: 0;
-      pointer-events: none;
-      z-index: calc(var(--z-overlay) + 2);
-      transform: translate3d(-100px, -100px, 0);
-      transition:
-        width 0.25s ease,
-        height 0.25s ease,
-        margin 0.25s ease,
-        background-color 0.25s ease,
-        opacity 0.2s ease;
-    }
-    .cursor.is-on { opacity: 0.9; }
-    .cursor.is-link {
-      width: 32px;
-      height: 32px;
-      margin: -16px 0 0 -16px;
       background: var(--ember);
-      opacity: 0.18;
+      flex: none;
     }
-    /* Never on touch / hybrid input; never under reduced motion */
-    @media (hover: none), (pointer: coarse) { .cursor { display: none; } }
-    @media (prefers-reduced-motion: reduce) { .cursor { display: none; } }
 
-    /* =========================================================
-       BREAKPOINTS — mobile-first
-       ========================================================= */
-    @media (min-width: 768px) {
-      .container { padding: 0 40px; }
-      .hero-title { font-size: clamp(72px, 10vw, 120px); }
-      .hero-ghost { font-size: clamp(180px, 20vw, 260px); }
-      /* What We Make — paired panels side by side */
-      .panel-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 24px;
-      }
-      .panel-graphite { margin-top: 64px; }
-      /* Footer — three columns, base row spread */
-      .footer-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .foot-base {
-        flex-direction: row;
-        justify-content: space-between;
-      }
+    .drop-fig--frame {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 1px solid var(--rule-bone);
+      border-radius: var(--r-m);
+    }
+    .drop-fig--frame img {
+      display: block;
+      width: 100%;
+      height: 120%;                    /* oversized for scroll parallax */
+      max-width: none;
+      object-fit: cover;
     }
 
     @media (min-width: 1024px) {
-      .container { padding: 0 56px; }
-      .nav-links { display: flex; }
-      .nav-menu-btn { display: none; }
-      /* Hero — asymmetric 55/45 split */
-      .hero-grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        column-gap: 64px;
-        align-items: start;
-      }
-      .hero-image { grid-column: 2; grid-row: 1; }
-      .hero-type  { grid-column: 1; grid-row: 1; }
-      .hero-meta  { grid-column: 1 / -1; }
-      .hero-ghost { top: -5%; right: -2%; font-size: clamp(200px, 18vw, 260px); }
-      /* Shared section grid — asymmetric 55/45 */
-      .sec-grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        column-gap: 64px;
-        align-items: start;
-      }
-      /* Obsessions — numeral + name left, fact on the right column */
-      .obs-row {
-        grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 0.9fr);
-        column-gap: 24px;
-        padding: 32px 0;
-      }
-      .obs-fact { grid-column: 3; margin-top: 0; }
-      /* Drop 01 — type left, parallax image right */
       .drop-grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        column-gap: 64px;
-        align-items: start;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sp-6);
       }
-      .drop-img  { grid-column: 2; grid-row: 1; }
-      .drop-type { grid-column: 1; grid-row: 1; }
     }
 
-    /* --- Reduced motion -------------------------------------- */
+    /* ---------- 10 · Footer (Essentials-style) ---------- */
+    .footer {
+      background: var(--ink);
+      color: var(--bone);
+      padding-block: clamp(64px, 10vw, 120px) clamp(32px, 5vw, 48px);
+    }
+
+    .foot-wordmark {
+      display: block;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(64px, 19vw, 200px);
+      font-weight: 900;
+      line-height: .9;
+      letter-spacing: .01em;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+    .foot-wordmark:hover { color: var(--ember); }
+
+    .foot-mid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+      margin-top: clamp(40px, 7vw, 80px);
+      align-items: end;
+    }
+
+    .foot-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px var(--sp-3);
+      align-items: center;
+      justify-content: center;
+    }
+    .foot-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mute-dark);
+      transition: color .2s ease;
+    }
+    .foot-link:hover { color: var(--bone); }
+    .foot-sep { color: var(--mute-dark); }
+
+    .foot-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: min(100%, 400px);
+      margin-inline: auto;
+    }
+    .foot-input {
+      flex: 1 1 220px;
+      padding: 12px 16px;
+      background: transparent;
+      border: 1px solid var(--rule-dark);
+      border-bottom-color: var(--mute-dark);
+      border-radius: var(--r-s);
+      color: var(--bone);
+      font: 14px/1 var(--font-sans);
+    }
+    .foot-input::placeholder { color: var(--mute-dark); }
+    .foot-input:focus {
+      outline: none;
+      border-color: var(--bone);
+    }
+
+    .foot-form .field-msg { flex-basis: 100%; text-align: center; }
+
+    .foot-note {
+      margin-top: clamp(40px, 6vw, 64px);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .06em;
+      color: var(--mute-dark);
+    }
+
+    /* ---------- 11 · Waitlist dialog ---------- */
+    .dialog {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-overlay);
+      display: grid;
+      place-items: center;
+      padding: var(--gutter);
+    }
+    .dialog[hidden] { display: none; }
+
+    .dialog-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 12, 12, .68);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-panel {
+      position: relative;
+      width: min(100%, 440px);
+      background: var(--bone);
+      color: var(--ink);
+      border-radius: var(--r-m);
+      border: 1px solid var(--rule-bone);
+      padding: clamp(24px, 5vw, 36px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+    }
+
+    .dialog-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .06em;
+      color: var(--mute-bone);
+    }
+    .dialog-close:hover { color: var(--ink); }
+
+    .dialog-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -.01em;
+    }
+    .dialog-sub {
+      margin-top: var(--sp-2);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--mute-bone);
+    }
+
+    .dialog-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      margin-top: var(--sp-4);
+    }
+    .dialog-input {
+      padding: 13px 16px;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--rule-bone);
+      color: var(--ink);
+      font: 15px/1 var(--font-sans);
+      width: 100%;
+    }
+    .dialog-input:focus { outline: none; border-bottom-color: var(--ink); }
+    .dialog-input::placeholder { color: var(--mute-bone); }
+
+    .field-msg {
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--ember);
+    }
+    .field-msg[hidden] { display: none; }
+
+    .dialog-done {
+      margin-top: var(--sp-4);
+    }
+    .dialog-done-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .dialog-go { align-self: flex-start; }
+
+    /* ---------- 12 · Reduced motion ---------- */
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .drawer { transition: none; }
-      .overlay { transition: none; }
-      .qlink { transition: none; }
+      .btn, .foot-link, .prod-fig img { transition: none; }
+    }
+
+    /* ---------- 13 · Responsive (mobile-first, grows up) ---------- */
+    @media (min-width: 768px) {
+      .nav-row { height: 72px; }
+    }
+
+    @media (min-width: 1024px) {
+      .nav-links  { display: flex; }
+      .nav-cta    { display: inline-flex; }
+      .nav-menu-btn { display: none; }
     }
   </style>
 </head>
-<body>
+<body id="top">
 
-  <!-- ===================== NAVIGATION ===================== -->
-  <nav class="nav container" role="navigation" aria-label="Main">
-    <a class="nav-brand" href="#top" aria-label="SIZR home">
-      <img src="assets/sizr-logo.png" alt="SIZR" width="26" height="26" />
-    </a>
-    <div class="nav-links">
-      <a href="#idea">the idea</a>
-      <a href="#what">what we make</a>
-      <a href="#drop">drops</a>
-      <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">instagram</a>
-      <a class="nav-join qlink" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
+  <!-- ============================================================
+       NAV
+       ============================================================ -->
+  <nav class="nav" aria-label="Primary">
+    <div class="container nav-row">
+      <a class="nav-brand" href="#top" aria-label="SIZR home">
+        <img src="assets/sizr-logo.png" alt="SIZR" width="220" height="44">
+      </a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="#drop">Drop</a>
+        <a class="nav-link" href="#footer">World</a>
+      </div>
+
+      <button class="btn nav-cta" type="button" data-waitlist>Join the Drop.</button>
+
+      <button class="nav-menu-btn" type="button"
+              aria-haspopup="true" aria-controls="drawer" aria-expanded="false">
+        Menu
+      </button>
     </div>
-    <button class="nav-menu-btn" aria-haspopup="true" aria-controls="menuDrawer" aria-expanded="false">
-      <span class="bar" aria-hidden="true"></span>
-      menu
-    </button>
   </nav>
 
   <!-- Mobile drawer -->
-  <div class="drawer" id="menuDrawer" aria-hidden="true">
-    <div class="drawer-top">
-      <img src="assets/sizr-logo.png" alt="SIZR" width="26" height="26" />
-      <button class="drawer-close" aria-label="Close menu">close</button>
+  <div class="drawer" id="drawer" role="presentation" aria-hidden="true">
+    <div class="drawer-head">
+      <img src="assets/sizr-logo.png" alt="SIZR" width="200" height="40">
+      <button class="drawer-close" type="button" data-close-drawer>Close</button>
     </div>
-    <nav aria-label="Menu">
-      <ul class="drawer-nav">
-        <li><a href="#idea"><span class="idx">01</span>the idea</a></li>
-        <li><a href="#what"><span class="idx">02</span>what we make</a></li>
-        <li><a href="#obsessions"><span class="idx">03</span>obsessions</a></li>
-        <li><a href="#drop"><span class="idx">04</span>drop 01</a></li>
-        <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener"><span class="idx">05</span>instagram</a></li>
-      </ul>
+
+    <nav class="drawer-nav" aria-label="Menu">
+      <a href="#drop" data-close-drawer>Drop</a>
+      <a href="#footer" data-close-drawer>World</a>
     </nav>
+
     <div class="drawer-foot">
-      <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
-      <div class="row">
-        <a href="mailto:hello@sizr.shop">hello@sizr.shop</a>
-        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">tiktok</a>
-      </div>
+      <button class="btn" type="button" data-waitlist data-close-drawer>Join the Drop.</button>
+      <a class="nav-link" href="mailto:hello@sizr.shop" data-close-drawer>hello@sizr.shop</a>
     </div>
   </div>
 
-  <!-- ===================== HERO ===================== -->
-  <header class="hero" id="top">
-    <span class="hero-ghost" aria-hidden="true">01</span>
-    <div class="container">
-      <div class="hero-grid">
-        <figure class="hero-image">
-          <img
-            src="assets/hero.jpg"
-            alt="SIZR heavyweight cotton tee, flat-lay photography on dark background"
-            width="600"
-            height="750"
-            onerror="this.remove()"
-          />
-        </figure>
-        <div class="hero-type">
-          <p class="hero-eyebrow">Drop 01 — heavyweight basics</p>
-          <h1 class="hero-title">Fit that <em>gets you.</em></h1>
-          <p class="hero-sub">Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes.</p>
-          <a class="qlink hero-cta" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
+  <!-- ============================================================
+       MAIN — sections added per stage
+       ============================================================ -->
+  <main>
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <header class="hero" id="hero" role="banner">
+      <div class="hero-bg">
+        <img class="parallax" src="assets/hero.jpg" alt="White oversized tee on neutral background" width="1200" height="1200" loading="eager" fetchpriority="high">
+      </div>
+      <div class="container hero-copy">
+        <span class="hero-eyebrow" aria-hidden="true"></span>
+        <h1 class="hero-headline">Fit that gets you.</h1>
+        <p class="hero-sub">Heavyweight basics, made properly, priced honestly.</p>
+        <button class="btn" type="button" data-waitlist>Join the Drop.</button>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         STORY
+         ============================================================ -->
+    <section class="story" id="story" aria-label="Our story">
+      <div class="container story-grid">
+        <div class="story-left">
+          <p class="story-kicker">the story</p>
+          <div class="story-copy">
+            <p>We're two computer engineering students — one in Islamabad, one in Sialkot — who got tired of clothes that were <em>'close enough.'</em></p>
+            <p>So we started Sizr: heavyweight basics, made properly, priced honestly.</p>
+          </div>
+        </div>
+        <aside class="story-aside" aria-hidden="true">
+          <div class="spec-label">
+            <span>SIZR</span>
+            <span class="spec-num">01</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRODUCT / FEATURE
+         ============================================================ -->
+    <section class="prod" id="product" aria-label="What we make">
+      <div class="container">
+        <p class="prod-kicker">what we make</p>
+        <h2 class="prod-headline">Heavyweight basics.</h2>
+
+        <div class="prod-media">
+          <figure class="prod-fig">
+            <img src="assets/tee-flatlay.jpg" alt="Folded garment laid flat" width="1000" height="667" loading="lazy">
+            <figcaption class="prod-cap">
+              <span>folded flat lay</span>
+              <span>01</span>
+            </figcaption>
+          </figure>
+          <figure class="prod-fig">
+            <img src="assets/hang-tag.jpg" alt="Garment hang tag and spec-label detail" width="800" height="534" loading="lazy">
+            <figcaption class="prod-cap">
+              <span>hang-tag detail</span>
+              <span>02</span>
+            </figcaption>
+          </figure>
+          <figure class="prod-fig">
+            <img src="assets/fabric-texture.jpg" alt="Close-up of heavyweight fabric texture" width="800" height="601" loading="lazy">
+            <figcaption class="prod-cap">
+              <span>fabric</span>
+              <span>03</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <ol class="obs-list">
+          <li class="obs-row">
+            <span class="obs-num">01</span>
+            <div class="obs-body">
+              <h3 class="obs-name">Fabric that lasts</h3>
+              <p class="obs-desc">Heavyweight cloth that earns its weight, not a thin-back offering.</p>
+            </div>
+          </li>
+          <li class="obs-row">
+            <span class="obs-num">02</span>
+            <div class="obs-body">
+              <h3 class="obs-name">Made in Sialkot</h3>
+              <p class="obs-desc">Made where we say it is, by people who are paid properly.</p>
+            </div>
+          </li>
+          <li class="obs-row">
+            <span class="obs-num">03</span>
+            <div class="obs-body">
+              <h3 class="obs-name">Numbered, not mass-made</h3>
+              <p class="obs-desc">Every piece carries its own number.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DROP 01
+         ============================================================ -->
+    <section class="drop" id="drop" aria-label="Drop 01 — sign-up open">
+      <div class="container">
+        <h2 class="drop-headline">Drop 01</h2>
+        <div class="drop-grid">
+          <div class="drop-info">
+            <p class="drop-status">Drop 01 — sign-up open</p>
+            <button class="btn" type="button" data-waitlist>Join the Drop.</button>
+          </div>
+          <figure class="drop-fig">
+            <div class="drop-fig--frame">
+              <img class="parallax" src="assets/drop.jpg" alt="Drop 01 product — dark, moody outerwear shot" width="1200" height="1600" loading="lazy">
+            </div>
+          </figure>
         </div>
       </div>
-      <dl class="hero-meta">
-        <div><dt>est.</dt><dd>2025 — Pakistan</dd></div>
-        <div><dt>drop 01</dt><dd>numbered, limited</dd></div>
-        <div><dt>made in</dt><dd>Sialkot</dd></div>
-      </dl>
-    </div>
-  </header>
+    </section>
+  </main>
 
-  <!-- ===================== 01 · THE IDEA ===================== -->
-  <section class="sec sec-bone idea" id="idea" aria-labelledby="idea-title">
-    <span class="ghost" aria-hidden="true">01</span>
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" id="footer">
     <div class="container">
-      <div class="sec-head">
-        <span class="sec-nr" aria-hidden="true">01</span>
-        <span class="sec-label">the idea</span>
-      </div>
-      <div class="sec-grid">
-        <h2 class="sec-title" id="idea-title">
-          We're two computer engineering students — one in Islamabad, one in
-          Sialkot — who got tired of clothes that were “close enough.”
-        </h2>
-        <p class="sec-body">
-          So we started Sizr: heavyweight basics, made properly, priced honestly.
-        </p>
-      </div>
-    </div>
-  </section>
+      <a class="foot-wordmark" href="#top" aria-label="SIZR — back to top">SIZR</a>
+      <div class="foot-mid">
+        <ul class="foot-links">
+          <li><a class="foot-link" href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a></li>
+          <li class="foot-sep" aria-hidden="true">/</li>
+          <li><a class="foot-link" href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a></li>
+          <li class="foot-sep" aria-hidden="true">/</li>
+          <li><a class="foot-link" href="mailto:hello@sizr.shop">hello@sizr.shop</a></li>
+        </ul>
 
-  <!-- ===================== 02 · WHAT WE MAKE ===================== -->
-  <section class="sec sec-bone wwm" id="what" aria-labelledby="what-title">
-    <span class="ghost" aria-hidden="true">02</span>
-    <div class="container">
-      <div class="sec-head">
-        <span class="sec-nr" aria-hidden="true">02</span>
-        <h2 class="sec-label" id="what-title">what we make</h2>
+        <form class="foot-form" id="footForm" novalidate>
+          <label class="sr-only" for="footEmail">Email address</label>
+          <input class="foot-input" id="footEmail" name="email" type="email" autocomplete="email" placeholder="you@email.com" required>
+          <p class="field-msg" id="footMsg" role="status" hidden></p>
+          <button class="btn" type="submit">Join.</button>
+        </form>
       </div>
-      <div class="panel-grid">
-        <figure class="panel panel-bone">
-          <span class="panel-letter" aria-hidden="true">T</span>
-          <img
-            src="assets/tee-flatlay.jpg"
-            alt="SIZR heavyweight cotton tee, flat-lay on a light background"
-            width="640"
-            height="800"
-            onerror="this.remove()"
-          />
-        </figure>
-        <figure class="panel panel-graphite">
-          <span class="panel-letter" aria-hidden="true">H</span>
-          <img
-            src="assets/moody-frame.jpg"
-            alt="SIZR heavyweight hoodie, moody lifestyle frame on a dark background"
-            width="600"
-            height="800"
-            onerror="this.remove()"
-          />
-        </figure>
-      </div>
-      <p class="pieces-wrap">
-        <a class="qlink" href="#drop">the pieces</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- ===================== 03 · OBSESSIONS ===================== -->
-  <section class="sec sec-bone obs" id="obsessions" aria-labelledby="obs-title">
-    <span class="ghost" aria-hidden="true">03</span>
-    <div class="container">
-      <div class="sec-head">
-        <span class="sec-nr" aria-hidden="true">03</span>
-        <h2 class="sec-label" id="obs-title">obsessions</h2>
-      </div>
-      <ol class="obs-list">
-        <li class="obs-row">
-          <span class="obs-num" aria-hidden="true">01</span>
-          <h3 class="obs-name">Fabric that lasts</h3>
-          <p class="obs-fact">300–400 GSM heavyweight cotton, built to hold shape.</p>
-        </li>
-        <li class="obs-row">
-          <span class="obs-num" aria-hidden="true">02</span>
-          <h3 class="obs-name">Made in Sialkot</h3>
-          <p class="obs-fact">Manufactured directly where we're based — no middlemen.</p>
-        </li>
-        <li class="obs-row">
-          <span class="obs-num" aria-hidden="true">03</span>
-          <h3 class="obs-name">Numbered, not mass-made</h3>
-          <p class="obs-fact">Each drop is limited. Every piece is batch-numbered.</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ===================== 04 · DROP 01 ===================== -->
-  <section class="sec sec-ink drop" id="drop" aria-labelledby="drop-title">
-    <span class="ghost" aria-hidden="true">04</span>
-    <div class="container">
-      <div class="sec-head">
-        <span class="sec-nr" aria-hidden="true">04</span>
-        <span class="sec-label">drop 01</span>
-      </div>
-      <div class="drop-grid">
-        <div class="drop-type">
-          <h2 class="drop-title" id="drop-title">Drop <em>01</em></h2>
-          <p class="drop-copy">Heavyweight tees and hoodies. Bold graphics. Limited run.</p>
-          <p class="drop-status">Drop 01 — sign-up open</p>
-          <a class="qlink drop-cta" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
-        </div>
-        <figure class="drop-img">
-          <span class="drop-letter" aria-hidden="true">D</span>
-          <img
-            src="assets/drop.jpg"
-            alt="SIZR Drop 01 — heavyweight tee and hoodie, dark product shot"
-            width="640"
-            height="800"
-            onerror="this.remove()"
-          />
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== FOOTER ===================== -->
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-word">SIZR — Fit that <em>gets you.</em></p>
-      <p class="footer-est">Est. 2025 — Pakistan</p>
-
-      <nav class="footer-cols" aria-label="Footer">
-        <div class="foot-col">
-          <h3 class="foot-head">Fit</h3>
-          <ul>
-            <li><a href="#drop">Drop 01</a></li>
-            <li><a href="#idea">The Idea</a></li>
-          </ul>
-        </div>
-        <div class="foot-col">
-          <h3 class="foot-head">World</h3>
-          <ul>
-            <li><a href="#top">Journal</a></li>
-          </ul>
-        </div>
-        <div class="foot-col">
-          <h3 class="foot-head">Contact</h3>
-          <ul>
-            <li><a href="mailto:hello@sizr.shop">hello@sizr.shop</a></li>
-          </ul>
-        </div>
-      </nav>
-
-      <form class="foot-join" id="footerJoin" novalidate>
-        <label class="sr-only" for="footerEmail">Email</label>
-        <input
-          id="footerEmail"
-          name="email"
-          type="email"
-          placeholder="your@email.com"
-          autocomplete="email"
-          required
-        />
-        <button type="submit" class="qlink foot-join-btn">join</button>
-        <p class="foot-err sr-only" id="footerErr" role="alert"></p>
-      </form>
-
-      <div class="foot-base">
-        <p>© 2026 Sizr. All rights reserved.</p>
-        <p class="foot-social">
-          <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a> ·
-          <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a> —
-          <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">@getsizr</a>
-        </p>
-      </div>
+      <p class="foot-note">© 2026 Sizr. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ===================== WAITLIST OVERLAY ===================== -->
-  <div
-    class="overlay"
-    id="waitlist"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="waitlist-title"
-    aria-hidden="true"
-  >
-    <div class="overlay-panel">
-      <button class="overlay-x" data-close aria-label="Close">close</button>
-      <p class="overlay-kicker">drop 01</p>
-      <h2 class="overlay-title" id="waitlist-title">Join the drop.</h2>
-      <p class="overlay-copy">First access when Drop 01 goes live — no spam, just the drop.</p>
-      <form class="waitlist-form" id="waitlistForm" novalidate>
-        <label class="sr-only" for="waitlistEmail">Email</label>
-        <input
-          id="waitlistEmail"
-          name="email"
-          type="email"
-          placeholder="your@email.com"
-          autocomplete="email"
-          required
-        />
-        <button type="submit" class="qlink waitlist-cta">join the drop</button>
-        <p class="waitlist-err sr-only" id="waitlistErr" role="alert"></p>
+  <!-- ============================================================
+       WAITLIST DIALOG
+       ============================================================ -->
+  <div class="dialog" id="waitlistDialog" role="dialog" aria-modal="true" aria-labelledby="waitlistTitle" hidden>
+    <div class="dialog-backdrop" data-dialog-close></div>
+    <div class="dialog-panel">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close dialog">Close</button>
+      <h3 class="dialog-title" id="waitlistTitle">Join the Drop.</h3>
+      <p class="dialog-sub">Sign-up is open for Drop 01. First access, heavyweight basics.</p>
+
+      <form class="dialog-form" id="waitlistForm" novalidate>
+        <div class="field">
+          <label class="sr-only" for="wl-mail">Email address</label>
+          <input class="dialog-input" id="wl-mail" name="email" type="email" autocomplete="email" placeholder="you@email.com" required>
+        </div>
+        <p class="field-msg" id="wl-msg" role="alert" hidden></p>
+        <button class="btn dialog-go" type="submit">Join the Drop.</button>
       </form>
-      <p class="overlay-note">No spam. Just the drop.</p>
+
+      <div class="dialog-done" id="dialogDone" hidden>
+        <p class="dialog-done-title">You're on the list.</p>
+        <p class="dialog-sub">Drop 01 — we'll email when it's your turn.</p>
+      </div>
     </div>
   </div>
 
-  <!-- ===================== STAGE 8 — LIBRARIES ===================== -->
-  <!-- Custom cursor dot (CSS/JS only — no library) -->
-  <div class="cursor" aria-hidden="true"></div>
-
-  <!-- Lenis smooth scroll + GSAP ScrollTrigger (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
 
   <script>
-    /* =========================================================
-       STAGE 1 — Drawer toggle
-       ========================================================= */
+    /* ---------- Mobile drawer ---------- */
     (function () {
-      var drawer = document.getElementById('menuDrawer');
-      var btn    = document.querySelector('.nav-menu-btn');
-      var closeBtn = document.querySelector('.drawer-close');
-      var openClass = 'is-open';
+      var drawer    = document.getElementById('drawer');
+      var trigger   = document.querySelector('.nav-menu-btn');
+      var closers   = document.querySelectorAll('[data-close-drawer]');
+      var closed    = true;
+      var lastFocus = null;
 
-      function toggleMenu() {
-        var isOpen = drawer.classList.toggle(openClass);
-        drawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-        /* Pause Lenis (Stage 8) while the drawer is up */
-        if (window.__lenis) {
-          if (isOpen) window.__lenis.stop(); else window.__lenis.start();
-        }
-        if (isOpen) closeBtn.focus();
+      function open() {
+        if (!closed) return;
+        closed        = false;
+        lastFocus     = document.activeElement;
+        drawer.setAttribute('aria-hidden', 'false');
+        trigger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        var first = drawer.querySelector('a[href], button');
+        if (first) first.focus();
       }
-
-      function closeMenu() {
-        drawer.classList.remove(openClass);
+      function close() {
+        if (closed) return;
+        closed = true;
         drawer.setAttribute('aria-hidden', 'true');
-        btn.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
-        if (window.__lenis) window.__lenis.start();
+        if (lastFocus) lastFocus.focus();
       }
 
-      btn.addEventListener('click', toggleMenu);
-      closeBtn.addEventListener('click', closeMenu);
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && drawer.classList.contains(openClass)) {
-          closeMenu();
-        }
+      trigger.addEventListener('click', function () { open(); });
+      closers.forEach(function (el) {
+        el.addEventListener('click', function () { close(); });
       });
-
-      /* Close drawer when any internal link is tapped */
-      drawer.querySelectorAll('a[href^="#"]').forEach(function (a) {
-        a.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !closed) { e.preventDefault(); close(); }
       });
     })();
 
-    /* =========================================================
-       STAGE 7 — Waitlist overlay + email validation
-       ========================================================= */
+    /* ---------- Waitlist ---------- */
     (function () {
-      var overlay = document.getElementById('waitlist');
-      var dForm   = document.getElementById('waitlistForm');
-      var dInput  = document.getElementById('waitlistEmail');
-      var dErr    = document.getElementById('waitlistErr');
-      var fForm   = document.getElementById('footerJoin');
-      var fInput  = document.getElementById('footerEmail');
-      var fErr    = document.getElementById('footerErr');
-      var lastFocused = null;
-      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      var dialog    = document.getElementById('waitlistDialog');
+      var form      = document.getElementById('waitlistForm');
+      var input     = document.getElementById('wl-mail');
+      var msg       = document.getElementById('wl-msg');
+      var done      = document.getElementById('dialogDone');
+      var triggers  = document.querySelectorAll('[data-waitlist]');
+      var closers   = document.querySelectorAll('[data-dialog-close]');
+      var lastFocus = null;
+      var EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      function validEmail(value) {
-        return EMAIL_RE.test(value.trim());
-      }
-
-      /* --- Open / close -------------------------------------- */
-      function openOverlay() {
-        lastFocused = document.activeElement;
-        overlay.classList.add('is-open');
-        overlay.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        /* Pause Lenis (Stage 8) while the dialog is up */
+      function open() {
+        if (!dialog.hidden) return;
+        lastFocus = document.activeElement;
         if (window.__lenis) window.__lenis.stop();
-        /* Reset any previous error */
-        dErr.textContent = '';
-        dErr.classList.add('sr-only');
-        dInput.removeAttribute('aria-invalid');
-        dInput.focus();
+        document.body.style.overflow = 'hidden';
+        dialog.hidden = false;
+        input.focus();
       }
-
-      function closeOverlay() {
-        overlay.classList.remove('is-open');
-        overlay.setAttribute('aria-hidden', 'true');
+      function close() {
+        if (dialog.hidden) return;
+        dialog.hidden = true;
         document.body.style.overflow = '';
         if (window.__lenis) window.__lenis.start();
-        if (lastFocused) lastFocused.focus();
+        msg.hidden = true;
+        done.hidden = true;
+        form.hidden = false;
+        if (lastFocus) lastFocus.focus();
       }
 
-      document.querySelectorAll('a[href="#waitlist"]').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          openOverlay();
+      triggers.forEach(function (t) {
+        t.addEventListener('click', function () { open(); });
+      });
+      closers.forEach(function (c) {
+        c.addEventListener('click', function (e) {
+          if (c.classList.contains('dialog-backdrop') && e.target !== c) return;
+          close();
         });
       });
-
-      overlay.addEventListener('click', function (e) {
-        /* Backdrop click or the "close" button */
-        if (e.target === overlay || e.target.hasAttribute('data-close')) {
-          closeOverlay();
-        }
+      dialog.addEventListener('click', function (e) {
+        if (e.target === dialog) close();      /* click outside the panel */
       });
-
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
-          closeOverlay();
-        }
+        if (e.key === 'Escape' && !dialog.hidden) { e.preventDefault(); close(); }
       });
 
-      /* --- Dialog form ---------------------------------------- */
-      dForm.addEventListener('submit', function (e) {
+      form.addEventListener('submit', function (e) {
         e.preventDefault();
-        if (validEmail(dInput.value)) {
-          console.log('SIZR waitlist join:', { form: 'dialog', email: dInput.value });
-          dForm.reset();
-          closeOverlay();
-        } else {
-          dErr.textContent = 'Please enter a valid email address.';
-          dErr.classList.remove('sr-only');
-          dInput.setAttribute('aria-invalid', 'true');
-          dInput.focus();
+        var val = input.value.trim();
+        if (!EMAIL_RE.test(val)) {
+          msg.textContent = 'That email doesn’t look right — try again.';
+          msg.hidden = false;
+          input.focus();
+          return;
         }
-      });
-
-      /* --- Footer inline form ---------------------------------- */
-      fForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (validEmail(fInput.value)) {
-          console.log('SIZR waitlist join:', { form: 'footer', email: fInput.value });
-          fForm.reset();
-        } else {
-          fErr.textContent = 'Please enter a valid email address.';
-          fErr.classList.remove('sr-only');
-          fInput.setAttribute('aria-invalid', 'true');
-          fInput.focus();
-        }
+        console.log('Waitlist signup:', { drop: 'Drop 01', email: val });
+        form.hidden = true;
+        done.hidden = false;
       });
     })();
 
-    /* =========================================================
-       STAGE 8 — Lenis + GSAP parallax + smooth anchors + cursor
-       ========================================================= */
+    /* ---------- Footer inline waitlist ---------- */
     (function () {
-      /* Reduce-motion: no Lenis, no GSAP, no parallax, no smooth anchors */
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+      var form  = document.getElementById('footForm');
+      var input = document.getElementById('footEmail');
+      var msg   = document.getElementById('footMsg');
+      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      /* --- Lenis — subtle, weighted, invisible smooth scroll ---- */
-      var lenis = new Lenis({ duration: 1.2 });
-      window.__lenis = lenis; /* drawer/overlay pause it via stop/start */
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-      gsap.ticker.lagSmoothing(0);
-
-      /* --- Smooth anchor navigation ------------------------------ */
-      document.addEventListener('click', function (e) {
-        /* Waitlist triggers already preventDefault()'d the click */
-        if (e.defaultPrevented) return;
-        var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-        if (!a) return;
-        var id = a.getAttribute('href');
-        if (id && id.length > 1) {
-          var el = document.querySelector(id);
-          if (el) {
-            e.preventDefault();
-            lenis.scrollTo(el, { offset: 0 });
-          }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var val = input.value.trim();
+        if (!EMAIL_RE.test(val)) {
+          msg.textContent = 'That email doesn’t look right.';
+          msg.hidden = false;
+          input.focus();
+          return;
         }
+        msg.textContent = 'You’re on the list.';
+        msg.hidden = false;
+        input.value = '';
+        console.log('Footer waitlist signup:', { drop: 'Drop 01', email: val });
       });
+    })();
 
-      /* --- Parallax 1 — hero image (~12% travel, in the 10–15% band) */
-      var heroImg = document.querySelector('.hero-image img');
-      if (heroImg) {
-        gsap.fromTo(heroImg,
-          { yPercent: -6, scale: 1.14 },
-          {
-            yPercent: 6, scale: 1.14, ease: 'none',
-            scrollTrigger: {
-              trigger: '.hero',
-              start: 'top top',
-              end: 'bottom top',
-              scrub: true
-            }
-          });
+    /* ---------- Lenis + GSAP ---------- */
+    (function () {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Smooth scroll — Lenis-managed, continuous easing (no wobble), no scroll-snap anywhere. */
+      if (!reduceMotion && window.Lenis) {
+        window.__lenis = new Lenis({
+          duration: 1.2,
+          easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+          smoothWheel: true,
+          syncTouch: false
+        });
+
+        window.__lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add(function (time) {
+          window.__lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
       }
 
-      /* --- Parallax 2 — Drop 01 image ---------------------------- */
-      var dropImg = document.querySelector('.drop-img img');
-      if (dropImg) {
-        gsap.fromTo(dropImg,
-          { yPercent: -6, scale: 1.14 },
-          {
-            yPercent: 6, scale: 1.14, ease: 'none',
+      /* ONE parallax effect on the two feature images (10–15% relative travel) */
+      if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('.parallax').forEach(function (img) {
+          var section = img.closest('.hero, .drop');
+          gsap.fromTo(img, { yPercent: -6 }, {
+            yPercent: 6,
+            ease: 'none',
             scrollTrigger: {
-              trigger: '.drop',
+              trigger: section,
               start: 'top bottom',
               end: 'bottom top',
               scrub: true
             }
           });
-      }
-    })();
-
-    /* --- Custom cursor — small dot, expands over links ------------ */
-    (function () {
-      var dot = document.querySelector('.cursor');
-      if (!dot) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (!window.matchMedia('(pointer: fine)').matches) return;
-
-      var ticking = false;
-      document.addEventListener('mousemove', function (e) {
-        var x = e.clientX;
-        var y = e.clientY;
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () {
-          dot.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
-          dot.classList.add('is-on');
-          ticking = false;
         });
-      }, { passive: true });
+      }
 
-      var HOVER = 'a, button, [role="button"]';
-      document.addEventListener('mouseover', function (e) {
-        if (e.target.closest && e.target.closest(HOVER)) dot.classList.add('is-link');
-      });
-      document.addEventListener('mouseout', function (e) {
-        if (e.target.closest && e.target.closest(HOVER)) dot.classList.remove('is-link');
+      /* Smooth in-page anchors via Lenis (native jump would skip the easing) */
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+        var a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        var id = a.getAttribute('href');
+        if (id.length < 2) return;
+        var el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        if (window.__lenis) {
+          window.__lenis.scrollTo(el, { offset: 0, duration: 1.2 });
+        } else {
+          el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
       });
     })();
-  </script>
-
 </body>
 </html>
