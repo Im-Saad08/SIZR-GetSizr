@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIZR — Fit that gets you.</title>
-  <meta name="description" content="Heavyweight basics, made properly and priced honestly. Two computer engineers, tired of 'close enough.' Drop 01 — limited, numbered, made in Sialkot." />
+  <meta name="description" content="SIZR — heavyweight basics, made properly, priced honestly. Limited, numbered, made in Sialkot, Pakistan." />
   <meta name="theme-color" content="#0A0C0C" />
-
   <link rel="icon" type="image/png" href="assets/sizr-logo.png" />
 
   <!-- Google Fonts -->
@@ -16,45 +15,41 @@
 
   <style>
     /* =========================================================
-       SIZR — Landing page
-       Fashion first. Technology second.
-       Editorial streetwear. Ink / Bone / Ember territories.
-       Mobile-first (375px > 768px > 1024px).
-       Only the hero animates. Everything else is a printed plate.
+       STAGE 1 — Tokens / Reset / Base / Navigation
        ========================================================= */
 
-    /* --- Design tokens -------------------------------------- */
+    /* --- Design tokens --------------------------------------- */
     :root {
-      /* Color */
-      --ink:     #0A0C0C;
-      --bone:    #F2EDE3;
-      --ember:   #FF5A3D;
-      --graphite:#1C1E1E;
+      --ink: #0A0C0C;
+      --bone: #F2EDE3;
+      --ember: #FF5A3D;
+      --graphite: #1C1E1E;
+      --mute-dark: rgba(242,237,227,.60);
+      --rule-dark: rgba(242,237,227,.12);
+      --rule-bone: rgba(10,12,12,.15);
 
-      --mute:       rgba(242, 237, 227, 0.58);  /* secondary text on ink, ~5.5:1 */
-      --faint:      rgba(242, 237, 227, 0.30);  /* captions / footnotes on ink */
-      --mute-ink:   #5A554C;                     /* secondary text on bone, ~5.5:1 */
-      --faint-ink:  rgba(10, 12, 12, 0.35);      /* watermarks on bone */
-      --rule-dark:  rgba(242, 237, 227, 0.12);   /* hairlines on ink */
-      --rule-bone:  rgba(10, 12, 12, 0.16);      /* hairlines on bone */
+      --font-display: 'Bodoni Moda', 'Times New Roman', serif;
+      --font-sans: 'Manrope', 'Helvetica Neue', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
 
-      /* Type */
-      --font-display: "Bodoni Moda", "Georgia", serif;
-      --font-sans:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --font-mono:    "Space Grotesk", -apple-system, BlinkMacSystemFont, monospace;
-
-      /* Space */
-      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 16px;
-      --sp-4: 24px; --sp-5: 48px; --sp-6: 96px; --sp-7: 140px;
+      --sp-1: 4px;  --sp-2: 8px;  --sp-3: 16px; --sp-4: 24px;
+      --sp-5: 48px; --sp-6: 96px; --sp-7: 160px;
       --maxw: 1240px;
 
-      /* Z-index scale: 10 nav, 20 overlay, 30 focus */
+      /* Extension tokens */
       --z-nav: 10;
       --z-overlay: 20;
+      --mute-bone: #5A554C;                     /* secondary text on bone — 5.5:1+ */
+      --faint-dark: rgba(242,237,227,0.30);      /* captions on ink */
     }
 
-    /* --- Reset & base -------------------------------------- */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    /* --- Reset & base ---------------------------------------- */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -69,13 +64,38 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; border: none; background: none; }
+
+    button {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
     img { max-width: 100%; height: auto; display: block; }
+
     ::selection { background: var(--ember); color: var(--ink); }
 
-    :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+    :focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
 
-    /* --- Layout -------------------------------------------- */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* --- Layout ---------------------------------------------- */
     .container {
       width: 100%;
       max-width: var(--maxw);
@@ -83,9 +103,9 @@
       padding: 0 24px;
     }
 
-    /* Quiet text link — the only CTA on the page. No buttons. */
+    /* --- Quiet text link — the only CTA style ---------------- */
     .qlink {
-      display: inline-block;
+      display: inline;
       font-family: var(--font-mono);
       font-size: 13px;
       font-weight: 500;
@@ -93,55 +113,16 @@
       border-bottom: 1px solid currentColor;
       padding-bottom: 2px;
       transition: border-color 0.2s ease, color 0.2s ease;
+      cursor: pointer;
     }
     .qlink:hover { border-color: var(--ember); color: var(--ember); }
-
-    /* Section footnote, set-copy sentence case (not an eyebrow) */
-    .footnote { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
-
-    /* Editorial plate (surrogate for real photography) */
-    .plate {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 2px;
+    .qlink:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
     }
-    /* Film grain overlay, via SVG feTurbulence (1px edges are fine on ink) */
-    .plate::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
-      opacity: 0.25;
-      pointer-events: none;
-    }
-    .plate--dark {
-      background:
-        radial-gradient(120% 90% at 20% 0%, #232627 0%, var(--graphite) 45%, #101111 100%);
-      border: 1px solid var(--rule-dark);
-    }
-    .plate--bone {
-      background:
-        radial-gradient(130% 100% at 80% 0%, #F7F2E9 0%, var(--bone) 55%, #E5DFD2 100%);
-      border: 1px solid var(--rule-bone);
-    }
-    .plate-caption {
-      position: absolute;
-      left: 16px;
-      bottom: 14px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      color: var(--faint);
-      z-index: 1;
-    }
-    .plate--bone .plate-caption { color: var(--faint-ink); }
 
     /* =========================================================
-       01 — NAVIGATION
+       NAVIGATION
        ========================================================= */
     .nav {
       position: sticky;
@@ -149,14 +130,20 @@
       z-index: var(--z-nav);
       background: var(--ink);
       border-bottom: 1px solid var(--rule-dark);
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
     }
-    .nav-brand { display: inline-flex; align-items: center; padding: 4px 0; }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 0;
+    }
     .nav-brand img { height: 26px; width: auto; }
 
+    /* Desktop links — hidden until 1024px */
     .nav-links {
       display: none;
       align-items: center;
@@ -166,17 +153,15 @@
       font-weight: 500;
       letter-spacing: 0.02em;
     }
-    .nav-links a { transition: color 0.2s ease, border-color 0.2s ease; }
+    .nav-links a { transition: color 0.2s ease; }
     .nav-links a:hover { color: var(--ember); }
-    .nav-join {
-      margin-left: 8px;
-      font-weight: 500;
-    }
+    .nav-join { margin-left: 8px; }
 
+    /* Mobile menu button — hidden on desktop */
     .nav-menu-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-family: var(--font-mono);
       font-size: 13px;
       letter-spacing: 0.02em;
@@ -186,29 +171,32 @@
       height: 1px;
       background: var(--bone);
       display: inline-block;
-      position: relative;
-      transition: background 0.2s ease;
     }
 
-    /* Mobile drawer overlay */
+    /* --- Mobile drawer --------------------------------------- */
     .drawer {
       position: fixed;
       inset: 0;
-      z-index: calc(var(--z-overlay) + 1);
+      z-index: var(--z-overlay);
       background: var(--ink);
       transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.28s;
+      visibility: hidden;
+      transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 0.28s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 0 24px 40px;
-      visibility: hidden;
     }
     .drawer.is-open {
       transform: translateX(0);
       visibility: visible;
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+      transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s;
     }
+
     .drawer-top {
       display: flex;
       align-items: center;
@@ -222,12 +210,13 @@
       font-size: 13px;
       letter-spacing: 0.02em;
     }
+
     .drawer-nav {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin: 48px 0 0;
+      margin-top: 48px;
     }
     .drawer-nav a {
       font-family: var(--font-display);
@@ -235,15 +224,16 @@
       font-weight: 700;
       line-height: 1.1;
     }
-    .drawer-nav a .idx {
+    .drawer-nav .idx {
       font-family: var(--font-mono);
       font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.08em;
-      color: var(--mute);
+      color: var(--mute-dark);
       margin-right: 14px;
       vertical-align: middle;
     }
+
     .drawer-foot {
       border-top: 1px solid var(--rule-dark);
       padding-top: 24px;
@@ -256,485 +246,752 @@
     .drawer-foot .row { display: flex; gap: 24px; }
 
     /* =========================================================
-       02 — HERO (asymmetric split, the only animation)
+       STAGE 2 — Hero
        ========================================================= */
     .hero {
-      padding-top: 48px;
-      padding-bottom: 88px;
-    }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .hero-media {
-      order: 1;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-    }
-    .hero-media img {
-      width: 62%;
-      height: auto;
-      opacity: 0.92;
-    }
-
-    .hero-text {
-      order: 2;
-      max-width: 30ch;
-    }
-    .hero-strap {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      color: var(--mute);
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(46px, 12vw, 92px);
-      line-height: 0.96;
-      letter-spacing: -0.015em;
-      margin-bottom: 28px;
-    }
-    .hero h1 em {
-      font-style: italic;
-      font-weight: 700;
-      color: var(--ember);
-    }
-    .hero-body {
-      font-size: 16px;
-      line-height: 1.65;
-      color: var(--mute);
-      margin-bottom: 36px;
-    }
-    .hero .qlink { font-size: 15px; }
-
-    /* Single entrance animation — hero only */
-    .hero-inner {
-      opacity: 0;
-      transform: translateY(14px);
-      animation: heroFadeIn 1s ease 0.2s forwards;
-    }
-    @keyframes heroFadeIn {
-      to { opacity: 1; transform: none; }
-    }
-
-    /* =========================================================
-       03 — 01 · THE IDEA (bone territory)
-       ========================================================= */
-    .idea {
-      background: var(--bone);
-      color: var(--ink);
       position: relative;
+      background: var(--ink);
       overflow: hidden;
-      padding: 96px 0;
+      padding: clamp(64px, 10vw, 120px) 0 clamp(56px, 8vw, 96px);
     }
-    .idea .footnote { color: var(--mute-ink); margin-bottom: 40px; }
-    .idea-grid {
+
+    /* Ghost numeral — design device, not a heading.
+       Spec: Bodoni Moda, ~120–260px, opacity ~0.08–0.12. */
+    .hero-ghost {
+      position: absolute;
+      top: 10%;
+      right: -5%;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(140px, 18vw, 260px);
+      line-height: 1;
+      color: var(--bone);
+      opacity: 0.09;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* --- Grid ----------------------------------------------- */
+    .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 32px;
       align-items: start;
     }
-    .idea-copy p {
-      font-size: clamp(19px, 3.4vw, 26px);
-      font-weight: 500;
-      line-height: 1.5;
-      max-width: 34ch;
-      color: var(--ink);
-    }
-    .idea-copy p + p {
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.65;
-      color: var(--mute-ink);
-      max-width: 44ch;
-    }
-    .idea-numeral {
-      position: absolute;
-      right: -2vw;
-      bottom: -6vw;
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(200px, 42vw, 480px);
-      line-height: 0.7;
-      letter-spacing: -0.04em;
-      color: var(--faint-ink);
-      user-select: none;
-      pointer-events: none;
+
+    /* --- Type column ----------------------------------------- */
+    .hero-type {
+      position: relative;
+      z-index: 1;
     }
 
-    /* =========================================================
-       04 — 02 · WHAT WE MAKE (bone territory, paired panel)
-       ========================================================= */
-    .make {
-      background: var(--bone);
-      color: var(--ink);
-      padding: 0 0 96px;
-    }
-    .make .footnote { color: var(--mute-ink); margin-bottom: 32px; }
-    .make-pair {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .make-panel {
-      min-height: 340px;
-    }
-    .make-panel--flat img { width: 56%; height: auto; }
-    .make-panel--life {
-      background:
-        radial-gradient(120% 90% at 30% 10%, #26292A 0%, var(--graphite) 55%, #111212 100%);
-      border: 1px solid var(--rule-dark);
-    }
-    .make-cta {
-      text-align: center;
-      margin-top: 40px;
-    }
-
-    /* =========================================================
-       05 — 03 · OBSESSIONS (bone, ruled list)
-       ========================================================= */
-    .obsessions {
-      background: var(--bone);
-      color: var(--ink);
-      padding: 0 0 96px;
-    }
-    .obsessions .footnote { color: var(--mute-ink); margin-bottom: 8px; }
-    .obs-list {
-      list-style: none;
-    }
-    .obs-list li {
-      display: grid;
-      grid-template-columns: 64px 1fr;
-      gap: 4px 20px;
-      align-items: baseline;
-      padding: 28px 0;
-      border-top: 1px solid var(--rule-bone);
-    }
-    .obs-list li:last-child { border-bottom: 1px solid var(--rule-bone); }
-    .obs-num {
+    .hero-eyebrow {
       font-family: var(--font-mono);
       font-size: 13px;
-      letter-spacing: 0.1em;
-      color: var(--mute-ink);
+      letter-spacing: 0.02em;
+      color: var(--mute-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .obs-title {
+    .hero-eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--ember);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(22px, 4.5vw, 30px);
-      line-height: 1.15;
+      font-weight: 900;
+      font-size: clamp(52px, 12vw, 128px);
+      line-height: 0.94;
+      letter-spacing: -0.02em;
+      margin-top: 16px;
     }
-    .obs-fact {
-      grid-column: 2;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--mute-ink);
-      margin-top: 2px;
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--mute-dark);
+      max-width: 42ch;
+      margin-top: 16px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 24px;
+    }
+
+    /* --- Hero image ------------------------------------------ */
+    .hero-image {
+      position: relative;
+      z-index: 1;
+      aspect-ratio: 4 / 5;
+      background: var(--graphite);
+      margin: 0;
+      overflow: hidden; /* clips the parallax scale bleed */
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* --- Hero entrance — once, on load ----------------------- */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero > .container > * {
+      opacity: 0;
+      animation: hero-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero > .container > *:nth-child(1) { animation-delay: 0.06s; }
+    .hero > .container > *:nth-child(2) { animation-delay: 0.14s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero > .container > * { opacity: 1; animation: none; }
     }
 
     /* =========================================================
-       06 — 04 · DROP 01 (dark plate)
+       STAGE 3 — Sections (shared) + The Idea
        ========================================================= */
-    .drop {
-      padding-top: 112px;
-      padding-bottom: 120px;
+
+    /* --- Shared section structure ----------------------------- */
+    .sec {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(72px, 10vw, 140px) 0;
     }
-    .drop .footnote { color: var(--mute); margin-bottom: 32px; }
-    .drop-media {
-      width: 100%;
-      aspect-ratio: 16 / 7;
-      margin-bottom: 48px;
+    .sec-bone { background: var(--bone); color: var(--ink); }
+
+    /* Section header: "01" + "the idea" */
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: clamp(40px, 6vw, 72px);
     }
-    .drop-media .big {
+    .sec-nr {
       font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(90px, 22vw, 220px);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(32px, 4vw, 44px);
       line-height: 1;
-      letter-spacing: -0.03em;
-      color: var(--faint);
-      user-select: none;
     }
-    .drop-layout {
+    .sec-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* Asymmetric editorial grid */
+    .sec-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .sec-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 4.5vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .sec-body {
+      font-size: clamp(15px, 1.6vw, 17px);
+      line-height: 1.75;
+      color: var(--mute-bone);
+    }
+
+    /* Ghost numeral — shared positioning */
+    .ghost {
+      position: absolute;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* --- The Idea specific ------------------------------------ */
+    .idea .ghost {
+      top: 15%;
+      right: -3%;
+      font-size: clamp(140px, 16vw, 260px);
+      color: var(--ink);
+      opacity: 0.09;
+    }
+
+    .idea .sec-title {
+      border-top: 1px solid var(--rule-bone);
+      padding-top: 20px;
+    }
+
+    /* =========================================================
+       STAGE 4 — What We Make
+       ========================================================= */
+
+    /* Ink section background variant */
+    .sec-ink { background: var(--ink); color: var(--bone); }
+
+    /* Section header color per background */
+    .sec-ink .sec-label { color: var(--mute-dark); }
+    .sec-bone .sec-label { color: var(--mute-bone); }
+
+    .wwm .ghost {
+      top: 10%;
+      right: -3%;
+      font-size: clamp(140px, 16vw, 260px);
+      color: var(--ink);
+      opacity: 0.09;
+    }
+
+    /* --- Paired panels ---------------------------------------- */
+    .panel-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
       align-items: start;
     }
-    .drop h2 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(44px, 8vw, 84px);
-      line-height: 0.95;
-      letter-spacing: -0.015em;
+    .panel {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
     }
-    .drop-copy {
-      font-size: 16px;
-      line-height: 1.65;
-      color: var(--mute);
-      max-width: 38ch;
-      margin: 4px 0 28px;
-    }
-    .drop-batch {
+    .panel img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      color: var(--mute);
-      margin-bottom: 32px;
+    }
+    /* Placeholder letter — hidden once a real image loads */
+    .panel-letter {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    .panel-bone {
+      background: var(--bone);
+      aspect-ratio: 4 / 5;
+      /* Delineates the flat-lay plate on the bone section */
+      box-shadow: inset 0 0 0 1px var(--rule-bone);
+    }
+    .panel-bone .panel-letter {
+      color: var(--ink);
+      opacity: 0.08;
+      font-size: clamp(120px, 14vw, 200px);
+    }
+    .panel-graphite {
+      background: var(--graphite);
+      aspect-ratio: 3 / 4;
+    }
+    .panel-graphite .panel-letter {
+      color: var(--bone);
+      opacity: 0.10;
+      font-size: clamp(120px, 14vw, 200px);
+    }
+
+    /* --- Centered link — the only centered element on the page */
+    .pieces-wrap {
+      margin-top: 40px;
+      text-align: center;
     }
 
     /* =========================================================
-       07 — FOOTER (ink)
+       STAGE 5 — Obsessions
        ========================================================= */
-    .footer {
-      border-top: 1px solid var(--rule-dark);
-      padding: 72px 0 48px;
+
+    .obs .ghost {
+      top: 12%;
+      right: -4%;
+      font-size: clamp(140px, 16vw, 260px);
+      color: var(--ink);
+      opacity: 0.09;
     }
-    .footer-inner {
+
+    /* Ruled numbered list — not cards */
+    .obs-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .obs-row {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      column-gap: 16px;
+      align-items: baseline;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule-bone);
+    }
+    .obs-row:last-child { border-bottom: 1px solid var(--rule-bone); }
+
+    .obs-num {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      color: var(--mute-bone);
+    }
+    /* Single ember accent — the flagship obsession. Ember is held at
+       one per viewport by the design system, so only the lead numeral
+       wears the accent. */
+    .obs-row:first-child .obs-num { color: var(--ember); }
+
+    .obs-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(22px, 2.6vw, 32px);
+      line-height: 1.2;
+    }
+
+    .obs-fact {
+      grid-column: 2;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--mute-bone);
+      margin-top: 8px;
+    }
+
+    /* =========================================================
+       STAGE 6 — Drop 01
+       ========================================================= */
+
+    .drop .ghost {
+      top: 10%;
+      right: -4%;
+      font-size: clamp(140px, 16vw, 260px);
+      color: var(--bone);
+      opacity: 0.09;
+    }
+
+    .drop-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 48px;
+      gap: 32px;
+      align-items: start;
     }
-    .footer-brand img { height: 30px; width: auto; margin-bottom: 18px; }
-    .footer-line {
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--mute);
-      max-width: 34ch;
+
+    .drop-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(48px, 9vw, 88px);
+      line-height: 0.96;
+      letter-spacing: -0.02em;
     }
-    .footer-form {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+    .drop-title em { font-style: italic; font-weight: 400; }
+
+    .drop-copy {
+      max-width: 40ch;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--mute-dark);
+      margin-top: 16px;
     }
-    .footer-form .form-row {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
+
+    /* Status band — a statement, not a countdown */
+    .drop-status {
+      margin-top: 40px;
+      border-top: 1px solid var(--rule-dark);
       border-bottom: 1px solid var(--rule-dark);
-      padding-bottom: 10px;
-      transition: border-color 0.2s ease;
-    }
-    .footer-form .form-row:focus-within { border-color: var(--ember); }
-    .footer-form input[type="email"] {
-      flex: 1;
-      min-width: 0;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--bone);
-      font-family: var(--font-sans);
-      font-size: 16px;
-      padding: 2px 0;
-    }
-    .footer-form input[type="email"]::placeholder { color: var(--faint); }
-    .footer-form .form-msg {
-      min-height: 20px;
-      font-size: 13px;
-    }
-    .footer-form .form-msg.ok  { color: var(--ember); }
-    .footer-form .form-msg.err { color: var(--ember); }
-    .footer-socials {
+      padding: 14px 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 24px;
+      align-items: center;
+      gap: 10px;
       font-family: var(--font-mono);
       font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--mute-dark);
     }
-    .footer-socials a { color: var(--mute); transition: color 0.2s ease; }
-    .footer-socials a:hover { color: var(--ember); }
-    .footer-bottom {
-      margin-top: 48px;
+    .drop-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--ember);
+      flex-shrink: 0;
+    }
+
+    .drop-cta {
+      display: inline-block;
+      margin-top: 24px;
+    }
+
+    /* Parallax image plate — GSAP target wired in Stage 8 */
+    .drop-img {
+      position: relative;
+      margin: 0;
+      aspect-ratio: 4 / 5;
+      background: var(--graphite);
+      box-shadow: inset 0 0 0 1px var(--rule-dark);
+      overflow: hidden;
+    }
+    .drop-img img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .drop-letter {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(120px, 14vw, 200px);
+      line-height: 1;
+      color: var(--bone);
+      opacity: 0.10;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* =========================================================
+       STAGE 7 — Footer & Waitlist overlay
+       ========================================================= */
+
+    /* --- Footer ---------------------------------------------- */
+    .footer {
+      background: var(--ink);
+      color: var(--bone);
+      border-top: 1px solid var(--rule-dark);
+      padding: clamp(64px, 9vw, 120px) 0 48px;
+    }
+
+    .footer-word {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .footer-word em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .footer-est {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--mute-dark);
+    }
+
+    .footer-cols {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: clamp(48px, 8vw, 80px);
+      padding-top: 32px;
+      border-top: 1px solid var(--rule-dark);
+    }
+    .foot-head {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mute-dark);
+      margin-bottom: 14px;
+    }
+    .foot-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .foot-col a {
+      font-size: 15px;
+      color: var(--mute-dark);
+      transition: color 0.2s ease;
+    }
+    .foot-col a:hover { color: var(--ember); }
+
+    /* Footer inline email — quiet hairline field + text link */
+    .foot-join {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--rule-dark);
+      padding-bottom: 12px;
+    }
+    .foot-join input {
+      flex: 1;
+      min-width: 0;
+      background: none;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      color: var(--bone);
+    }
+    .foot-join input::placeholder { color: var(--faint-dark); }
+    .foot-join input:focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
+    .foot-join-btn { flex-shrink: 0; }
+
+    .foot-err {
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--ember);
+    }
+
+    .foot-base {
+      margin-top: clamp(40px, 7vw, 64px);
       padding-top: 24px;
       border-top: 1px solid var(--rule-dark);
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--faint);
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--mute-dark);
     }
-    .footer-bottom a { color: var(--mute); transition: color 0.2s ease; }
-    .footer-bottom a:hover { color: var(--ember); }
+    .foot-social a { color: var(--bone); }
+    .foot-social a:hover { color: var(--ember); }
 
-    /* =========================================================
-       08 — WAITLIST OVERLAY
-       ========================================================= */
+    /* --- Waitlist overlay ------------------------------------ */
     .overlay {
       position: fixed;
       inset: 0;
-      z-index: var(--z-overlay);
-      background: rgba(10, 12, 12, 0.82);
-      backdrop-filter: blur(2px);
+      z-index: calc(var(--z-overlay) + 1);
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
+      padding: 24px;
+      background: rgba(10, 12, 12, 0.72);
       opacity: 0;
-      pointer-events: none;
       visibility: hidden;
       transition: opacity 0.25s ease, visibility 0s linear 0.25s;
     }
     .overlay.is-open {
       opacity: 1;
-      pointer-events: auto;
       visibility: visible;
       transition: opacity 0.25s ease, visibility 0s;
     }
+
     .overlay-panel {
-      width: 100%;
-      max-width: 560px;
-      background: var(--graphite);
-      border: 1px solid var(--rule-dark);
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-      padding: 48px 28px 40px;
       position: relative;
-      transform: translateY(24px);
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 100%;
+      max-width: 440px;
+      background: var(--ink);
+      border: 1px solid var(--rule-dark);
+      padding: clamp(28px, 5vw, 40px);
     }
-    .overlay.is-open .overlay-panel { transform: translateY(0); }
-    .overlay-close {
+    .overlay-x {
       position: absolute;
-      top: 20px;
-      right: 24px;
+      top: 16px;
+      right: 20px;
       font-family: var(--font-mono);
       font-size: 13px;
       letter-spacing: 0.02em;
-      color: var(--mute);
-      transition: color 0.2s ease;
+      color: var(--mute-dark);
     }
-    .overlay-close:hover { color: var(--ember); }
-    .overlay-panel h3 {
+    .overlay-x:hover { color: var(--ember); }
+
+    .overlay-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mute-dark);
+    }
+    .overlay-title {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 900;
+      font-size: clamp(30px, 6vw, 40px);
       line-height: 1.05;
-      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+      margin-top: 12px;
     }
-    .overlay-panel h3 em { font-style: italic; font-weight: 700; color: var(--ember); }
-    .overlay-panel .intro {
+    .overlay-copy {
+      margin-top: 14px;
       font-size: 15px;
       line-height: 1.6;
-      color: var(--mute);
-      margin-bottom: 32px;
-      max-width: 40ch;
+      color: var(--mute-dark);
     }
+
     .waitlist-form {
+      margin-top: 24px;
       display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .waitlist-form .form-row {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
+      align-items: flex-end;
+      gap: 16px;
       border-bottom: 1px solid var(--rule-dark);
-      padding-bottom: 10px;
-      transition: border-color 0.2s ease;
+      padding-bottom: 12px;
     }
-    .waitlist-form .form-row:focus-within { border-color: var(--ember); }
-    .waitlist-form input[type="email"] {
+    .waitlist-form input {
       flex: 1;
       min-width: 0;
-      background: transparent;
+      background: none;
       border: none;
-      outline: none;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 0.02em;
       color: var(--bone);
-      font-family: var(--font-sans);
-      font-size: 16px;
-      padding: 2px 0;
     }
-    .waitlist-form input[type="email"]::placeholder { color: var(--faint); }
-    .waitlist-form .form-msg {
-      min-height: 20px;
-      font-size: 13px;
-      color: var(--mute);
+    .waitlist-form input::placeholder { color: var(--faint-dark); }
+    .waitlist-cta { flex-shrink: 0; }
+
+    .waitlist-err {
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--ember);
     }
-    .waitlist-form .form-msg.ok  { color: var(--ember); }
-    .waitlist-form .form-msg.err { color: var(--ember); }
+
+    .overlay-note {
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--faint-dark);
+    }
 
     /* =========================================================
-       TABLET (min-width: 768px)
+       STAGE 8 — Custom cursor & parallax groundwork
+       ========================================================= */
+
+    /* Parallax targets — image is scaled up 1.14 so the 12%
+       travel never reveals an edge; prefetch transform buffer */
+    .hero-image img,
+    .drop-img img { will-change: transform; }
+
+    /* Custom cursor — small dot that expands over links */
+    .cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      border-radius: 50%;
+      background: var(--bone);
+      opacity: 0;
+      pointer-events: none;
+      z-index: calc(var(--z-overlay) + 2);
+      transform: translate3d(-100px, -100px, 0);
+      transition:
+        width 0.25s ease,
+        height 0.25s ease,
+        margin 0.25s ease,
+        background-color 0.25s ease,
+        opacity 0.2s ease;
+    }
+    .cursor.is-on { opacity: 0.9; }
+    .cursor.is-link {
+      width: 32px;
+      height: 32px;
+      margin: -16px 0 0 -16px;
+      background: var(--ember);
+      opacity: 0.18;
+    }
+    /* Never on touch / hybrid input; never under reduced motion */
+    @media (hover: none), (pointer: coarse) { .cursor { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { display: none; } }
+
+    /* =========================================================
+       BREAKPOINTS — mobile-first
        ========================================================= */
     @media (min-width: 768px) {
       .container { padding: 0 40px; }
-
-      .hero { padding-top: 72px; padding-bottom: 120px; }
-      .hero-inner { gap: 56px; }
-      .hero-text { max-width: 34ch; }
-
-      .idea { padding: 140px 0; }
-      .idea-grid { grid-template-columns: 1fr 1fr; }
-
-      .make { padding: 0 0 140px; }
-      .make-pair { grid-template-columns: 1fr 1fr; gap: 16px; }
-      .make-panel { min-height: 520px; }
-
-      .obsessions { padding: 0 0 140px; }
-      .obs-list li { grid-template-columns: 96px 1fr; gap: 0 28px; padding: 36px 0; }
-
-      .drop { padding-top: 160px; padding-bottom: 168px; }
-      .drop-layout { grid-template-columns: 1fr 1fr; }
-
-      .footer { padding: 96px 0 56px; }
-      .footer-inner { grid-template-columns: 1fr 1fr; }
-      .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
-
-      .overlay-panel { padding: 64px 56px 48px; }
+      .hero-title { font-size: clamp(72px, 10vw, 120px); }
+      .hero-ghost { font-size: clamp(180px, 20vw, 260px); }
+      /* What We Make — paired panels side by side */
+      .panel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+      }
+      .panel-graphite { margin-top: 64px; }
+      /* Footer — three columns, base row spread */
+      .footer-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .foot-base {
+        flex-direction: row;
+        justify-content: space-between;
+      }
     }
 
-    /* =========================================================
-       DESKTOP (min-width: 1024px)
-       ========================================================= */
     @media (min-width: 1024px) {
       .container { padding: 0 56px; }
-
       .nav-links { display: flex; }
       .nav-menu-btn { display: none; }
-
-      /* Asymmetric split — image column ~55% / type column ~45% */
-      .hero {
-        padding-top: 40px;
-        padding-bottom: 0;
-        min-height: calc(100vh - 64px);
-        display: flex;
-        align-items: center;
+      /* Hero — asymmetric 55/45 split */
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        column-gap: 64px;
+        align-items: start;
       }
-      .hero-inner {
-        grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
-        gap: 0 72px;
-        align-items: center;
+      .hero-image { grid-column: 2; grid-row: 1; }
+      .hero-type  { grid-column: 1; grid-row: 1; }
+      .hero-meta  { grid-column: 1 / -1; }
+      .hero-ghost { top: -5%; right: -2%; font-size: clamp(200px, 18vw, 260px); }
+      /* Shared section grid — asymmetric 55/45 */
+      .sec-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        column-gap: 64px;
+        align-items: start;
       }
-      .hero-media {
-        order: 0;
-        aspect-ratio: auto;
-        align-self: stretch;
-        height: calc(100vh - 64px - 80px);
-        margin-left: -56px;            /* bleed to left gutter */
-        border-radius: 0 4px 4px 0;
+      /* Obsessions — numeral + name left, fact on the right column */
+      .obs-row {
+        grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 0.9fr);
+        column-gap: 24px;
+        padding: 32px 0;
       }
-      .hero-media img { width: 44%; }
-      .hero-text {
-        order: 1;
-        max-width: 30ch;
+      .obs-fact { grid-column: 3; margin-top: 0; }
+      /* Drop 01 — type left, parallax image right */
+      .drop-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        column-gap: 64px;
+        align-items: start;
       }
-
-      .idea-numeral { font-size: 520px; }
-
-      .drop-media .big { font-size: 240px; }
+      .drop-img  { grid-column: 2; grid-row: 1; }
+      .drop-type { grid-column: 1; grid-row: 1; }
     }
 
-    /* =========================================================
-       REDUCED MOTION
-       ========================================================= */
+    /* --- Reduced motion -------------------------------------- */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .hero-inner { animation: none; opacity: 1; transform: none; }
-      .overlay, .overlay-panel { transition: none; }
       .drawer { transition: none; }
+      .overlay { transition: none; }
       .qlink { transition: none; }
     }
   </style>
@@ -744,17 +1001,16 @@
   <!-- ===================== NAVIGATION ===================== -->
   <nav class="nav container" role="navigation" aria-label="Main">
     <a class="nav-brand" href="#top" aria-label="SIZR home">
-      <img src="assets/sizr-logo-dark.png" alt="SIZR — fit that gets you" width="26" height="26" />
+      <img src="assets/sizr-logo.png" alt="SIZR" width="26" height="26" />
     </a>
-
     <div class="nav-links">
+      <a href="#idea">the idea</a>
+      <a href="#what">what we make</a>
       <a href="#drop">drops</a>
-      <a href="#idea">good</a>
       <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">instagram</a>
-      <a class="nav-join qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
+      <a class="nav-join qlink" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
     </div>
-
-    <button class="nav-menu-btn" aria-haspopup="true" aria-controls="menuDrawer" aria-expanded="false" onclick="toggleMenu()">
+    <button class="nav-menu-btn" aria-haspopup="true" aria-controls="menuDrawer" aria-expanded="false">
       <span class="bar" aria-hidden="true"></span>
       menu
     </button>
@@ -763,18 +1019,20 @@
   <!-- Mobile drawer -->
   <div class="drawer" id="menuDrawer" aria-hidden="true">
     <div class="drawer-top">
-      <img src="assets/sizr-logo-dark.png" alt="SIZR" width="26" height="26" />
-      <button class="drawer-close" onclick="toggleMenu()" aria-label="Close menu">close</button>
+      <img src="assets/sizr-logo.png" alt="SIZR" width="26" height="26" />
+      <button class="drawer-close" aria-label="Close menu">close</button>
     </div>
     <nav aria-label="Menu">
       <ul class="drawer-nav">
-        <li><a href="#drop" onclick="closeMenu()"><span class="idx">01</span>drops</a></li>
-        <li><a href="#idea" onclick="closeMenu()"><span class="idx">02</span>good</a></li>
-        <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener" onclick="closeMenu()"><span class="idx">03</span>instagram</a></li>
+        <li><a href="#idea"><span class="idx">01</span>the idea</a></li>
+        <li><a href="#what"><span class="idx">02</span>what we make</a></li>
+        <li><a href="#obsessions"><span class="idx">03</span>obsessions</a></li>
+        <li><a href="#drop"><span class="idx">04</span>drop 01</a></li>
+        <li><a href="https://instagram.com/getsizr" target="_blank" rel="noopener"><span class="idx">05</span>instagram</a></li>
       </ul>
     </nav>
     <div class="drawer-foot">
-      <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
+      <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
       <div class="row">
         <a href="mailto:hello@sizr.shop">hello@sizr.shop</a>
         <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">tiktok</a>
@@ -783,279 +1041,470 @@
   </div>
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero container" id="top">
-    <div class="hero-inner">
-      <!-- PLACEHOLDER — replace with real editorial photography (heavy tee, dark frame) -->
-      <div class="hero-media plate plate--dark" role="img" aria-label="Placeholder for SIZR editorial photography — heavy tee in a dark frame">
-        <img src="assets/sizr-logo-dark.png" alt="SIZR heavyweight tee graphic" />
-        <span class="plate-caption">photography — heavy tee / 01</span>
-      </div>
-
-      <div class="hero-text">
-        <p class="hero-strap">Heavyweight basics.</p>
-        <h1>Made <em>properly.</em><br />Priced honestly.</h1>
-        <p class="hero-body">
-          Two engineers, tired of "close enough." Heavyweight cotton, built to hold shape.
-          Small runs, numbered pieces.
-        </p>
-        <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 01 · THE IDEA ===================== -->
-  <section class="idea" id="idea">
-    <div class="container relative">
-      <p class="footnote"><em>01</em> — the idea</p>
-      <div class="idea-grid">
-        <div class="idea-copy">
-          <p>
-            Two computer engineering students — one in Islamabad, one in Sialkot —
-            got tired of clothes that were "close enough."
-          </p>
-          <p>
-            So we started Sizr: heavyweight basics, made properly, priced honestly.
-          </p>
+  <header class="hero" id="top">
+    <span class="hero-ghost" aria-hidden="true">01</span>
+    <div class="container">
+      <div class="hero-grid">
+        <figure class="hero-image">
+          <img
+            src="assets/hero.jpg"
+            alt="SIZR heavyweight cotton tee, flat-lay photography on dark background"
+            width="600"
+            height="750"
+            onerror="this.remove()"
+          />
+        </figure>
+        <div class="hero-type">
+          <p class="hero-eyebrow">Drop 01 — heavyweight basics</p>
+          <h1 class="hero-title">Fit that <em>gets you.</em></h1>
+          <p class="hero-sub">Heavyweight basics, engineered by two computer engineers who got tired of guessing sizes.</p>
+          <a class="qlink hero-cta" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
         </div>
       </div>
+      <dl class="hero-meta">
+        <div><dt>est.</dt><dd>2025 — Pakistan</dd></div>
+        <div><dt>drop 01</dt><dd>numbered, limited</dd></div>
+        <div><dt>made in</dt><dd>Sialkot</dd></div>
+      </dl>
     </div>
-    <div class="idea-numeral" aria-hidden="true">01</div>
+  </header>
+
+  <!-- ===================== 01 · THE IDEA ===================== -->
+  <section class="sec sec-bone idea" id="idea" aria-labelledby="idea-title">
+    <span class="ghost" aria-hidden="true">01</span>
+    <div class="container">
+      <div class="sec-head">
+        <span class="sec-nr" aria-hidden="true">01</span>
+        <span class="sec-label">the idea</span>
+      </div>
+      <div class="sec-grid">
+        <h2 class="sec-title" id="idea-title">
+          We're two computer engineering students — one in Islamabad, one in
+          Sialkot — who got tired of clothes that were “close enough.”
+        </h2>
+        <p class="sec-body">
+          So we started Sizr: heavyweight basics, made properly, priced honestly.
+        </p>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== 02 · WHAT WE MAKE ===================== -->
-  <section class="make" id="make">
+  <section class="sec sec-bone wwm" id="what" aria-labelledby="what-title">
+    <span class="ghost" aria-hidden="true">02</span>
     <div class="container">
-      <p class="footnote"><em>02</em> — what we make</p>
-      <div class="make-pair">
-        <!-- PLACEHOLDER — flat-lay of heavyweight tee on raw linen -->
-        <div class="make-panel make-panel--flat plate plate--bone" role="img" aria-label="Placeholder for SIZR flat-lay — folded heavyweight tee on raw linen">
-          <img src="assets/sizr-logo.png" alt="SIZR tee graphic" />
-          <span class="plate-caption">flat-lay — heavy tee / 01</span>
-        </div>
-        <!-- PLACEHOLDER — lifestyle frame, worn against a raw wall -->
-        <div class="make-panel make-panel--life plate" role="img" aria-label="Placeholder for SIZR editorial — worn heavy tee, raw wall">
-          <span class="plate-caption">editorial — worn / 02</span>
-        </div>
+      <div class="sec-head">
+        <span class="sec-nr" aria-hidden="true">02</span>
+        <h2 class="sec-label" id="what-title">what we make</h2>
       </div>
-      <p class="make-cta"><a class="qlink" href="#drop">the pieces</a></p>
+      <div class="panel-grid">
+        <figure class="panel panel-bone">
+          <span class="panel-letter" aria-hidden="true">T</span>
+          <img
+            src="assets/tee-flatlay.jpg"
+            alt="SIZR heavyweight cotton tee, flat-lay on a light background"
+            width="640"
+            height="800"
+            onerror="this.remove()"
+          />
+        </figure>
+        <figure class="panel panel-graphite">
+          <span class="panel-letter" aria-hidden="true">H</span>
+          <img
+            src="assets/moody-frame.jpg"
+            alt="SIZR heavyweight hoodie, moody lifestyle frame on a dark background"
+            width="600"
+            height="800"
+            onerror="this.remove()"
+          />
+        </figure>
+      </div>
+      <p class="pieces-wrap">
+        <a class="qlink" href="#drop">the pieces</a>
+      </p>
     </div>
   </section>
 
   <!-- ===================== 03 · OBSESSIONS ===================== -->
-  <section class="obsessions" id="obsessions">
+  <section class="sec sec-bone obs" id="obsessions" aria-labelledby="obs-title">
+    <span class="ghost" aria-hidden="true">03</span>
     <div class="container">
-      <p class="footnote"><em>03</em> — obsessions</p>
-      <ul class="obs-list">
-        <li>
+      <div class="sec-head">
+        <span class="sec-nr" aria-hidden="true">03</span>
+        <h2 class="sec-label" id="obs-title">obsessions</h2>
+      </div>
+      <ol class="obs-list">
+        <li class="obs-row">
           <span class="obs-num" aria-hidden="true">01</span>
-          <div>
-            <h3 class="obs-title">Fabric that lasts.</h3>
-            <p class="obs-fact">300–400 GSM heavyweight cotton, built to hold shape.</p>
-          </div>
+          <h3 class="obs-name">Fabric that lasts</h3>
+          <p class="obs-fact">300–400 GSM heavyweight cotton, built to hold shape.</p>
         </li>
-        <li>
+        <li class="obs-row">
           <span class="obs-num" aria-hidden="true">02</span>
-          <div>
-            <h3 class="obs-title">Made in Sialkot.</h3>
-            <p class="obs-fact">Manufactured directly where we're based — no middlemen.</p>
-          </div>
+          <h3 class="obs-name">Made in Sialkot</h3>
+          <p class="obs-fact">Manufactured directly where we're based — no middlemen.</p>
         </li>
-        <li>
+        <li class="obs-row">
           <span class="obs-num" aria-hidden="true">03</span>
-          <div>
-            <h3 class="obs-title">Numbered, not mass-made.</h3>
-            <p class="obs-fact">Each drop is limited. Every piece is batch-numbered.</p>
-          </div>
+          <h3 class="obs-name">Numbered, not mass-made</h3>
+          <p class="obs-fact">Each drop is limited. Every piece is batch-numbered.</p>
         </li>
-      </ul>
+      </ol>
     </div>
   </section>
 
   <!-- ===================== 04 · DROP 01 ===================== -->
-  <section class="drop container" id="drop">
-    <p class="footnote">04 — drop 01</p>
-    <!-- PLACEHOLDER — campaign image for drop 01 -->
-    <div class="drop-media plate plate--dark" role="img" aria-label="Placeholder for SIZR drop 01 campaign image">
-      <span class="big" aria-hidden="true">01</span>
-      <span class="plate-caption">campaign — drop 01</span>
-    </div>
-    <div class="drop-layout">
-      <h2>Drop 01</h2>
-      <div>
-        <p class="drop-copy">
-          Heavyweight tees and hoodies. Bold graphics. Limited run.
-          Drop 01 sign-up is open.
-        </p>
-        <span class="drop-batch" aria-label="Edition one, batch one">edition 01 · batch 01</span>
-        <a class="qlink" href="#waitlist" role="button" aria-haspopup="dialog" onclick="openWaitlist(event)">join the drop</a>
+  <section class="sec sec-ink drop" id="drop" aria-labelledby="drop-title">
+    <span class="ghost" aria-hidden="true">04</span>
+    <div class="container">
+      <div class="sec-head">
+        <span class="sec-nr" aria-hidden="true">04</span>
+        <span class="sec-label">drop 01</span>
+      </div>
+      <div class="drop-grid">
+        <div class="drop-type">
+          <h2 class="drop-title" id="drop-title">Drop <em>01</em></h2>
+          <p class="drop-copy">Heavyweight tees and hoodies. Bold graphics. Limited run.</p>
+          <p class="drop-status">Drop 01 — sign-up open</p>
+          <a class="qlink drop-cta" href="#waitlist" role="button" aria-haspopup="dialog">join the drop</a>
+        </div>
+        <figure class="drop-img">
+          <span class="drop-letter" aria-hidden="true">D</span>
+          <img
+            src="assets/drop.jpg"
+            alt="SIZR Drop 01 — heavyweight tee and hoodie, dark product shot"
+            width="640"
+            height="800"
+            onerror="this.remove()"
+          />
+        </figure>
       </div>
     </div>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="footer" role="contentinfo">
+  <footer class="footer">
     <div class="container">
-      <div class="footer-inner">
-        <div>
-          <div class="footer-brand">
-            <img src="assets/sizr-logo-dark.png" alt="SIZR" width="30" height="30" />
-          </div>
-          <p class="footer-line">
-            Heavyweight basics, made properly, priced honestly. Small runs. Numbered pieces.
-          </p>
+      <p class="footer-word">SIZR — Fit that <em>gets you.</em></p>
+      <p class="footer-est">Est. 2025 — Pakistan</p>
+
+      <nav class="footer-cols" aria-label="Footer">
+        <div class="foot-col">
+          <h3 class="foot-head">Fit</h3>
+          <ul>
+            <li><a href="#drop">Drop 01</a></li>
+            <li><a href="#idea">The Idea</a></li>
+          </ul>
         </div>
-
-        <div class="footer-form">
-          <label class="qlink" for="footerEmail">join the drop</label>
-          <form id="footerWaitlistForm" novalidate>
-            <div class="form-row">
-              <input
-                type="email"
-                id="footerEmail"
-                name="email"
-                placeholder="you@email.com"
-                autocomplete="email"
-                required
-              />
-              <button type="submit" class="qlink">join</button>
-            </div>
-            <p class="form-msg" id="footerFormMsg" role="status" aria-live="polite"></p>
-          </form>
+        <div class="foot-col">
+          <h3 class="foot-head">World</h3>
+          <ul>
+            <li><a href="#top">Journal</a></li>
+          </ul>
         </div>
-      </div>
+        <div class="foot-col">
+          <h3 class="foot-head">Contact</h3>
+          <ul>
+            <li><a href="mailto:hello@sizr.shop">hello@sizr.shop</a></li>
+          </ul>
+        </div>
+      </nav>
 
-      <div class="footer-socials">
-        <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">@getsizr — instagram</a>
-        <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">@getsizr — tiktok</a>
-        <a href="mailto:hello@sizr.shop">hello@sizr.shop</a>
-      </div>
+      <form class="foot-join" id="footerJoin" novalidate>
+        <label class="sr-only" for="footerEmail">Email</label>
+        <input
+          id="footerEmail"
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="qlink foot-join-btn">join</button>
+        <p class="foot-err sr-only" id="footerErr" role="alert"></p>
+      </form>
 
-      <div class="footer-bottom">
-        <span>© 2026 Sizr. All rights reserved.</span>
-        <span>Est. 2025 — Pakistan</span>
+      <div class="foot-base">
+        <p>© 2026 Sizr. All rights reserved.</p>
+        <p class="foot-social">
+          <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">Instagram</a> ·
+          <a href="https://tiktok.com/@getsizr" target="_blank" rel="noopener">TikTok</a> —
+          <a href="https://instagram.com/getsizr" target="_blank" rel="noopener">@getsizr</a>
+        </p>
       </div>
     </div>
   </footer>
 
   <!-- ===================== WAITLIST OVERLAY ===================== -->
-  <div class="overlay" id="waitlistOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Join the waitlist">
+  <div
+    class="overlay"
+    id="waitlist"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="waitlist-title"
+    aria-hidden="true"
+  >
     <div class="overlay-panel">
-      <button class="overlay-close" onclick="closeWaitlist()" aria-label="Close waitlist dialog">close</button>
-      <h3>join the <em>list.</em></h3>
-      <p class="intro">Drop 01 is coming. Sign up for early access and updates.</p>
+      <button class="overlay-x" data-close aria-label="Close">close</button>
+      <p class="overlay-kicker">drop 01</p>
+      <h2 class="overlay-title" id="waitlist-title">Join the drop.</h2>
+      <p class="overlay-copy">First access when Drop 01 goes live — no spam, just the drop.</p>
       <form class="waitlist-form" id="waitlistForm" novalidate>
-        <div class="form-row">
-          <label class="qlink" for="waitlistEmail">email address</label>
-          <input
-            type="email"
-            id="waitlistEmail"
-            name="email"
-            placeholder="you@email.com"
-            autocomplete="email"
-            required
-          />
-        </div>
-        <button type="submit" class="qlink">join</button>
-        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+        <label class="sr-only" for="waitlistEmail">Email</label>
+        <input
+          id="waitlistEmail"
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="qlink waitlist-cta">join the drop</button>
+        <p class="waitlist-err sr-only" id="waitlistErr" role="alert"></p>
       </form>
+      <p class="overlay-note">No spam. Just the drop.</p>
     </div>
   </div>
 
-  <!-- ===================== SCRIPTS ===================== -->
+  <!-- ===================== STAGE 8 — LIBRARIES ===================== -->
+  <!-- Custom cursor dot (CSS/JS only — no library) -->
+  <div class="cursor" aria-hidden="true"></div>
+
+  <!-- Lenis smooth scroll + GSAP ScrollTrigger (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+
   <script>
     /* =========================================================
-       SIZR — Landing page interactions
-       No scroll-reveal. Only the hero animates.
+       STAGE 1 — Drawer toggle
        ========================================================= */
+    (function () {
+      var drawer = document.getElementById('menuDrawer');
+      var btn    = document.querySelector('.nav-menu-btn');
+      var closeBtn = document.querySelector('.drawer-close');
+      var openClass = 'is-open';
 
-    /* --- Mobile menu drawer -------------------------------- */
-    var drawer = document.getElementById('menuDrawer');
-    var menuBtn = document.querySelector('.nav-menu-btn');
-
-    function toggleMenu() {
-      var open = drawer.classList.toggle('is-open');
-      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.body.style.overflow = open ? 'hidden' : '';
-      if (open) {
-        var f = drawer.querySelector('.drawer-close');
-        if (f) f.focus();
-      }
-    }
-
-    function closeMenu() {
-      drawer.classList.remove('is-open');
-      drawer.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    /* --- Waitlist overlay ---------------------------------- */
-    var overlay = document.getElementById('waitlistOverlay');
-
-    function openWaitlist(e) {
-      if (e) e.preventDefault();
-      closeMenu();
-      overlay.classList.add('is-open');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      var input = document.getElementById('waitlistEmail');
-      if (input) input.focus();
-    }
-
-    function closeWaitlist() {
-      overlay.classList.remove('is-open');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        if (overlay.classList.contains('is-open')) closeWaitlist();
-        if (drawer.classList.contains('is-open')) closeMenu();
-      }
-    });
-
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeWaitlist();
-    });
-
-    /* --- Email validation (shared) ------------------------- */
-    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    function bindForm(formId, inputId, msgId, label) {
-      var form = document.getElementById(formId);
-      var input = document.getElementById(inputId);
-      var msg = document.getElementById(msgId);
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var value = (input.value || '').trim();
-
-        if (!value) {
-          setMsg('Enter an email address to join.', 'err');
-          input.focus();
-          return;
+      function toggleMenu() {
+        var isOpen = drawer.classList.toggle(openClass);
+        drawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+        /* Pause Lenis (Stage 8) while the drawer is up */
+        if (window.__lenis) {
+          if (isOpen) window.__lenis.stop(); else window.__lenis.start();
         }
-        if (!emailRe.test(value)) {
-          setMsg("That email doesn't look right — try again.", 'err');
-          input.focus();
-          return;
-        }
+        if (isOpen) closeBtn.focus();
+      }
 
-        console.log(label + ' signup:', value);
-        setMsg("You're on the list. We'll be in touch.", 'ok');
-        input.value = '';
+      function closeMenu() {
+        drawer.classList.remove(openClass);
+        drawer.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        if (window.__lenis) window.__lenis.start();
+      }
+
+      btn.addEventListener('click', toggleMenu);
+      closeBtn.addEventListener('click', closeMenu);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && drawer.classList.contains(openClass)) {
+          closeMenu();
+        }
       });
 
-      function setMsg(text, kind) {
-        msg.textContent = text;
-        msg.className = 'form-msg ' + (kind || '');
-      }
-    }
+      /* Close drawer when any internal link is tapped */
+      drawer.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', closeMenu);
+      });
+    })();
 
-    bindForm('waitlistForm', 'waitlistEmail', 'formMsg', 'Waitlist');
-    bindForm('footerWaitlistForm', 'footerEmail', 'footerFormMsg', 'Footer waitlist');
+    /* =========================================================
+       STAGE 7 — Waitlist overlay + email validation
+       ========================================================= */
+    (function () {
+      var overlay = document.getElementById('waitlist');
+      var dForm   = document.getElementById('waitlistForm');
+      var dInput  = document.getElementById('waitlistEmail');
+      var dErr    = document.getElementById('waitlistErr');
+      var fForm   = document.getElementById('footerJoin');
+      var fInput  = document.getElementById('footerEmail');
+      var fErr    = document.getElementById('footerErr');
+      var lastFocused = null;
+      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function validEmail(value) {
+        return EMAIL_RE.test(value.trim());
+      }
+
+      /* --- Open / close -------------------------------------- */
+      function openOverlay() {
+        lastFocused = document.activeElement;
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        /* Pause Lenis (Stage 8) while the dialog is up */
+        if (window.__lenis) window.__lenis.stop();
+        /* Reset any previous error */
+        dErr.textContent = '';
+        dErr.classList.add('sr-only');
+        dInput.removeAttribute('aria-invalid');
+        dInput.focus();
+      }
+
+      function closeOverlay() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (window.__lenis) window.__lenis.start();
+        if (lastFocused) lastFocused.focus();
+      }
+
+      document.querySelectorAll('a[href="#waitlist"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          openOverlay();
+        });
+      });
+
+      overlay.addEventListener('click', function (e) {
+        /* Backdrop click or the "close" button */
+        if (e.target === overlay || e.target.hasAttribute('data-close')) {
+          closeOverlay();
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+          closeOverlay();
+        }
+      });
+
+      /* --- Dialog form ---------------------------------------- */
+      dForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (validEmail(dInput.value)) {
+          console.log('SIZR waitlist join:', { form: 'dialog', email: dInput.value });
+          dForm.reset();
+          closeOverlay();
+        } else {
+          dErr.textContent = 'Please enter a valid email address.';
+          dErr.classList.remove('sr-only');
+          dInput.setAttribute('aria-invalid', 'true');
+          dInput.focus();
+        }
+      });
+
+      /* --- Footer inline form ---------------------------------- */
+      fForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (validEmail(fInput.value)) {
+          console.log('SIZR waitlist join:', { form: 'footer', email: fInput.value });
+          fForm.reset();
+        } else {
+          fErr.textContent = 'Please enter a valid email address.';
+          fErr.classList.remove('sr-only');
+          fInput.setAttribute('aria-invalid', 'true');
+          fInput.focus();
+        }
+      });
+    })();
+
+    /* =========================================================
+       STAGE 8 — Lenis + GSAP parallax + smooth anchors + cursor
+       ========================================================= */
+    (function () {
+      /* Reduce-motion: no Lenis, no GSAP, no parallax, no smooth anchors */
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* --- Lenis — subtle, weighted, invisible smooth scroll ---- */
+      var lenis = new Lenis({ duration: 1.2 });
+      window.__lenis = lenis; /* drawer/overlay pause it via stop/start */
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+
+      /* --- Smooth anchor navigation ------------------------------ */
+      document.addEventListener('click', function (e) {
+        /* Waitlist triggers already preventDefault()'d the click */
+        if (e.defaultPrevented) return;
+        var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+        if (!a) return;
+        var id = a.getAttribute('href');
+        if (id && id.length > 1) {
+          var el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            lenis.scrollTo(el, { offset: 0 });
+          }
+        }
+      });
+
+      /* --- Parallax 1 — hero image (~12% travel, in the 10–15% band) */
+      var heroImg = document.querySelector('.hero-image img');
+      if (heroImg) {
+        gsap.fromTo(heroImg,
+          { yPercent: -6, scale: 1.14 },
+          {
+            yPercent: 6, scale: 1.14, ease: 'none',
+            scrollTrigger: {
+              trigger: '.hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true
+            }
+          });
+      }
+
+      /* --- Parallax 2 — Drop 01 image ---------------------------- */
+      var dropImg = document.querySelector('.drop-img img');
+      if (dropImg) {
+        gsap.fromTo(dropImg,
+          { yPercent: -6, scale: 1.14 },
+          {
+            yPercent: 6, scale: 1.14, ease: 'none',
+            scrollTrigger: {
+              trigger: '.drop',
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          });
+      }
+    })();
+
+    /* --- Custom cursor — small dot, expands over links ------------ */
+    (function () {
+      var dot = document.querySelector('.cursor');
+      if (!dot) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!window.matchMedia('(pointer: fine)').matches) return;
+
+      var ticking = false;
+      document.addEventListener('mousemove', function (e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          dot.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+          dot.classList.add('is-on');
+          ticking = false;
+        });
+      }, { passive: true });
+
+      var HOVER = 'a, button, [role="button"]';
+      document.addEventListener('mouseover', function (e) {
+        if (e.target.closest && e.target.closest(HOVER)) dot.classList.add('is-link');
+      });
+      document.addEventListener('mouseout', function (e) {
+        if (e.target.closest && e.target.closest(HOVER)) dot.classList.remove('is-link');
+      });
+    })();
   </script>
 
 </body>
