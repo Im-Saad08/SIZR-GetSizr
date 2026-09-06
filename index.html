@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>SIZR — Fit that gets you.</title>
-  <meta name="description" content="SIZR — heavyweight basics, made properly, priced honestly.">
+  <meta name="description" content="SIZR — heavyweight basics made by us, priced for what they actually cost. No middleman markup.">
   <meta name="theme-color" content="#0A0C0C">
   <link rel="icon" href="assets/sizr-logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -515,6 +515,46 @@
       .prod-media { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
     }
 
+    /* ---------- 08b · The route (no middleman) ---------- */
+    .route {
+      background: var(--graphite);
+      color: var(--bone);
+      padding-block: clamp(72px, 11vw, 128px);
+      border-bottom: 1px solid var(--rule-dark);
+    }
+    .route-kicker {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: .1em;
+      color: var(--mute-dark);
+      margin-bottom: var(--sp-3);
+    }
+    .route-headline {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 7vw, 72px);
+      font-weight: 900;
+      line-height: 1.03;
+      letter-spacing: -.02em;
+      color: var(--bone);
+      max-width: 20ch;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+    /* ledger handled by the shared .obs-* motifs; corner tag closes the band */
+    .route-tag {
+      display: inline-block;
+      width: fit-content;
+      margin-top: clamp(32px, 4vw, 48px);
+      border-top: none;
+      border-inline: 1px solid var(--rule-dark);
+      border-bottom: 1px solid var(--rule-dark);
+      padding: 14px 16px 16px;            /* open top, like a spec-label */
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--mute-dark);
+    }
+
     /* ---------- 09 · Drop 01 (the main event) ---------- */
     .drop {
       background: var(--bone);
@@ -745,9 +785,14 @@
     .field-msg {
       font-size: 13px;
       line-height: 1.4;
-      color: var(--ember);
     }
     .field-msg[hidden] { display: none; }
+    .msg-err { color: var(--ember); }            /* on ink ≈ 6.3:1      */
+    .msg-ok  { color: var(--mute-dark); font-weight: 500; }  /* footer success */
+    .dialog-form .msg-err {                     /* on bone: deep ember ≈ 5:1 */
+      color: #B33A1F;
+      font-weight: 600;
+    }
 
     .dialog-done {
       margin-top: var(--sp-4);
@@ -761,9 +806,14 @@
 
     .dialog-go { align-self: flex-start; }
 
+    /* anchor targets clear the sticky nav (native-scroll fallback path) */
+    #story, #product, #drop, #footer { scroll-margin-top: 88px; }
+
     /* ---------- 12 · Reduced motion ---------- */
     @media (prefers-reduced-motion: reduce) {
-      .btn, .foot-link, .prod-fig img { transition: none; }
+      .btn, .foot-link, .nav-link, .nav-menu-btn, .drawer-close,
+      .foot-wordmark, .foot-input, .prod-fig img,
+      .drawer, .dialog-backdrop, .dialog-panel { transition: none; }
     }
 
     /* ---------- 13 · Responsive (mobile-first, grows up) ---------- */
@@ -843,13 +893,14 @@
     <!-- ============================================================
          STORY
          ============================================================ -->
-    <section class="story" id="story" aria-label="Our story">
+    <section class="story" id="story" aria-labelledby="story-title">
       <div class="container story-grid">
         <div class="story-left">
+          <h2 class="sr-only" id="story-title">Our story</h2>
           <p class="story-kicker">the story</p>
           <div class="story-copy">
-            <p>We're two computer engineering students — one in Islamabad, one in Sialkot — who got tired of clothes that were <em>'close enough.'</em></p>
-            <p>So we started Sizr: heavyweight basics, made properly, priced honestly.</p>
+            <p>Two computer engineering students — one in Islamabad, one in Sialkot.</p>
+            <p>Most clothing brands buy from a factory and quietly pay someone else's margin on top of yours. <em>We don't.</em> One of us is the manufacturer. No trading company, no middleman, no markup for a name. Just heavyweight cotton, made properly, priced for what it actually costs to make it well.</p>
           </div>
         </div>
         <aside class="story-aside" aria-hidden="true">
@@ -897,25 +948,61 @@
           <li class="obs-row">
             <span class="obs-num">01</span>
             <div class="obs-body">
-              <h3 class="obs-name">Fabric that lasts</h3>
-              <p class="obs-desc">Heavyweight cloth that earns its weight, not a thin-back offering.</p>
+              <h3 class="obs-name">Made by us, not through anyone else.</h3>
+              <p class="obs-desc">Our co-founder runs the factory in Sialkot. No middleman markup — you pay for the garment, not someone else's cut.</p>
             </div>
           </li>
           <li class="obs-row">
             <span class="obs-num">02</span>
             <div class="obs-body">
-              <h3 class="obs-name">Made in Sialkot</h3>
-              <p class="obs-desc">Made where we say it is, by people who are paid properly.</p>
+              <h3 class="obs-name">Fabric that lasts.</h3>
+              <p class="obs-desc">400 GSM heavyweight cotton, built to hold shape, not just look good on day one.</p>
             </div>
           </li>
           <li class="obs-row">
             <span class="obs-num">03</span>
             <div class="obs-body">
-              <h3 class="obs-name">Numbered, not mass-made</h3>
-              <p class="obs-desc">Every piece carries its own number.</p>
+              <h3 class="obs-name">Numbered, not mass-made.</h3>
+              <p class="obs-desc">Each drop is limited. Every piece is batch-numbered.</p>
             </div>
           </li>
         </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE ROUTE — no middleman
+         ============================================================ -->
+    <section class="route" id="route" aria-label="The route — from factory to you">
+      <div class="container">
+        <p class="route-kicker">the route</p>
+        <h2 class="route-headline">From factory floor<br>to your door.</h2>
+
+        <ol class="obs-list">
+          <li class="obs-row">
+            <span class="obs-num">01</span>
+            <div class="obs-body">
+              <h3 class="obs-name">We make it.</h3>
+              <p class="obs-desc">It starts in our co-founder's factory in Sialkot. We own the floor, so we own the quality.</p>
+            </div>
+          </li>
+          <li class="obs-row">
+            <span class="obs-num">02</span>
+            <div class="obs-body">
+              <h3 class="obs-name">No middle tier.</h3>
+              <p class="obs-desc">We don't sell through a trading company or a reseller. No one in the middle adds their cut.</p>
+            </div>
+          </li>
+          <li class="obs-row">
+            <span class="obs-num">03</span>
+            <div class="obs-body">
+              <h3 class="obs-name">You pay the cost.</h3>
+              <p class="obs-desc">The price is what it costs to make it properly. No markup for a name.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="route-tag" aria-hidden="true">no middleman · no markup for a name</p>
       </div>
     </section>
 
@@ -997,6 +1084,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
 
   <script>
+    /* Focus trap: keep Tab cycling inside an open overlay. */
+    function trapTab(e, node) {
+      if (e.key !== 'Tab') return;
+      var focusables = Array.prototype.filter.call(
+        node.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+        function (el) { return el.hidden !== true; }
+      );
+      if (!focusables.length) { e.preventDefault(); return; }
+      var first = focusables[0];
+      var last  = focusables[focusables.length - 1];
+      var here  = document.activeElement;
+      if (e.shiftKey) {
+        if (here === first || here === node) { e.preventDefault(); last.focus(); }
+      } else if (here === last) {
+        e.preventDefault(); first.focus();
+      } else if (focusables.indexOf(here) === -1) {
+        e.preventDefault(); first.focus();
+      }
+    }
+
     /* ---------- Mobile drawer ---------- */
     (function () {
       var drawer    = document.getElementById('drawer');
@@ -1012,6 +1120,7 @@
         drawer.setAttribute('aria-hidden', 'false');
         trigger.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
+        if (window.__lenis) window.__lenis.stop();
         var first = drawer.querySelector('a[href], button');
         if (first) first.focus();
       }
@@ -1021,6 +1130,7 @@
         drawer.setAttribute('aria-hidden', 'true');
         trigger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
+        if (window.__lenis) window.__lenis.start();
         if (lastFocus) lastFocus.focus();
       }
 
@@ -1028,8 +1138,12 @@
       closers.forEach(function (el) {
         el.addEventListener('click', function () { close(); });
       });
+      drawer.addEventListener('click', function (e) {
+        if (e.target === drawer) close();      /* tapping the empty overlay */
+      });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && !closed) { e.preventDefault(); close(); }
+        else if (e.key === 'Tab' && !closed) { trapTab(e, drawer); }
       });
     })();
 
@@ -1059,6 +1173,7 @@
         document.body.style.overflow = '';
         if (window.__lenis) window.__lenis.start();
         msg.hidden = true;
+        msg.className = 'field-msg';
         done.hidden = true;
         form.hidden = false;
         if (lastFocus) lastFocus.focus();
@@ -1078,12 +1193,14 @@
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && !dialog.hidden) { e.preventDefault(); close(); }
+        else if (e.key === 'Tab' && !dialog.hidden) { trapTab(e, dialog.querySelector('.dialog-panel')); }
       });
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var val = input.value.trim();
         if (!EMAIL_RE.test(val)) {
+          msg.className = 'field-msg msg-err';
           msg.textContent = 'That email doesn’t look right — try again.';
           msg.hidden = false;
           input.focus();
@@ -1106,11 +1223,13 @@
         e.preventDefault();
         var val = input.value.trim();
         if (!EMAIL_RE.test(val)) {
+          msg.className = 'field-msg msg-err';
           msg.textContent = 'That email doesn’t look right.';
           msg.hidden = false;
           input.focus();
           return;
         }
+        msg.className = 'field-msg msg-ok';
         msg.textContent = 'You’re on the list.';
         msg.hidden = false;
         input.value = '';
@@ -1122,21 +1241,33 @@
     (function () {
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      /* Testing override: append ?smooth=1 to the URL to force smooth scroll
+         on even when the OS requests reduced motion. */
+      if (new URLSearchParams(location.search).get('smooth') === '1') {
+        reduceMotion = false;
+      }
+
       /* Smooth scroll — Lenis-managed, continuous easing (no wobble), no scroll-snap anywhere. */
       if (!reduceMotion && window.Lenis) {
-        window.__lenis = new Lenis({
+        var lenis = window.__lenis = new Lenis({
           duration: 1.2,
           easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
           smoothWheel: true,
           syncTouch: false
         });
 
-        window.__lenis.on('scroll', ScrollTrigger.update);
+        /* Keep ScrollTrigger in sync when it's present. Guarded so a missing
+           GSAP/ScrollTrigger CDN can no longer kill Lenis with a ReferenceError. */
+        if (window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
 
-        gsap.ticker.add(function (time) {
-          window.__lenis.raf(time * 1000);
-        });
-        gsap.ticker.lagSmoothing(0);
+        /* Drive Lenis inside GSAP's ticker when available, else plain rAF
+           so smooth scroll still works even if the GSAP CDN fails. */
+        if (window.gsap) {
+          gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          (function loop(time) { lenis.raf(time); requestAnimationFrame(loop); })(0);
+        }
       }
 
       /* ONE parallax effect on the two feature images (10–15% relative travel) */
@@ -1158,6 +1289,12 @@
         });
       }
 
+      /* Live status for the console — tells you exactly what's running. */
+      console.log('[SIZR] smooth scroll: ' + (window.__lenis ? 'Lenis ACTIVE' : 'OFF')
+        + (reduceMotion ? ' (reduced-motion)' : '')
+        + (window.__lenis && !window.gsap ? ' — GSAP not loaded, Lenis on native rAF' : '')
+        + (window.__lenis && !window.ScrollTrigger ? ' — ScrollTrigger not loaded, parallax off' : ''));
+
       /* Smooth in-page anchors via Lenis (native jump would skip the easing) */
       document.addEventListener('click', function (e) {
         if (e.defaultPrevented) return;
@@ -1169,11 +1306,17 @@
         if (!el) return;
         e.preventDefault();
         if (window.__lenis) {
-          window.__lenis.scrollTo(el, { offset: 0, duration: 1.2 });
+          if (id === '#top') {
+            window.__lenis.scrollTo('top', { duration: 1.2 });
+          } else {
+            /* Lenis ignores scroll-margin-top — clear the sticky nav explicitly */
+            window.__lenis.scrollTo(el, { offset: -88, duration: 1.2 });
+          }
         } else {
           el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
         }
       });
     })();
+  </script>
 </body>
 </html>
